@@ -96,7 +96,7 @@
             this.InstallCheckBox.TabIndex = 2;
             this.InstallCheckBox.Text = "(&Re)Install Spotify (Recommended)";
             this.ControlToolTips.SetToolTip(this.InstallCheckBox, "Installs Spotify (necessary), if its already installed it will override the previ" +
-        "ous version (recommended)");
+        "ous installation (recommended)");
             this.InstallCheckBox.UseVisualStyleBackColor = true;
             // 
             // WarningLabel
@@ -168,7 +168,7 @@
             this.CheckUpdatesButton.Name = "CheckUpdatesButton";
             this.CheckUpdatesButton.Size = new System.Drawing.Size(117, 23);
             this.CheckUpdatesButton.TabIndex = 1;
-            this.CheckUpdatesButton.Text = "&Check for Updates";
+            this.CheckUpdatesButton.Text = "&Check for updates";
             this.CheckUpdatesButton.UseVisualStyleBackColor = true;
             this.CheckUpdatesButton.Click += new System.EventHandler(this.CheckUpdatesButton_Click);
             // 
@@ -176,12 +176,13 @@
             // 
             this.AboutGithubLabel.AutoSize = true;
             this.AboutGithubLabel.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
-            this.AboutGithubLabel.Location = new System.Drawing.Point(133, 84);
+            this.AboutGithubLabel.Location = new System.Drawing.Point(117, 84);
             this.AboutGithubLabel.Name = "AboutGithubLabel";
-            this.AboutGithubLabel.Size = new System.Drawing.Size(67, 13);
+            this.AboutGithubLabel.Size = new System.Drawing.Size(91, 13);
             this.AboutGithubLabel.TabIndex = 0;
             this.AboutGithubLabel.TabStop = true;
-            this.AboutGithubLabel.Text = "&Github Repo";
+            this.AboutGithubLabel.Text = "&Github Repository";
+            this.ControlToolTips.SetToolTip(this.AboutGithubLabel, "https://github.com/midare160/RemoveSpotifyAds");
             this.AboutGithubLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.AboutGithubLabel_LinkClicked);
             // 
             // AboutLabel

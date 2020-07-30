@@ -46,7 +46,14 @@ namespace RemoveSpotifyAds.UI
         {
             Cursor.Current = Cursors.WaitCursor;
 
-            PerformUITasks();
+            FormTabControl.SelectTab(OutputTabPage);
+            ClearButton.Enabled = true;
+            this.Update(); // Explicit update, otherwise the form updates itself too late
+
+            if (!string.IsNullOrEmpty(OutputTextBox.Text))
+            {
+                OutputTextBox.AppendText("\r\n- - - - - - - - - - - - - - - - - - - - - - - -\r\n\r\n");
+            }
 
             if (InstallCheckBox.Checked && !InstallSpotify())
             {
@@ -58,6 +65,7 @@ namespace RemoveSpotifyAds.UI
             DenyAccessToUpdateDirectory();
             WriteToHostFile();
             DeleteAdSpaFile();
+
             InstallCheckBox.Enabled = true;
 
             OutputTextBox.AppendText("\r\nAds removed successfully!");
@@ -82,7 +90,7 @@ namespace RemoveSpotifyAds.UI
             try
             {
                 AboutGithubLabel.LinkVisited = true;
-                Process.Start("www.google.de"); //TODO Github repo link
+                Process.Start("https://github.com/midare160/RemoveSpotifyAds");
             }
             catch (Exception)
             {
@@ -97,19 +105,19 @@ namespace RemoveSpotifyAds.UI
         private void CheckUpdatesButton_Click(object sender, EventArgs e)
         {
             Cursor.Current = Cursors.WaitCursor;
-            Thread.Sleep(new Random().Next(500, 3000)); // TODO remove
+
+            // TODO check for updates => API
 
             MessageBox.Show(
                 "No updates available!",
                 "Information",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
-            //TODO check for updates
         }
 
         private void RemoveSpotifyAds_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Escape)
+            if (Cursor.Current != Cursors.WaitCursor && e.KeyCode == Keys.Escape)
             {
                 this.Close();
             }
@@ -122,22 +130,6 @@ namespace RemoveSpotifyAds.UI
             InstallCheckBox.Checked = visible;
             InstallCheckBox.Visible = visible;
             WarningLabel.Visible = !visible;
-        }
-
-        /// <summary>
-        /// Does some tasks before starting to remove the ads.
-        /// </summary>
-        private void PerformUITasks()
-        {
-            FormTabControl.SelectTab(OutputTabPage);
-            ClearButton.Enabled = true;
-
-            if (!string.IsNullOrEmpty(OutputTextBox.Text))
-            {
-                OutputTextBox.AppendText("\r\n- - - - - - - - - - - - - - - - - - - - - - - -\r\n\r\n");
-            }
-
-            this.Update();
         }
 
         /// <summary>
@@ -185,10 +177,10 @@ namespace RemoveSpotifyAds.UI
 
             var allUsers = new SecurityIdentifier(WellKnownSidType.WorldSid, null);
             var directoryInfo = new DirectoryInfo(updatePath);
-            var fsar = new FileSystemAccessRule(allUsers, FileSystemRights.FullControl, AccessControlType.Deny);
+            var accessRule = new FileSystemAccessRule(allUsers, FileSystemRights.FullControl, AccessControlType.Deny);
 
             var directorySecurity = directoryInfo.GetAccessControl();
-            directorySecurity.AddAccessRule(fsar);
+            directorySecurity.AddAccessRule(accessRule);
             directoryInfo.SetAccessControl(directorySecurity);
 
             OutputTextBox.AppendText(FinishedKeyWord);
@@ -245,7 +237,7 @@ namespace RemoveSpotifyAds.UI
         }
 
         /// <summary>
-        /// Removes the URLS that the hosts-file is already containing
+        /// Removes the URLS from the list that the hosts-file is already containing
         /// </summary>
         /// <param name="hostsPath">The path to the hosts-file</param>
         /// <returns>A <see cref="List{T}"/> that contains all URLs that are not already written to the hosts-file.

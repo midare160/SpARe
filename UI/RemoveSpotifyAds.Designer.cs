@@ -36,13 +36,13 @@
             this.InstallCheckBox = new System.Windows.Forms.CheckBox();
             this.WarningLabel = new System.Windows.Forms.Label();
             this.OutputTabPage = new System.Windows.Forms.TabPage();
-            this.OutputTextBox = new RemoveSpotifyAds.CustomControls.ReadOnlyRichTextBox();
             this.ClearButton = new System.Windows.Forms.Button();
             this.HelpTabPage = new System.Windows.Forms.TabPage();
             this.CheckUpdatesButton = new System.Windows.Forms.Button();
             this.AboutGithubLabel = new System.Windows.Forms.LinkLabel();
             this.AboutLabel = new System.Windows.Forms.Label();
             this.ControlToolTips = new System.Windows.Forms.ToolTip(this.components);
+            this.OutputTextBox = new RemoveSpotifyAds.CustomControls.ReadOnlyRichTextBox();
             this.FormTabControl.SuspendLayout();
             this.StartTabPage.SuspendLayout();
             this.OutputTabPage.SuspendLayout();
@@ -122,21 +122,6 @@
             this.OutputTabPage.Text = "Output";
             this.OutputTabPage.UseVisualStyleBackColor = true;
             // 
-            // OutputTextBox
-            // 
-            this.OutputTextBox.Cursor = System.Windows.Forms.Cursors.Default;
-            this.OutputTextBox.DetectUrls = false;
-            this.OutputTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OutputTextBox.HideSelection = false;
-            this.OutputTextBox.Location = new System.Drawing.Point(3, 3);
-            this.OutputTextBox.Name = "OutputTextBox";
-            this.OutputTextBox.ReadOnly = true;
-            this.OutputTextBox.Size = new System.Drawing.Size(318, 123);
-            this.OutputTextBox.TabIndex = 0;
-            this.OutputTextBox.TabStop = false;
-            this.OutputTextBox.Text = "";
-            this.OutputTextBox.TextChanged += new System.EventHandler(this.OutputTextBox_TextChanged);
-            // 
             // ClearButton
             // 
             this.ClearButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -182,8 +167,11 @@
             this.AboutGithubLabel.TabIndex = 0;
             this.AboutGithubLabel.TabStop = true;
             this.AboutGithubLabel.Text = "&Github Repository";
+            this.AboutGithubLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.ControlToolTips.SetToolTip(this.AboutGithubLabel, "https://github.com/midare160/RemoveSpotifyAds");
             this.AboutGithubLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.AboutGithubLabel_LinkClicked);
+            this.AboutGithubLabel.Enter += new System.EventHandler(this.AboutGithubLabel_Enter);
+            this.AboutGithubLabel.Leave += new System.EventHandler(this.AboutGithubLabel_Leave);
             // 
             // AboutLabel
             // 
@@ -193,14 +181,28 @@
             this.AboutLabel.Size = new System.Drawing.Size(97, 13);
             this.AboutLabel.TabIndex = 0;
             this.AboutLabel.Text = "©2020 MIDARE16";
+            this.AboutLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // ControlToolTips
             // 
             this.ControlToolTips.AutoPopDelay = 10000;
             this.ControlToolTips.InitialDelay = 500;
             this.ControlToolTips.ReshowDelay = 100;
-            this.ControlToolTips.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
-            this.ControlToolTips.ToolTipTitle = "Information";
+            // 
+            // OutputTextBox
+            // 
+            this.OutputTextBox.Cursor = System.Windows.Forms.Cursors.Default;
+            this.OutputTextBox.DetectUrls = false;
+            this.OutputTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.OutputTextBox.HideSelection = false;
+            this.OutputTextBox.Location = new System.Drawing.Point(3, 3);
+            this.OutputTextBox.Name = "OutputTextBox";
+            this.OutputTextBox.ReadOnly = true;
+            this.OutputTextBox.Size = new System.Drawing.Size(318, 123);
+            this.OutputTextBox.TabIndex = 0;
+            this.OutputTextBox.TabStop = false;
+            this.OutputTextBox.Text = "";
+            this.OutputTextBox.TextChanged += new System.EventHandler(this.OutputTextBox_TextChanged);
             // 
             // RemoveSpotifyAdsForm
             // 
@@ -209,6 +211,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(332, 184);
             this.Controls.Add(this.FormTabControl);
+            this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
@@ -217,7 +220,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Remove Spotify Ads";
             this.Load += new System.EventHandler(this.RemoveSpotifyAds_Load);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.RemoveSpotifyAds_KeyDown);
             this.FormTabControl.ResumeLayout(false);
             this.StartTabPage.ResumeLayout(false);
             this.StartTabPage.PerformLayout();

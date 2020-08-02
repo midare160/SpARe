@@ -1,12 +1,15 @@
-﻿using System;
+﻿using RemoveSpotifyAds.API;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Media;
+using System.Net;
+using System.Net.Http;
 using System.Security.AccessControl;
 using System.Security.Principal;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace RemoveSpotifyAds.UI
@@ -80,7 +83,7 @@ namespace RemoveSpotifyAds.UI
             ClearButton.Enabled = false;
         }
 
-        private void OutputTextBox_TextChanged(object sender, EventArgs e) 
+        private void OutputTextBox_TextChanged(object sender, EventArgs e)
             => this.Update();
 
         private void AboutGithubLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
@@ -102,24 +105,59 @@ namespace RemoveSpotifyAds.UI
             }
         }
 
-        private void CheckUpdatesButton_Click(object sender, EventArgs e)
+        private void AboutGithubLabel_Enter(object sender, EventArgs e)
+        {
+            // Underline when focused with tab
+            AboutGithubLabel.LinkBehavior = LinkBehavior.AlwaysUnderline;
+        }
+
+        private void AboutGithubLabel_Leave(object sender, EventArgs e)
+        {
+            AboutGithubLabel.LinkBehavior = LinkBehavior.HoverUnderline;
+        }
+
+        private async void CheckUpdatesButton_Click(object sender, EventArgs e)
         {
             Cursor.Current = Cursors.WaitCursor;
 
-            // TODO check for updates => API
-
-            MessageBox.Show(
-                "No updates available!",
-                "Information",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
-        }
-
-        private void RemoveSpotifyAds_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (Cursor.Current != Cursors.WaitCursor && e.KeyCode == Keys.Escape)
+            try
             {
-                this.Close();
+                var client = new GithubClient("RemoveSpotifyAds");
+                var repository = await client.GetRepositoryAsync("https://api.github.com/repositories/283887091/releases/latest");
+
+                var releaseVersion = new Version(repository.TagName.Substring(1));
+
+                if (releaseVersion.CompareTo(new Version(Application.ProductVersion)) == 0) // TODO Change to bigger ('>')
+                {
+                    var dialogResult = MessageBox.Show(
+                        "New update available! Do you want to download it now?",
+                        "Update available!",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question);
+
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        InstallNewVersion(repository.Assets[0].BrowserDownloadUrl);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show(
+                        "You already have the latest version!",
+                        "Up to date!",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex) when (ex is WebException || ex is HttpRequestException || ex is HttpListenerException)
+            {
+                MessageBox.Show(
+                    "Couldn't connect to the servers!",
+                    "Error!",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+
+                return;
             }
         }
         #endregion
@@ -140,7 +178,7 @@ namespace RemoveSpotifyAds.UI
             OutputTextBox.AppendText("Installing Spotify...");
 
             // §HACK: Start the Spotify installer with non-admin rights, otherwise it won't execute
-            Process.Start("explorer.exe", Path.Combine(Application.StartupPath, @"Data\spotify_installer1.0.8.exe")).WaitForExit();
+            Process.Start("explorer.exe", Path.Combine(System.Windows.Forms.Application.StartupPath, @"Data\spotify_installer1.0.8.exe")).WaitForExit();
 
             using (var installProcess = Process.GetProcessesByName("spotify_installer1.0.8")[0])
             {
@@ -273,6 +311,55 @@ namespace RemoveSpotifyAds.UI
             {
                 OutputTextBox.AppendText(" Does not exist!\r\n");
             }
+        }
+
+        private void InstallNewVersion(string url)
+        {
+            var updatePath = Path.Combine(Application.StartupPath, "Update");
+            var zipPath = Path.Combine(updatePath, Path.GetFileName(url));
+
+            Directory.CreateDirectory(updatePath);
+
+            var downloader = new Downloader
+            {
+                Headers = new List<(string name, string value)> { ("user-agent", "RemoveSpotifyAds") },
+                Address = url,
+                FileName = zipPath
+            };
+
+            downloader.Start();
+            if (downloader.ShowDialog(this) == DialogResult.Cancel)
+            {
+                Directory.Delete(updatePath, true);
+                return;
+            }
+
+            var bakPath = Path.GetFileNameWithoutExtension(Application.ExecutablePath) + ".bak";
+
+            if (File.Exists(bakPath))
+            {
+                File.Delete(bakPath);
+            }
+
+            // Executable cant be replaced at runtime => rename it
+            File.Move(Application.ExecutablePath, bakPath);
+            Directory.Delete(Path.Combine(Application.StartupPath, "Data"), true);
+
+            ZipFile.ExtractToDirectory(zipPath, Application.StartupPath);
+
+            Directory.Delete(updatePath, true);
+            Application.Restart();
+        }
+
+        protected override bool ProcessDialogKey(Keys keyData)
+        {
+            if (Form.ModifierKeys == Keys.None && keyData == Keys.Escape)
+            {
+                this.Close();
+                return true;
+            }
+
+            return base.ProcessDialogKey(keyData);
         }
         #endregion
     }

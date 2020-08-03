@@ -130,7 +130,7 @@ namespace RemoveSpotifyAds.UI
                 if (releaseVersion.CompareTo(new Version(Application.ProductVersion)) == 0) // TODO Change to bigger ('>')
                 {
                     var dialogResult = MessageBox.Show(
-                        "New update available! Do you want to download it now?",
+                        "New version available! Do you want to download it now?",
                         "Update available!",
                         MessageBoxButtons.YesNo,
                         MessageBoxIcon.Question);
@@ -152,8 +152,8 @@ namespace RemoveSpotifyAds.UI
             catch (Exception ex) when (ex is WebException || ex is HttpRequestException || ex is HttpListenerException)
             {
                 MessageBox.Show(
-                    "Couldn't connect to the servers!",
-                    "Error!",
+                    "Couldn't connect to the servers:\r\n\r\n" + ex.Message,
+                    "Connection error!",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
 
@@ -178,14 +178,21 @@ namespace RemoveSpotifyAds.UI
             OutputTextBox.AppendText("Installing Spotify...");
 
             // §HACK: Start the Spotify installer with non-admin rights, otherwise it won't execute
-            Process.Start("explorer.exe", Path.Combine(System.Windows.Forms.Application.StartupPath, @"Data\spotify_installer1.0.8.exe")).WaitForExit();
+            Process.Start("explorer.exe", Path.Combine(Application.StartupPath, @"Data\spotify_installer1.0.8.exe")).WaitForExit();
 
-            using (var installProcess = Process.GetProcessesByName("spotify_installer1.0.8")[0])
+            try
             {
-                installProcess.EnableRaisingEvents = true;
-                installProcess.Exited += InstallProcessExited;
+                using (var installProcess = Process.GetProcessesByName("spotify_installer1.0.8")[0])
+                {
+                    installProcess.EnableRaisingEvents = true;
+                    installProcess.Exited += InstallProcessExited;
 
-                while (!installProcess.HasExited) ;
+                    while (!installProcess.HasExited) ;
+                }
+            }
+            catch (IndexOutOfRangeException)
+            {
+                _installExitCode = -1;
             }
 
             if (_installExitCode == 0)
@@ -320,17 +327,15 @@ namespace RemoveSpotifyAds.UI
 
             Directory.CreateDirectory(updatePath);
 
-            var downloader = new Downloader
+            var downloader = new Downloader(url, zipPath)
             {
                 Headers = new List<(string name, string value)> { ("user-agent", "RemoveSpotifyAds") },
-                Address = url,
-                FileName = zipPath
             };
 
             downloader.Start();
             if (downloader.ShowDialog(this) == DialogResult.Cancel)
             {
-                Directory.Delete(updatePath, true);
+                File.Delete(zipPath);
                 return;
             }
 

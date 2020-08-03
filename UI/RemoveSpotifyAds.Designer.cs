@@ -36,13 +36,13 @@
             this.InstallCheckBox = new System.Windows.Forms.CheckBox();
             this.WarningLabel = new System.Windows.Forms.Label();
             this.OutputTabPage = new System.Windows.Forms.TabPage();
+            this.OutputTextBox = new RemoveSpotifyAds.CustomControls.ReadOnlyRichTextBox();
             this.ClearButton = new System.Windows.Forms.Button();
             this.HelpTabPage = new System.Windows.Forms.TabPage();
             this.CheckUpdatesButton = new System.Windows.Forms.Button();
             this.AboutGithubLabel = new System.Windows.Forms.LinkLabel();
             this.AboutLabel = new System.Windows.Forms.Label();
-            this.ControlToolTips = new System.Windows.Forms.ToolTip(this.components);
-            this.OutputTextBox = new RemoveSpotifyAds.CustomControls.ReadOnlyRichTextBox();
+            this.ControlToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.FormTabControl.SuspendLayout();
             this.StartTabPage.SuspendLayout();
             this.OutputTabPage.SuspendLayout();
@@ -95,7 +95,7 @@
             this.InstallCheckBox.Size = new System.Drawing.Size(189, 17);
             this.InstallCheckBox.TabIndex = 2;
             this.InstallCheckBox.Text = "(&Re)Install Spotify (Recommended)";
-            this.ControlToolTips.SetToolTip(this.InstallCheckBox, "Installs Spotify (necessary), if its already installed it will override the previ" +
+            this.ControlToolTip.SetToolTip(this.InstallCheckBox, "Installs Spotify (necessary), if its already installed it will override the previ" +
         "ous installation (recommended)");
             this.InstallCheckBox.UseVisualStyleBackColor = true;
             // 
@@ -122,9 +122,25 @@
             this.OutputTabPage.Text = "Output";
             this.OutputTabPage.UseVisualStyleBackColor = true;
             // 
+            // OutputTextBox
+            // 
+            this.OutputTextBox.Cursor = System.Windows.Forms.Cursors.Default;
+            this.OutputTextBox.DetectUrls = false;
+            this.OutputTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.OutputTextBox.HideSelection = false;
+            this.OutputTextBox.Location = new System.Drawing.Point(3, 3);
+            this.OutputTextBox.Name = "OutputTextBox";
+            this.OutputTextBox.ReadOnly = true;
+            this.OutputTextBox.Size = new System.Drawing.Size(318, 123);
+            this.OutputTextBox.TabIndex = 0;
+            this.OutputTextBox.TabStop = false;
+            this.OutputTextBox.Text = "";
+            this.OutputTextBox.TextChanged += new System.EventHandler(this.OutputTextBox_TextChanged);
+            // 
             // ClearButton
             // 
             this.ClearButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.ClearButton.Cursor = System.Windows.Forms.Cursors.Default;
             this.ClearButton.Enabled = false;
             this.ClearButton.Location = new System.Drawing.Point(246, 132);
             this.ClearButton.Name = "ClearButton";
@@ -168,7 +184,7 @@
             this.AboutGithubLabel.TabStop = true;
             this.AboutGithubLabel.Text = "&Github Repository";
             this.AboutGithubLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.ControlToolTips.SetToolTip(this.AboutGithubLabel, "https://github.com/midare160/RemoveSpotifyAds");
+            this.ControlToolTip.SetToolTip(this.AboutGithubLabel, "https://github.com/midare160/RemoveSpotifyAds");
             this.AboutGithubLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.AboutGithubLabel_LinkClicked);
             this.AboutGithubLabel.Enter += new System.EventHandler(this.AboutGithubLabel_Enter);
             this.AboutGithubLabel.Leave += new System.EventHandler(this.AboutGithubLabel_Leave);
@@ -183,26 +199,11 @@
             this.AboutLabel.Text = "©2020 MIDARE16";
             this.AboutLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // ControlToolTips
+            // ControlToolTip
             // 
-            this.ControlToolTips.AutoPopDelay = 10000;
-            this.ControlToolTips.InitialDelay = 500;
-            this.ControlToolTips.ReshowDelay = 100;
-            // 
-            // OutputTextBox
-            // 
-            this.OutputTextBox.Cursor = System.Windows.Forms.Cursors.Default;
-            this.OutputTextBox.DetectUrls = false;
-            this.OutputTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OutputTextBox.HideSelection = false;
-            this.OutputTextBox.Location = new System.Drawing.Point(3, 3);
-            this.OutputTextBox.Name = "OutputTextBox";
-            this.OutputTextBox.ReadOnly = true;
-            this.OutputTextBox.Size = new System.Drawing.Size(318, 123);
-            this.OutputTextBox.TabIndex = 0;
-            this.OutputTextBox.TabStop = false;
-            this.OutputTextBox.Text = "";
-            this.OutputTextBox.TextChanged += new System.EventHandler(this.OutputTextBox_TextChanged);
+            this.ControlToolTip.AutoPopDelay = 10000;
+            this.ControlToolTip.InitialDelay = 500;
+            this.ControlToolTip.ReshowDelay = 100;
             // 
             // RemoveSpotifyAdsForm
             // 
@@ -240,7 +241,7 @@
         private System.Windows.Forms.TabPage HelpTabPage;
         private System.Windows.Forms.Button ClearButton;
         private System.Windows.Forms.CheckBox InstallCheckBox;
-        private System.Windows.Forms.ToolTip ControlToolTips;
+        private System.Windows.Forms.ToolTip ControlToolTip;
         private System.Windows.Forms.LinkLabel AboutGithubLabel;
         private System.Windows.Forms.Label AboutLabel;
         private System.Windows.Forms.Label WarningLabel;

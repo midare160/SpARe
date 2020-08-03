@@ -28,15 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.CancelDownloadButton = new System.Windows.Forms.Button();
             this.PercentageProgressLabel = new System.Windows.Forms.Label();
             this.DownloadSpeedLabel = new System.Windows.Forms.Label();
             this.DownloadProgressLabel = new System.Windows.Forms.Label();
             this.DownloadProgressBar = new System.Windows.Forms.ProgressBar();
+            this.DownloadToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.SuspendLayout();
             // 
             // CancelDownloadButton
             // 
+            this.CancelDownloadButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.CancelDownloadButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.CancelDownloadButton.Location = new System.Drawing.Point(195, 71);
             this.CancelDownloadButton.Name = "CancelDownloadButton";
@@ -48,6 +51,7 @@
             // 
             // PercentageProgressLabel
             // 
+            this.PercentageProgressLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.PercentageProgressLabel.BackColor = System.Drawing.Color.Transparent;
             this.PercentageProgressLabel.Location = new System.Drawing.Point(207, 39);
             this.PercentageProgressLabel.Name = "PercentageProgressLabel";
@@ -59,25 +63,30 @@
             // DownloadSpeedLabel
             // 
             this.DownloadSpeedLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
-            this.DownloadSpeedLabel.Location = new System.Drawing.Point(12, 8);
+            this.DownloadSpeedLabel.AutoSize = true;
+            this.DownloadSpeedLabel.Cursor = System.Windows.Forms.Cursors.SizeWE;
+            this.DownloadSpeedLabel.Location = new System.Drawing.Point(12, 13);
             this.DownloadSpeedLabel.Name = "DownloadSpeedLabel";
-            this.DownloadSpeedLabel.Size = new System.Drawing.Size(216, 23);
+            this.DownloadSpeedLabel.Size = new System.Drawing.Size(57, 13);
             this.DownloadSpeedLabel.TabIndex = 3;
-            this.DownloadSpeedLabel.Text = "0 MBit/s";
+            this.DownloadSpeedLabel.Text = "0.00 MB/s";
             this.DownloadSpeedLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.DownloadToolTip.SetToolTip(this.DownloadSpeedLabel, "Change to MBit/s (MegaBits per second)");
+            this.DownloadSpeedLabel.Click += new System.EventHandler(this.DownloadSpeedLabel_Click);
             // 
             // DownloadProgressLabel
             // 
             this.DownloadProgressLabel.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.DownloadProgressLabel.Location = new System.Drawing.Point(237, 8);
+            this.DownloadProgressLabel.Location = new System.Drawing.Point(228, 8);
             this.DownloadProgressLabel.Name = "DownloadProgressLabel";
-            this.DownloadProgressLabel.Size = new System.Drawing.Size(216, 23);
+            this.DownloadProgressLabel.Size = new System.Drawing.Size(225, 23);
             this.DownloadProgressLabel.TabIndex = 4;
-            this.DownloadProgressLabel.Text = "0 MB / 0 MB";
+            this.DownloadProgressLabel.Text = "0.00 MB / 0.00 MB";
             this.DownloadProgressLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // DownloadProgressBar
             // 
+            this.DownloadProgressBar.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.DownloadProgressBar.Location = new System.Drawing.Point(12, 34);
             this.DownloadProgressBar.Name = "DownloadProgressBar";
             this.DownloadProgressBar.Size = new System.Drawing.Size(441, 23);
@@ -104,6 +113,7 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Downloader_FormClosing);
             this.Load += new System.EventHandler(this.Downloader_Load);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -114,5 +124,6 @@
         private System.Windows.Forms.Label DownloadSpeedLabel;
         private System.Windows.Forms.Label DownloadProgressLabel;
         private System.Windows.Forms.ProgressBar DownloadProgressBar;
+        private System.Windows.Forms.ToolTip DownloadToolTip;
     }
 }

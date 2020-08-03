@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Windows.Forms;
-using System.Windows.Shell;
 
 namespace RemoveSpotifyAds.UI
 {
@@ -22,10 +21,6 @@ namespace RemoveSpotifyAds.UI
         public IWebProxy Proxy { get; set; }
 
         public SecurityProtocolType SecurityProtocol { get; set; } = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-        #endregion
-
-        #region Static
-        private const string _numberFormat = "0.00";
         #endregion
 
         #region Declarations
@@ -82,6 +77,9 @@ namespace RemoveSpotifyAds.UI
 
         private void WebClient_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
+            const string numberFormat = "0.00";
+            const double basis = 10, exponent = 6;
+
             long bytesPerSecond = 0;
             var timeSpan = DateTime.Now - _startedAt;
 
@@ -90,10 +88,11 @@ namespace RemoveSpotifyAds.UI
                 bytesPerSecond = e.BytesReceived / (long)timeSpan.TotalSeconds;
             }
 
-            var megaBytesPerSecond = (bytesPerSecond / Math.Pow(10, 6)).ToString(_numberFormat);
-            var megaBitsPerSecond = (bytesPerSecond / Math.Pow(10, 6) * 8).ToString(_numberFormat);
-            var megaBytesReceived = (e.BytesReceived / Math.Pow(10, 6)).ToString(_numberFormat);
-            var totalMegaBytesToReceive = (e.TotalBytesToReceive / Math.Pow(10, 6)).ToString(_numberFormat);
+            var megaBytesPerSecond = (bytesPerSecond / Math.Pow(basis, exponent)).ToString(numberFormat);
+            var megaBitsPerSecond = (bytesPerSecond / Math.Pow(basis, exponent) * 8).ToString(numberFormat);
+            var megaBytesReceived = (e.BytesReceived / Math.Pow(basis, exponent)).ToString(numberFormat);
+            var totalMegaBytesToReceive = (e.TotalBytesToReceive / Math.Pow(10, 6)).ToString(numberFormat);
+            var timeRemaining = TimeSpan.FromSeconds((e.TotalBytesToReceive - e.BytesReceived) / bytesPerSecond);
 
             DownloadProgressBar.Value = e.ProgressPercentage;
             PercentageProgressLabel.Text = $"{e.ProgressPercentage} %";
@@ -109,6 +108,14 @@ namespace RemoveSpotifyAds.UI
                 DownloadSpeedLabel.Text = $"{megaBytesPerSecond} MB/s";
                 DownloadToolTip.SetToolTip(DownloadSpeedLabel, "Change to MBit/s (MegaBit per second)");
             }
+
+            var timeRemainingString = "";
+
+            if (timeRemaining.Days > 0) timeRemainingString += $"{timeRemaining.Days:0}d, ";
+            if (timeRemaining.Hours > 0) timeRemainingString += $"{timeRemaining.Hours:0}h, ";
+            if (timeRemaining.Minutes > 0) timeRemainingString += $"{timeRemaining.Minutes:0}min, ";
+
+            TimeRemainingLabel.Text = $"{timeRemainingString}{timeRemaining.Seconds:0}s left";
 
             TaskbarManager.Instance.SetProgressValue(e.ProgressPercentage, 100, this.Handle);
         }

@@ -41,8 +41,8 @@ namespace RemoveSpotifyAds.UI
         private void RemoveSpotifyAds_Load(object sender, EventArgs e)
         {
             SetCheckboxState(File.Exists(Path.Combine(Application.StartupPath, @"Data\spotify_installer1.0.8.exe")));
-
             InstallCheckBox.Enabled = File.Exists(Path.Combine(_roamingDirectory, "Spotify.exe"));
+            VersionLabel.Text = $"v.{Application.ProductVersion}";
         }
 
         private void StartButton_Click(object sender, EventArgs e)
@@ -51,7 +51,6 @@ namespace RemoveSpotifyAds.UI
 
             FormTabControl.SelectTab(OutputTabPage);
             ClearButton.Enabled = true;
-            this.Update(); // Explicit update, otherwise the form updates itself too late
 
             if (!string.IsNullOrEmpty(OutputTextBox.Text))
             {
@@ -83,6 +82,9 @@ namespace RemoveSpotifyAds.UI
             ClearButton.Enabled = false;
         }
 
+        private void InstallProcessExited(object sender, EventArgs e)
+            => _installExitCode = ((Process)sender).ExitCode;
+
         private void OutputTextBox_TextChanged(object sender, EventArgs e)
             => this.Update();
 
@@ -92,7 +94,7 @@ namespace RemoveSpotifyAds.UI
 
             try
             {
-                AboutGithubLabel.LinkVisited = true;
+                GithubLabel.LinkVisited = true;
                 Process.Start("https://github.com/midare160/RemoveSpotifyAds");
             }
             catch (Exception)
@@ -108,12 +110,12 @@ namespace RemoveSpotifyAds.UI
         private void AboutGithubLabel_Enter(object sender, EventArgs e)
         {
             // Underline when focused with tab
-            AboutGithubLabel.LinkBehavior = LinkBehavior.AlwaysUnderline;
+            GithubLabel.LinkBehavior = LinkBehavior.AlwaysUnderline;
         }
 
         private void AboutGithubLabel_Leave(object sender, EventArgs e)
         {
-            AboutGithubLabel.LinkBehavior = LinkBehavior.HoverUnderline;
+            GithubLabel.LinkBehavior = LinkBehavior.HoverUnderline;
         }
 
         private async void CheckUpdatesButton_Click(object sender, EventArgs e)
@@ -156,8 +158,6 @@ namespace RemoveSpotifyAds.UI
                     "Connection error!",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
-
-                return;
             }
         }
         #endregion
@@ -178,7 +178,7 @@ namespace RemoveSpotifyAds.UI
             OutputTextBox.AppendText("Installing Spotify...");
 
             // §HACK: Start the Spotify installer with non-admin rights, otherwise it won't execute
-            Process.Start("explorer.exe", Path.Combine(Application.StartupPath, @"Data\spotify_installer1.0.8.exe")).WaitForExit();
+            Process.Start("explorer.exe", Path.Combine(Application.StartupPath, @"Data\spotify_installer1.0.8.exe"))?.WaitForExit();
 
             try
             {
@@ -200,15 +200,10 @@ namespace RemoveSpotifyAds.UI
                 OutputTextBox.AppendText(FinishedKeyWord);
                 return true;
             }
-            else
-            {
-                OutputTextBox.AppendText(" Aborted!\r\n");
-                return false;
-            }
-        }
 
-        private void InstallProcessExited(object sender, EventArgs e)
-            => _installExitCode = (sender as Process).ExitCode;
+            OutputTextBox.AppendText(" Aborted!\r\n");
+            return false;
+        }
 
         /// <summary>
         /// Denies access for all users to the "Update"-directory to prevent Spotify from updating itself
@@ -292,9 +287,9 @@ namespace RemoveSpotifyAds.UI
             var fileContent = File.ReadAllText(hostsPath);
             var urls = UrlsToBlock();
 
-            foreach (var a in urls.ToList().Where(u => fileContent.Contains(u)))
+            foreach (var url in urls.ToList().Where(u => fileContent.Contains(u)))
             {
-                urls.Remove(a);
+                urls.Remove(url);
             }
 
             return urls;
@@ -339,7 +334,7 @@ namespace RemoveSpotifyAds.UI
                 return;
             }
 
-            var bakPath = Path.GetFileNameWithoutExtension(Application.ExecutablePath) + ".bak";
+            var bakPath = $"{Path.GetFileNameWithoutExtension(Application.ExecutablePath)}.bak";
 
             if (File.Exists(bakPath))
             {

@@ -35,13 +35,14 @@
             this.DownloadProgressLabel = new System.Windows.Forms.Label();
             this.DownloadProgressBar = new System.Windows.Forms.ProgressBar();
             this.DownloadToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.TimeRemainingLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // CancelDownloadButton
             // 
             this.CancelDownloadButton.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
             this.CancelDownloadButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.CancelDownloadButton.Location = new System.Drawing.Point(195, 71);
+            this.CancelDownloadButton.Location = new System.Drawing.Point(378, 71);
             this.CancelDownloadButton.Name = "CancelDownloadButton";
             this.CancelDownloadButton.Size = new System.Drawing.Size(75, 23);
             this.CancelDownloadButton.TabIndex = 0;
@@ -92,12 +93,23 @@
             this.DownloadProgressBar.Size = new System.Drawing.Size(441, 23);
             this.DownloadProgressBar.TabIndex = 1;
             // 
+            // TimeRemainingLabel
+            // 
+            this.TimeRemainingLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.TimeRemainingLabel.AutoSize = true;
+            this.TimeRemainingLabel.Location = new System.Drawing.Point(12, 65);
+            this.TimeRemainingLabel.Name = "TimeRemainingLabel";
+            this.TimeRemainingLabel.Size = new System.Drawing.Size(35, 13);
+            this.TimeRemainingLabel.TabIndex = 5;
+            this.TimeRemainingLabel.Text = "0s left";
+            // 
             // Downloader
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.CancelDownloadButton;
             this.ClientSize = new System.Drawing.Size(465, 106);
+            this.Controls.Add(this.TimeRemainingLabel);
             this.Controls.Add(this.DownloadProgressLabel);
             this.Controls.Add(this.DownloadSpeedLabel);
             this.Controls.Add(this.PercentageProgressLabel);
@@ -125,5 +137,6 @@
         private System.Windows.Forms.Label DownloadProgressLabel;
         private System.Windows.Forms.ProgressBar DownloadProgressBar;
         private System.Windows.Forms.ToolTip DownloadToolTip;
+        private System.Windows.Forms.Label TimeRemainingLabel;
     }
 }

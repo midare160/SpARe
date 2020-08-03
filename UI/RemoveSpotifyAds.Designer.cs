@@ -40,9 +40,10 @@
             this.ClearButton = new System.Windows.Forms.Button();
             this.HelpTabPage = new System.Windows.Forms.TabPage();
             this.CheckUpdatesButton = new System.Windows.Forms.Button();
-            this.AboutGithubLabel = new System.Windows.Forms.LinkLabel();
-            this.AboutLabel = new System.Windows.Forms.Label();
+            this.GithubLabel = new System.Windows.Forms.LinkLabel();
+            this.CopyrightLabel = new System.Windows.Forms.Label();
             this.ControlToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.VersionLabel = new System.Windows.Forms.Label();
             this.FormTabControl.SuspendLayout();
             this.StartTabPage.SuspendLayout();
             this.OutputTabPage.SuspendLayout();
@@ -152,9 +153,10 @@
             // 
             // HelpTabPage
             // 
+            this.HelpTabPage.Controls.Add(this.VersionLabel);
             this.HelpTabPage.Controls.Add(this.CheckUpdatesButton);
-            this.HelpTabPage.Controls.Add(this.AboutGithubLabel);
-            this.HelpTabPage.Controls.Add(this.AboutLabel);
+            this.HelpTabPage.Controls.Add(this.GithubLabel);
+            this.HelpTabPage.Controls.Add(this.CopyrightLabel);
             this.HelpTabPage.Location = new System.Drawing.Point(4, 22);
             this.HelpTabPage.Name = "HelpTabPage";
             this.HelpTabPage.Padding = new System.Windows.Forms.Padding(3);
@@ -173,37 +175,46 @@
             this.CheckUpdatesButton.UseVisualStyleBackColor = true;
             this.CheckUpdatesButton.Click += new System.EventHandler(this.CheckUpdatesButton_Click);
             // 
-            // AboutGithubLabel
+            // GithubLabel
             // 
-            this.AboutGithubLabel.AutoSize = true;
-            this.AboutGithubLabel.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
-            this.AboutGithubLabel.Location = new System.Drawing.Point(117, 84);
-            this.AboutGithubLabel.Name = "AboutGithubLabel";
-            this.AboutGithubLabel.Size = new System.Drawing.Size(91, 13);
-            this.AboutGithubLabel.TabIndex = 0;
-            this.AboutGithubLabel.TabStop = true;
-            this.AboutGithubLabel.Text = "&Github Repository";
-            this.AboutGithubLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.ControlToolTip.SetToolTip(this.AboutGithubLabel, "https://github.com/midare160/RemoveSpotifyAds");
-            this.AboutGithubLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.AboutGithubLabel_LinkClicked);
-            this.AboutGithubLabel.Enter += new System.EventHandler(this.AboutGithubLabel_Enter);
-            this.AboutGithubLabel.Leave += new System.EventHandler(this.AboutGithubLabel_Leave);
+            this.GithubLabel.AutoSize = true;
+            this.GithubLabel.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.GithubLabel.Location = new System.Drawing.Point(117, 97);
+            this.GithubLabel.Name = "GithubLabel";
+            this.GithubLabel.Size = new System.Drawing.Size(91, 13);
+            this.GithubLabel.TabIndex = 0;
+            this.GithubLabel.TabStop = true;
+            this.GithubLabel.Text = "&Github Repository";
+            this.GithubLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.ControlToolTip.SetToolTip(this.GithubLabel, "https://github.com/midare160/RemoveSpotifyAds");
+            this.GithubLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.AboutGithubLabel_LinkClicked);
+            this.GithubLabel.Enter += new System.EventHandler(this.AboutGithubLabel_Enter);
+            this.GithubLabel.Leave += new System.EventHandler(this.AboutGithubLabel_Leave);
             // 
-            // AboutLabel
+            // CopyrightLabel
             // 
-            this.AboutLabel.AutoSize = true;
-            this.AboutLabel.Location = new System.Drawing.Point(114, 61);
-            this.AboutLabel.Name = "AboutLabel";
-            this.AboutLabel.Size = new System.Drawing.Size(97, 13);
-            this.AboutLabel.TabIndex = 0;
-            this.AboutLabel.Text = "©2020 MIDARE16";
-            this.AboutLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.CopyrightLabel.AutoSize = true;
+            this.CopyrightLabel.Location = new System.Drawing.Point(114, 73);
+            this.CopyrightLabel.Name = "CopyrightLabel";
+            this.CopyrightLabel.Size = new System.Drawing.Size(97, 13);
+            this.CopyrightLabel.TabIndex = 0;
+            this.CopyrightLabel.Text = "©2020 MIDARE16";
+            this.CopyrightLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // ControlToolTip
             // 
             this.ControlToolTip.AutoPopDelay = 10000;
             this.ControlToolTip.InitialDelay = 500;
             this.ControlToolTip.ReshowDelay = 100;
+            // 
+            // VersionLabel
+            // 
+            this.VersionLabel.AutoSize = true;
+            this.VersionLabel.Location = new System.Drawing.Point(138, 49);
+            this.VersionLabel.Name = "VersionLabel";
+            this.VersionLabel.Size = new System.Drawing.Size(49, 13);
+            this.VersionLabel.TabIndex = 2;
+            this.VersionLabel.Text = "v.1.0.0.0";
             // 
             // RemoveSpotifyAdsForm
             // 
@@ -242,10 +253,11 @@
         private System.Windows.Forms.Button ClearButton;
         private System.Windows.Forms.CheckBox InstallCheckBox;
         private System.Windows.Forms.ToolTip ControlToolTip;
-        private System.Windows.Forms.LinkLabel AboutGithubLabel;
-        private System.Windows.Forms.Label AboutLabel;
+        private System.Windows.Forms.LinkLabel GithubLabel;
+        private System.Windows.Forms.Label CopyrightLabel;
         private System.Windows.Forms.Label WarningLabel;
         private System.Windows.Forms.Button CheckUpdatesButton;
+        private System.Windows.Forms.Label VersionLabel;
     }
 }
 

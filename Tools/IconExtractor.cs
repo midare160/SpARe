@@ -8,7 +8,7 @@ namespace RemoveSpotifyAds.Tools
     {
         public static Icon Extract(string file, int number, bool largeIcon)
         {
-            ExtractIconEx(file, number, out IntPtr large, out IntPtr small, 1);
+            ExtractIconEx(file, number, out var large, out var small, 1);
 
             try
             {

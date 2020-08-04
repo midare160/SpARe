@@ -33,7 +33,6 @@ namespace RemoveSpotifyAds.UI
         public Downloader(string adress, string filename)
         {
             InitializeComponent();
-            /*PercentageProgressLabel.Parent = DownloadProgressBar;*/ // TODO transparent not working
 
             ServicePointManager.SecurityProtocol = SecurityProtocol;
             WebRequest.DefaultWebProxy = Proxy;
@@ -68,54 +67,43 @@ namespace RemoveSpotifyAds.UI
         #region Events
         private void Downloader_Load(object sender, EventArgs e)
         {
+            this.Icon = IconExtractor.Extract("imageres.dll", 175, true); // 175 = index of "Download"-icon in dll
+
             TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.Normal, this.Handle);
 
             TaskbarManager.Instance.ThumbnailToolBars.AddButtons(this.Handle, new ThumbnailToolBarButton(IconExtractor.Extract("imageres.dll", 175, false), "abort")); // TODO add abort button
-
-            this.Icon = IconExtractor.Extract("imageres.dll", 175, true); // 175 = index of "Download"-icon in dll
         }
 
         private void WebClient_DownloadProgressChanged(object sender, DownloadProgressChangedEventArgs e)
         {
             const string numberFormat = "0.00";
-            const double basis = 10, exponent = 6;
+            const double quotient = 1000000;
 
-            long bytesPerSecond = 0;
+            double bytesPerSecond = 0;
             var timeSpan = DateTime.Now - _startedAt;
 
-            if ((long)timeSpan.TotalSeconds > 0)
+            if (timeSpan.TotalSeconds > 0)
             {
-                bytesPerSecond = e.BytesReceived / (long)timeSpan.TotalSeconds;
+                bytesPerSecond = e.BytesReceived / timeSpan.TotalSeconds;
             }
 
-            var megaBytesPerSecond = (bytesPerSecond / Math.Pow(basis, exponent)).ToString(numberFormat);
-            var megaBitsPerSecond = (bytesPerSecond / Math.Pow(basis, exponent) * 8).ToString(numberFormat);
-            var megaBytesReceived = (e.BytesReceived / Math.Pow(basis, exponent)).ToString(numberFormat);
-            var totalMegaBytesToReceive = (e.TotalBytesToReceive / Math.Pow(10, 6)).ToString(numberFormat);
+            var megaBytesPerSecond = (bytesPerSecond / quotient).ToString(numberFormat);
+            var megaBitPerSecond = (bytesPerSecond / quotient * 8).ToString(numberFormat);
+            var megaBytesReceived = (e.BytesReceived / quotient).ToString(numberFormat);
+            var totalMegaBytesToReceive = (e.TotalBytesToReceive / quotient).ToString(numberFormat);
             var timeRemaining = TimeSpan.FromSeconds((e.TotalBytesToReceive - e.BytesReceived) / bytesPerSecond);
-
-            DownloadProgressBar.Value = e.ProgressPercentage;
-            PercentageProgressLabel.Text = $"{e.ProgressPercentage} %";
-            DownloadProgressLabel.Text = $"{megaBytesReceived} MB / {totalMegaBytesToReceive} MB";
-
-            if (_isMegaBit)
-            {
-                DownloadSpeedLabel.Text = $"{megaBitsPerSecond} MBit/s";
-                DownloadToolTip.SetToolTip(DownloadSpeedLabel, "Change to MB/s (MegaBytes per second)");
-            }
-            else
-            {
-                DownloadSpeedLabel.Text = $"{megaBytesPerSecond} MB/s";
-                DownloadToolTip.SetToolTip(DownloadSpeedLabel, "Change to MBit/s (MegaBit per second)");
-            }
 
             var timeRemainingString = "";
 
-            if (timeRemaining.Days > 0) timeRemainingString += $"{timeRemaining.Days:0}d, ";
-            if (timeRemaining.Hours > 0) timeRemainingString += $"{timeRemaining.Hours:0}h, ";
-            if (timeRemaining.Minutes > 0) timeRemainingString += $"{timeRemaining.Minutes:0}min, ";
+            if (timeRemaining.Days > 0) timeRemainingString += $"{timeRemaining.Days}d, ";
+            if (timeRemaining.Hours > 0) timeRemainingString += $"{timeRemaining.Hours}h, ";
+            if (timeRemaining.Minutes > 0) timeRemainingString += $"{timeRemaining.Minutes}min, ";
 
-            TimeRemainingLabel.Text = $"{timeRemainingString}{timeRemaining.Seconds:0}s left";
+            TimeRemainingLabel.Text = $"{timeRemainingString}{timeRemaining.Seconds}s left";
+            ProgressLabel.Text = $"{megaBytesReceived} MB / {totalMegaBytesToReceive} MB";
+            SpeedLabel.Text = _isMegaBit ? $"{megaBitPerSecond} MBit/s" : $"{megaBytesPerSecond} MB/s";
+            ProgressBar.Value = e.ProgressPercentage;
+            DownloadPercentageLabel.Text = $"{e.ProgressPercentage} %";
 
             TaskbarManager.Instance.SetProgressValue(e.ProgressPercentage, 100, this.Handle);
         }
@@ -130,7 +118,7 @@ namespace RemoveSpotifyAds.UI
             this.DialogResult = DialogResult.Cancel;
         }
 
-        private void DownloadSpeedLabel_Click(object sender, EventArgs e)
+        private void SpeedLabel_Click(object sender, EventArgs e)
         {
             _isMegaBit = !_isMegaBit;
         }
@@ -148,21 +136,21 @@ namespace RemoveSpotifyAds.UI
                 "Do you really want to cancel the download?",
                 "Are you sure?",
                 MessageBoxButtons.OKCancel,
-                MessageBoxIcon.Question);
+                MessageBoxIcon.Question,
+                MessageBoxDefaultButton.Button2);
 
-            if (this.DialogResult != DialogResult.OK)
+            if (this.DialogResult == DialogResult.OK) return;
+
+            if (dialogResult == DialogResult.OK)
             {
-                if (dialogResult == DialogResult.OK)
-                {
-                    TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.Error, this.Handle);
-                    _webClient.CancelAsync();
-                    _webClient.Dispose();
-                }
-                else
-                {
-                    TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.Normal, this.Handle);
-                    e.Cancel = true;
-                }
+                TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.Error, this.Handle);
+                _webClient.CancelAsync();
+                _webClient.Dispose();
+            }
+            else
+            {
+                TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.Normal, this.Handle);
+                e.Cancel = true;
             }
         }
         #endregion

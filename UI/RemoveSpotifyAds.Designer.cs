@@ -36,14 +36,14 @@
             this.InstallCheckBox = new System.Windows.Forms.CheckBox();
             this.WarningLabel = new System.Windows.Forms.Label();
             this.OutputTabPage = new System.Windows.Forms.TabPage();
-            this.OutputTextBox = new RemoveSpotifyAds.CustomControls.ReadOnlyRichTextBox();
             this.ClearButton = new System.Windows.Forms.Button();
             this.HelpTabPage = new System.Windows.Forms.TabPage();
+            this.VersionLabel = new System.Windows.Forms.Label();
             this.CheckUpdatesButton = new System.Windows.Forms.Button();
             this.GithubLabel = new System.Windows.Forms.LinkLabel();
             this.CopyrightLabel = new System.Windows.Forms.Label();
             this.ControlToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.VersionLabel = new System.Windows.Forms.Label();
+            this.OutputTextBox = new RemoveSpotifyAds.CustomControls.ReadOnlyRichTextBox();
             this.FormTabControl.SuspendLayout();
             this.StartTabPage.SuspendLayout();
             this.OutputTabPage.SuspendLayout();
@@ -123,21 +123,6 @@
             this.OutputTabPage.Text = "Output";
             this.OutputTabPage.UseVisualStyleBackColor = true;
             // 
-            // OutputTextBox
-            // 
-            this.OutputTextBox.Cursor = System.Windows.Forms.Cursors.Default;
-            this.OutputTextBox.DetectUrls = false;
-            this.OutputTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OutputTextBox.HideSelection = false;
-            this.OutputTextBox.Location = new System.Drawing.Point(3, 3);
-            this.OutputTextBox.Name = "OutputTextBox";
-            this.OutputTextBox.ReadOnly = true;
-            this.OutputTextBox.Size = new System.Drawing.Size(318, 123);
-            this.OutputTextBox.TabIndex = 0;
-            this.OutputTextBox.TabStop = false;
-            this.OutputTextBox.Text = "";
-            this.OutputTextBox.TextChanged += new System.EventHandler(this.OutputTextBox_TextChanged);
-            // 
             // ClearButton
             // 
             this.ClearButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -165,12 +150,21 @@
             this.HelpTabPage.Text = "Help";
             this.HelpTabPage.UseVisualStyleBackColor = true;
             // 
+            // VersionLabel
+            // 
+            this.VersionLabel.AutoSize = true;
+            this.VersionLabel.Location = new System.Drawing.Point(138, 49);
+            this.VersionLabel.Name = "VersionLabel";
+            this.VersionLabel.Size = new System.Drawing.Size(49, 13);
+            this.VersionLabel.TabIndex = 0;
+            this.VersionLabel.Text = "v.1.0.0.0";
+            // 
             // CheckUpdatesButton
             // 
             this.CheckUpdatesButton.Location = new System.Drawing.Point(204, 132);
             this.CheckUpdatesButton.Name = "CheckUpdatesButton";
             this.CheckUpdatesButton.Size = new System.Drawing.Size(117, 23);
-            this.CheckUpdatesButton.TabIndex = 1;
+            this.CheckUpdatesButton.TabIndex = 3;
             this.CheckUpdatesButton.Text = "&Check for updates";
             this.CheckUpdatesButton.UseVisualStyleBackColor = true;
             this.CheckUpdatesButton.Click += new System.EventHandler(this.CheckUpdatesButton_Click);
@@ -182,7 +176,7 @@
             this.GithubLabel.Location = new System.Drawing.Point(117, 97);
             this.GithubLabel.Name = "GithubLabel";
             this.GithubLabel.Size = new System.Drawing.Size(91, 13);
-            this.GithubLabel.TabIndex = 0;
+            this.GithubLabel.TabIndex = 2;
             this.GithubLabel.TabStop = true;
             this.GithubLabel.Text = "&Github Repository";
             this.GithubLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -197,7 +191,7 @@
             this.CopyrightLabel.Location = new System.Drawing.Point(114, 73);
             this.CopyrightLabel.Name = "CopyrightLabel";
             this.CopyrightLabel.Size = new System.Drawing.Size(97, 13);
-            this.CopyrightLabel.TabIndex = 0;
+            this.CopyrightLabel.TabIndex = 1;
             this.CopyrightLabel.Text = "©2020 MIDARE16";
             this.CopyrightLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -207,14 +201,20 @@
             this.ControlToolTip.InitialDelay = 500;
             this.ControlToolTip.ReshowDelay = 100;
             // 
-            // VersionLabel
+            // OutputTextBox
             // 
-            this.VersionLabel.AutoSize = true;
-            this.VersionLabel.Location = new System.Drawing.Point(138, 49);
-            this.VersionLabel.Name = "VersionLabel";
-            this.VersionLabel.Size = new System.Drawing.Size(49, 13);
-            this.VersionLabel.TabIndex = 2;
-            this.VersionLabel.Text = "v.1.0.0.0";
+            this.OutputTextBox.Cursor = System.Windows.Forms.Cursors.Default;
+            this.OutputTextBox.DetectUrls = false;
+            this.OutputTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.OutputTextBox.HideSelection = false;
+            this.OutputTextBox.Location = new System.Drawing.Point(3, 3);
+            this.OutputTextBox.Name = "OutputTextBox";
+            this.OutputTextBox.ReadOnly = true;
+            this.OutputTextBox.Size = new System.Drawing.Size(318, 123);
+            this.OutputTextBox.TabIndex = 0;
+            this.OutputTextBox.TabStop = false;
+            this.OutputTextBox.Text = "";
+            this.OutputTextBox.TextChanged += new System.EventHandler(this.OutputTextBox_TextChanged);
             // 
             // RemoveSpotifyAdsForm
             // 

@@ -129,7 +129,7 @@ namespace RemoveSpotifyAds.UI
 
                 var releaseVersion = new Version(repository.TagName.Substring(1));
 
-                if (releaseVersion.CompareTo(new Version(Application.ProductVersion)) == 0) // TODO Change to bigger ('>')
+                if (releaseVersion.CompareTo(new Version(Application.ProductVersion)) != 0) // TODO Change to bigger ('>')
                 {
                     var dialogResult = MessageBox.Show(
                         "New version available! Do you want to download it now?",
@@ -151,7 +151,7 @@ namespace RemoveSpotifyAds.UI
                         MessageBoxIcon.Information);
                 }
             }
-            catch (Exception ex) when (ex is WebException || ex is HttpRequestException || ex is HttpListenerException)
+            catch (Exception ex) when (ex is WebException | ex is HttpRequestException | ex is HttpListenerException)
             {
                 MessageBox.Show(
                     "Couldn't connect to the servers:\r\n\r\n" + ex.Message,
@@ -355,7 +355,7 @@ namespace RemoveSpotifyAds.UI
         {
             if (Form.ModifierKeys == Keys.None && keyData == Keys.Escape)
             {
-                this.Close();
+                Application.Exit();
                 return true;
             }
 

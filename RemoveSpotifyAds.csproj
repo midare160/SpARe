@@ -48,6 +48,9 @@
     <Reference Include="Costura, Version=4.1.0.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
       <HintPath>packages\Costura.Fody.4.1.0\lib\net40\Costura.dll</HintPath>
     </Reference>
+    <Reference Include="Daubert">
+      <HintPath>..\Daubert\bin\Release\Daubert.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.Bcl.AsyncInterfaces.1.1.1\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -108,13 +111,6 @@
     </Compile>
     <Compile Include="API\GithubClient.cs" />
     <Compile Include="API\Json\Repository.cs" />
-    <Compile Include="Tools\IconExtractor.cs" />
-    <Compile Include="UI\Downloader.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\Downloader.Designer.cs">
-      <DependentUpon>Downloader.cs</DependentUpon>
-    </Compile>
     <Compile Include="UI\RemoveSpotifyAds.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -124,9 +120,6 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Properties\licenses.licx" />
-    <EmbeddedResource Include="UI\Downloader.resx">
-      <DependentUpon>Downloader.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="UI\RemoveSpotifyAds.resx">
       <DependentUpon>RemoveSpotifyAds.cs</DependentUpon>
     </EmbeddedResource>

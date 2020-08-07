@@ -1,4 +1,5 @@
-﻿using RemoveSpotifyAds.API;
+﻿using Daubert.Forms;
+using RemoveSpotifyAds.API;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -229,8 +230,8 @@ namespace RemoveSpotifyAds.UI
         /// <summary>
         /// Contains all Spotify Ad-URLs 
         /// </summary>
-        private List<string> UrlsToBlock()
-            => new List<string>()
+        private static List<string> UrlsToBlock()
+            => new List<string>
             {
                 "adclick.g.doublecklick.net",
                 "googleads.g.doubleclick.net",
@@ -282,7 +283,7 @@ namespace RemoveSpotifyAds.UI
         /// <param name="hostsPath">The path to the hosts-file</param>
         /// <returns>A <see cref="List{T}"/> that contains all URLs that are not already written to the hosts-file.
         /// The <see cref="List{T}"/> is empty if the hosts-file already contains all of them.</returns>
-        private List<string> FilterBlockedUrlsIfHostsFileAlreadyContains(string hostsPath)
+        private static List<string> FilterBlockedUrlsIfHostsFileAlreadyContains(string hostsPath)
         {
             var fileContent = File.ReadAllText(hostsPath);
             var urls = UrlsToBlock();
@@ -325,6 +326,7 @@ namespace RemoveSpotifyAds.UI
             var downloader = new Downloader(url, zipPath)
             {
                 Headers = new List<(string name, string value)> { ("user-agent", "RemoveSpotifyAds") },
+                FinishMessage = ShowFinishMessageBox
             };
 
             downloader.Start();
@@ -349,6 +351,15 @@ namespace RemoveSpotifyAds.UI
 
             Directory.Delete(updatePath, true);
             Application.Restart();
+        }
+
+        private static void ShowFinishMessageBox()
+        {
+            MessageBox.Show(
+                "Update finished successfully! The Application will restart now.",
+                "Finished!",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
         }
 
         protected override bool ProcessDialogKey(Keys keyData)

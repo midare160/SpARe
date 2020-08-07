@@ -178,7 +178,7 @@
             this.GithubLabel.Size = new System.Drawing.Size(91, 13);
             this.GithubLabel.TabIndex = 2;
             this.GithubLabel.TabStop = true;
-            this.GithubLabel.Text = "&Github Repository";
+            this.GithubLabel.Text = "Github Repository";
             this.GithubLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.ControlToolTip.SetToolTip(this.GithubLabel, "https://github.com/midare160/RemoveSpotifyAds");
             this.GithubLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.AboutGithubLabel_LinkClicked);

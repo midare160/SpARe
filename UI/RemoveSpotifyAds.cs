@@ -11,6 +11,7 @@ using System.Net;
 using System.Net.Http;
 using System.Security.AccessControl;
 using System.Security.Principal;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace RemoveSpotifyAds.UI
@@ -19,7 +20,7 @@ namespace RemoveSpotifyAds.UI
     {
         #region Static
         private const string Mapping = "0.0.0.0";
-        private const string FinishedKeyWord = " Finished.\r\n";
+        private const string FinishedKeyWord = " Done.\r\n";
         #endregion
 
         #region Declarations
@@ -178,12 +179,12 @@ namespace RemoveSpotifyAds.UI
         {
             OutputTextBox.AppendText("Installing Spotify...");
 
-            // §HACK: Start the Spotify installer with non-admin rights, otherwise it won't execute
+            // HACK Start the Spotify installer with non-admin rights, otherwise it wouldnt execute
             Process.Start("explorer.exe", Path.Combine(Application.StartupPath, @"Data\spotify_installer1.0.8.exe"))?.WaitForExit();
 
             try
             {
-                using (var installProcess = Process.GetProcessesByName("spotify_installer1.0.8")[0])
+                using (var installProcess = Process.GetProcessesByName("spotify_installer1.0.8").First())
                 {
                     installProcess.EnableRaisingEvents = true;
                     installProcess.Exited += InstallProcessExited;
@@ -191,7 +192,7 @@ namespace RemoveSpotifyAds.UI
                     while (!installProcess.HasExited) ;
                 }
             }
-            catch (IndexOutOfRangeException)
+            catch (InvalidOperationException)
             {
                 _installExitCode = -1;
             }
@@ -216,14 +217,25 @@ namespace RemoveSpotifyAds.UI
             var updatePath = Path.Combine(_localDirectory, "Update");
             Directory.CreateDirectory(updatePath);
 
-            var allUsers = new SecurityIdentifier(WellKnownSidType.WorldSid, null);
             var directoryInfo = new DirectoryInfo(updatePath);
-            var accessRule = new FileSystemAccessRule(allUsers, FileSystemRights.FullControl, AccessControlType.Deny);
+            var directorySecurity = directoryInfo.GetAccessControl(AccessControlSections.All);
 
-            var directorySecurity = directoryInfo.GetAccessControl();
-            directorySecurity.AddAccessRule(accessRule);
+            // Cast with enum, otherwise the variable would be an object
+            foreach (var sidType in (WellKnownSidType[])Enum.GetValues(typeof(WellKnownSidType)))
+            {
+                try
+                {
+                    var user = new SecurityIdentifier(sidType, null);
+                    var accessRule = new FileSystemAccessRule(user, FileSystemRights.FullControl, AccessControlType.Deny);
+                    directorySecurity.AddAccessRule(accessRule);
+                }
+                catch (ArgumentException)
+                {
+                    // Access cant be denied for some users, if thats the case just skip them
+                }
+            }
+
             directoryInfo.SetAccessControl(directorySecurity);
-
             OutputTextBox.AppendText(FinishedKeyWord);
         }
 
@@ -278,7 +290,7 @@ namespace RemoveSpotifyAds.UI
         }
 
         /// <summary>
-        /// Removes the URLS from the list that the hosts-file is already containing
+        /// Removes the URLs from the list that the hosts-file is already containing
         /// </summary>
         /// <param name="hostsPath">The path to the hosts-file</param>
         /// <returns>A <see cref="List{T}"/> that contains all URLs that are not already written to the hosts-file.
@@ -326,7 +338,7 @@ namespace RemoveSpotifyAds.UI
             var downloader = new Downloader(url, zipPath)
             {
                 Headers = new List<(string name, string value)> { ("user-agent", "RemoveSpotifyAds") },
-                FinishMessage = ShowFinishMessageBox
+                AbortMessage = ShowAbortMessageBox
             };
 
             downloader.Start();
@@ -350,20 +362,29 @@ namespace RemoveSpotifyAds.UI
             ZipFile.ExtractToDirectory(zipPath, Application.StartupPath);
 
             Directory.Delete(updatePath, true);
-            Application.Restart();
-        }
 
-        private static void ShowFinishMessageBox()
-        {
             MessageBox.Show(
-                "Update finished successfully! The Application will restart now.",
+                "Update successfully installed! The application will restart now.",
                 "Finished!",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Information);
+
+            Application.Restart();
+        }
+
+        private static DialogResult ShowAbortMessageBox()
+        {
+            return MessageBox.Show(
+                "Do you really want to cancel the download?",
+                "Are you sure?",
+                MessageBoxButtons.OKCancel,
+                MessageBoxIcon.Question,
+                MessageBoxDefaultButton.Button2);
         }
 
         protected override bool ProcessDialogKey(Keys keyData)
         {
+            // ReSharper disable once InvertIf
             if (Form.ModifierKeys == Keys.None && keyData == Keys.Escape)
             {
                 Application.Exit();

@@ -11,7 +11,6 @@ using System.Net;
 using System.Net.Http;
 using System.Security.AccessControl;
 using System.Security.Principal;
-using System.Threading;
 using System.Windows.Forms;
 
 namespace RemoveSpotifyAds.UI
@@ -76,6 +75,12 @@ namespace RemoveSpotifyAds.UI
             SystemSounds.Asterisk.Play();
         }
 
+        private void NewVersionAvailableLabel_Click(object sender, EventArgs e)
+        {
+            FormTabControl.SelectedTab = HelpTabPage;
+            CheckUpdatesButton.PerformClick();
+        }
+
         private void ClearButton_Click(object sender, EventArgs e)
         {
             Cursor.Current = Cursors.WaitCursor;
@@ -131,8 +136,10 @@ namespace RemoveSpotifyAds.UI
 
                 var releaseVersion = new Version(repository.TagName.Substring(1));
 
-                if (releaseVersion.CompareTo(new Version(Application.ProductVersion)) != 0) // TODO Change to bigger ('>')
+                if (releaseVersion.CompareTo(new Version(Application.ProductVersion)) > 0) // TODO Change to bigger ('>')
                 {
+                    NewVersionAvailableLabel.Visible = true;
+
                     var dialogResult = MessageBox.Show(
                         "New version available! Do you want to download it now?",
                         "Update available!",
@@ -332,44 +339,47 @@ namespace RemoveSpotifyAds.UI
         {
             var updatePath = Path.Combine(Application.StartupPath, "Update");
             var zipPath = Path.Combine(updatePath, Path.GetFileName(url));
+            var bakPath = $"{Path.GetFileNameWithoutExtension(Application.ExecutablePath)}.bak";
 
             Directory.CreateDirectory(updatePath);
 
-            var downloader = new Downloader(url, zipPath)
+            try
             {
-                Headers = new List<(string name, string value)> { ("user-agent", "RemoveSpotifyAds") },
-                AbortMessage = ShowAbortMessageBox
-            };
+                var downloader = new Downloader(url, zipPath)
+                {
+                    Headers = new List<(string name, string value)> { ("user-agent", "RemoveSpotifyAds") },
+                    AbortMessage = ShowAbortMessageBox
+                };
 
-            downloader.Start();
-            if (downloader.ShowDialog(this) == DialogResult.Cancel)
-            {
-                File.Delete(zipPath);
-                return;
+                downloader.Start();
+                if (downloader.ShowDialog(this) == DialogResult.Cancel)
+                {
+                    return;
+                }
+
+                if (File.Exists(bakPath))
+                {
+                    File.Delete(bakPath);
+                }
+
+                // Executable cant be replaced at runtime => rename it
+                File.Move(Application.ExecutablePath, bakPath);
+                Directory.Delete(Path.Combine(Application.StartupPath, "Data"), true);
+
+                ZipFile.ExtractToDirectory(zipPath, Application.StartupPath);
+
+                MessageBox.Show(
+                    "Update successfully installed! The application will restart now.",
+                    "Finished!",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+                Application.Restart();
             }
-
-            var bakPath = $"{Path.GetFileNameWithoutExtension(Application.ExecutablePath)}.bak";
-
-            if (File.Exists(bakPath))
+            finally
             {
-                File.Delete(bakPath);
+                Directory.Delete(updatePath, true);
             }
-
-            // Executable cant be replaced at runtime => rename it
-            File.Move(Application.ExecutablePath, bakPath);
-            Directory.Delete(Path.Combine(Application.StartupPath, "Data"), true);
-
-            ZipFile.ExtractToDirectory(zipPath, Application.StartupPath);
-
-            Directory.Delete(updatePath, true);
-
-            MessageBox.Show(
-                "Update successfully installed! The application will restart now.",
-                "Finished!",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
-
-            Application.Restart();
         }
 
         private static DialogResult ShowAbortMessageBox()

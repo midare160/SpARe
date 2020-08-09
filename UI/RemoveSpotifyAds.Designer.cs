@@ -44,6 +44,7 @@
             this.CopyrightLabel = new System.Windows.Forms.Label();
             this.ControlToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.OutputTextBox = new RemoveSpotifyAds.CustomControls.ReadOnlyRichTextBox();
+            this.NewVersionAvailableLabel = new System.Windows.Forms.Label();
             this.FormTabControl.SuspendLayout();
             this.StartTabPage.SuspendLayout();
             this.OutputTabPage.SuspendLayout();
@@ -74,6 +75,7 @@
             // 
             // StartTabPage
             // 
+            this.StartTabPage.Controls.Add(this.NewVersionAvailableLabel);
             this.StartTabPage.Controls.Add(this.InstallCheckBox);
             this.StartTabPage.Controls.Add(this.StartButton);
             this.StartTabPage.Controls.Add(this.WarningLabel);
@@ -216,6 +218,20 @@
             this.OutputTextBox.Text = "";
             this.OutputTextBox.TextChanged += new System.EventHandler(this.OutputTextBox_TextChanged);
             // 
+            // NewVersionAvailableLabel
+            // 
+            this.NewVersionAvailableLabel.AutoSize = true;
+            this.NewVersionAvailableLabel.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.NewVersionAvailableLabel.ForeColor = System.Drawing.Color.OliveDrab;
+            this.NewVersionAvailableLabel.Location = new System.Drawing.Point(202, 10);
+            this.NewVersionAvailableLabel.Name = "NewVersionAvailableLabel";
+            this.NewVersionAvailableLabel.Size = new System.Drawing.Size(114, 13);
+            this.NewVersionAvailableLabel.TabIndex = 3;
+            this.NewVersionAvailableLabel.Text = "New version available!";
+            this.NewVersionAvailableLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.NewVersionAvailableLabel.Visible = false;
+            this.NewVersionAvailableLabel.Click += new System.EventHandler(this.NewVersionAvailableLabel_Click);
+            // 
             // RemoveSpotifyAdsForm
             // 
             this.AcceptButton = this.StartButton;
@@ -258,6 +274,7 @@
         private System.Windows.Forms.Label WarningLabel;
         private System.Windows.Forms.Button CheckUpdatesButton;
         private System.Windows.Forms.Label VersionLabel;
+        private System.Windows.Forms.Label NewVersionAvailableLabel;
     }
 }
 

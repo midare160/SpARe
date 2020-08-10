@@ -43,8 +43,9 @@
             this.GithubLabel = new System.Windows.Forms.LinkLabel();
             this.CopyrightLabel = new System.Windows.Forms.Label();
             this.ControlToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.NewVersionAvailableLinkLabel = new System.Windows.Forms.LinkLabel();
             this.OutputTextBox = new RemoveSpotifyAds.CustomControls.ReadOnlyRichTextBox();
-            this.NewVersionAvailableLabel = new System.Windows.Forms.Label();
+            this.RevertButton = new System.Windows.Forms.Button();
             this.FormTabControl.SuspendLayout();
             this.StartTabPage.SuspendLayout();
             this.OutputTabPage.SuspendLayout();
@@ -53,7 +54,7 @@
             // 
             // StartButton
             // 
-            this.StartButton.Location = new System.Drawing.Point(125, 54);
+            this.StartButton.Location = new System.Drawing.Point(80, 54);
             this.StartButton.Name = "StartButton";
             this.StartButton.Size = new System.Drawing.Size(75, 23);
             this.StartButton.TabIndex = 1;
@@ -75,7 +76,8 @@
             // 
             // StartTabPage
             // 
-            this.StartTabPage.Controls.Add(this.NewVersionAvailableLabel);
+            this.StartTabPage.Controls.Add(this.RevertButton);
+            this.StartTabPage.Controls.Add(this.NewVersionAvailableLinkLabel);
             this.StartTabPage.Controls.Add(this.InstallCheckBox);
             this.StartTabPage.Controls.Add(this.StartButton);
             this.StartTabPage.Controls.Add(this.WarningLabel);
@@ -97,7 +99,7 @@
             this.InstallCheckBox.Name = "InstallCheckBox";
             this.InstallCheckBox.Size = new System.Drawing.Size(189, 17);
             this.InstallCheckBox.TabIndex = 2;
-            this.InstallCheckBox.Text = "(&Re)Install Spotify (Recommended)";
+            this.InstallCheckBox.Text = "(Re)&Install Spotify (Recommended)";
             this.ControlToolTip.SetToolTip(this.InstallCheckBox, "Installs Spotify (necessary), if its already installed it will override the previ" +
         "ous installation (recommended)");
             this.InstallCheckBox.UseVisualStyleBackColor = true;
@@ -158,7 +160,7 @@
             this.VersionLabel.Location = new System.Drawing.Point(138, 49);
             this.VersionLabel.Name = "VersionLabel";
             this.VersionLabel.Size = new System.Drawing.Size(49, 13);
-            this.VersionLabel.TabIndex = 0;
+            this.VersionLabel.TabIndex = 1;
             this.VersionLabel.Text = "v.1.0.0.0";
             // 
             // CheckUpdatesButton
@@ -166,7 +168,7 @@
             this.CheckUpdatesButton.Location = new System.Drawing.Point(204, 132);
             this.CheckUpdatesButton.Name = "CheckUpdatesButton";
             this.CheckUpdatesButton.Size = new System.Drawing.Size(117, 23);
-            this.CheckUpdatesButton.TabIndex = 3;
+            this.CheckUpdatesButton.TabIndex = 0;
             this.CheckUpdatesButton.Text = "&Check for updates";
             this.CheckUpdatesButton.UseVisualStyleBackColor = true;
             this.CheckUpdatesButton.Click += new System.EventHandler(this.CheckUpdatesButton_Click);
@@ -178,7 +180,7 @@
             this.GithubLabel.Location = new System.Drawing.Point(117, 97);
             this.GithubLabel.Name = "GithubLabel";
             this.GithubLabel.Size = new System.Drawing.Size(91, 13);
-            this.GithubLabel.TabIndex = 2;
+            this.GithubLabel.TabIndex = 3;
             this.GithubLabel.TabStop = true;
             this.GithubLabel.Text = "Github Repository";
             this.GithubLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -193,7 +195,7 @@
             this.CopyrightLabel.Location = new System.Drawing.Point(114, 73);
             this.CopyrightLabel.Name = "CopyrightLabel";
             this.CopyrightLabel.Size = new System.Drawing.Size(97, 13);
-            this.CopyrightLabel.TabIndex = 1;
+            this.CopyrightLabel.TabIndex = 2;
             this.CopyrightLabel.Text = "©2020 MIDARE16";
             this.CopyrightLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -202,6 +204,23 @@
             this.ControlToolTip.AutoPopDelay = 10000;
             this.ControlToolTip.InitialDelay = 500;
             this.ControlToolTip.ReshowDelay = 100;
+            // 
+            // NewVersionAvailableLinkLabel
+            // 
+            this.NewVersionAvailableLinkLabel.ActiveLinkColor = System.Drawing.Color.Lime;
+            this.NewVersionAvailableLinkLabel.AutoSize = true;
+            this.NewVersionAvailableLinkLabel.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.NewVersionAvailableLinkLabel.LinkColor = System.Drawing.Color.Green;
+            this.NewVersionAvailableLinkLabel.Location = new System.Drawing.Point(202, 10);
+            this.NewVersionAvailableLinkLabel.Name = "NewVersionAvailableLinkLabel";
+            this.NewVersionAvailableLinkLabel.Size = new System.Drawing.Size(114, 13);
+            this.NewVersionAvailableLinkLabel.TabIndex = 4;
+            this.NewVersionAvailableLinkLabel.TabStop = true;
+            this.NewVersionAvailableLinkLabel.Text = "&New version available!";
+            this.NewVersionAvailableLinkLabel.Visible = false;
+            this.NewVersionAvailableLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.NewVersionAvailableLinkLabel_LinkClicked);
+            this.NewVersionAvailableLinkLabel.Enter += new System.EventHandler(this.NewVersionAvailableLinkLabel_Enter);
+            this.NewVersionAvailableLinkLabel.Leave += new System.EventHandler(this.NewVersionAvailableLinkLabel_Leave);
             // 
             // OutputTextBox
             // 
@@ -218,19 +237,16 @@
             this.OutputTextBox.Text = "";
             this.OutputTextBox.TextChanged += new System.EventHandler(this.OutputTextBox_TextChanged);
             // 
-            // NewVersionAvailableLabel
+            // RevertButton
             // 
-            this.NewVersionAvailableLabel.AutoSize = true;
-            this.NewVersionAvailableLabel.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.NewVersionAvailableLabel.ForeColor = System.Drawing.Color.OliveDrab;
-            this.NewVersionAvailableLabel.Location = new System.Drawing.Point(202, 10);
-            this.NewVersionAvailableLabel.Name = "NewVersionAvailableLabel";
-            this.NewVersionAvailableLabel.Size = new System.Drawing.Size(114, 13);
-            this.NewVersionAvailableLabel.TabIndex = 3;
-            this.NewVersionAvailableLabel.Text = "New version available!";
-            this.NewVersionAvailableLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.NewVersionAvailableLabel.Visible = false;
-            this.NewVersionAvailableLabel.Click += new System.EventHandler(this.NewVersionAvailableLabel_Click);
+            this.RevertButton.Enabled = false;
+            this.RevertButton.Location = new System.Drawing.Point(169, 54);
+            this.RevertButton.Name = "RevertButton";
+            this.RevertButton.Size = new System.Drawing.Size(75, 23);
+            this.RevertButton.TabIndex = 5;
+            this.RevertButton.Text = "&Revert";
+            this.RevertButton.UseVisualStyleBackColor = true;
+            this.RevertButton.Click += new System.EventHandler(this.RevertButton_Click);
             // 
             // RemoveSpotifyAdsForm
             // 
@@ -274,7 +290,8 @@
         private System.Windows.Forms.Label WarningLabel;
         private System.Windows.Forms.Button CheckUpdatesButton;
         private System.Windows.Forms.Label VersionLabel;
-        private System.Windows.Forms.Label NewVersionAvailableLabel;
+        private System.Windows.Forms.LinkLabel NewVersionAvailableLinkLabel;
+        private System.Windows.Forms.Button RevertButton;
     }
 }
 

@@ -12,23 +12,29 @@ using System.Net.Http;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Windows.Forms;
+using Microsoft.Win32;
 
 namespace RemoveSpotifyAds.UI
 {
     public partial class RemoveSpotifyAdsForm : Form
     {
-        #region Static
+        #region Static Fields
         private const string Mapping = "0.0.0.0";
         private const string FinishedKeyWord = " Done.\r\n";
+        private const string OutputTextBoxSeparator = "\r\n- - - - - - - - - - - - - - - - - - - - - - - -\r\n\r\n";
+
+        private const string AdsRemovedRegistryKey = "AdsRemoved";
+        private const string NewVersionAvailableRegistryKey = "NewVersionAvailable";
+        private const string ProductVersionRegistryKey = "ProductVersion";
         #endregion
 
-        #region Declarations
+        #region Fields
         private readonly string _roamingDirectory;
         private readonly string _localDirectory;
         private int _installExitCode;
         #endregion
 
-        #region Constructor
+        #region Constructors
         public RemoveSpotifyAdsForm()
         {
             InitializeComponent();
@@ -39,23 +45,42 @@ namespace RemoveSpotifyAds.UI
         #endregion
 
         #region Events
+        #region Events-Form
         private void RemoveSpotifyAds_Load(object sender, EventArgs e)
         {
             SetCheckboxState(File.Exists(Path.Combine(Application.StartupPath, @"Data\spotify_installer1.0.8.exe")));
-            InstallCheckBox.Enabled = File.Exists(Path.Combine(_roamingDirectory, "Spotify.exe"));
+
+            if (!string.Equals((string)GetValueFromRegistry(ProductVersionRegistryKey, true), Application.ProductVersion))
+            {
+                Registry.CurrentUser
+                    .OpenSubKey("Software", true)?
+                    .DeleteSubKeyTree(Application.ProductName, false);
+            }
+
+            WriteToRegistry(ProductVersionRegistryKey, Application.ProductVersion);
+
+            var removalAlreadyDone = (bool)GetValueFromRegistry(AdsRemovedRegistryKey);
+            SetButtonState(removalAlreadyDone);
+            InstallCheckBox.Enabled = File.Exists(Path.Combine(_roamingDirectory, "Spotify.exe")) && !removalAlreadyDone;
+
+            NewVersionAvailableLinkLabel.Visible = (bool)GetValueFromRegistry(NewVersionAvailableRegistryKey);
             VersionLabel.Text = $"v.{Application.ProductVersion}";
         }
 
+        private void InstallProcessExited(object sender, EventArgs e)
+            => _installExitCode = ((Process)sender).ExitCode;
+        #endregion
+
+        #region Events-StartTabPage
         private void StartButton_Click(object sender, EventArgs e)
         {
             Cursor.Current = Cursors.WaitCursor;
 
             FormTabControl.SelectTab(OutputTabPage);
-            ClearButton.Enabled = true;
 
             if (!string.IsNullOrEmpty(OutputTextBox.Text))
             {
-                OutputTextBox.AppendText("\r\n- - - - - - - - - - - - - - - - - - - - - - - -\r\n\r\n");
+                OutputTextBox.AppendText(OutputTextBoxSeparator);
             }
 
             if (InstallCheckBox.Checked && !InstallSpotify())
@@ -70,17 +95,49 @@ namespace RemoveSpotifyAds.UI
             DeleteAdSpaFile();
 
             InstallCheckBox.Enabled = true;
+            SetStartRevertState(true);
 
             OutputTextBox.AppendText("\r\nAds removed successfully!");
             SystemSounds.Asterisk.Play();
         }
 
-        private void NewVersionAvailableLabel_Click(object sender, EventArgs e)
+        private void RevertButton_Click(object sender, EventArgs e)
+        {
+            Cursor.Current = Cursors.WaitCursor;
+
+            FormTabControl.SelectedTab = OutputTabPage;
+
+            if (!string.IsNullOrEmpty(OutputTextBox.Text))
+            {
+                OutputTextBox.AppendText(OutputTextBoxSeparator);
+            }
+
+            // TODO revert code here
+
+            SetStartRevertState(false);
+
+            OutputTextBox.AppendText("\r\nAll changes successfully reverted!");
+            SystemSounds.Asterisk.Play();
+        }
+
+        private void NewVersionAvailableLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             FormTabControl.SelectedTab = HelpTabPage;
             CheckUpdatesButton.PerformClick();
         }
 
+        private void NewVersionAvailableLinkLabel_Enter(object sender, EventArgs e)
+        {
+            NewVersionAvailableLinkLabel.LinkBehavior = LinkBehavior.AlwaysUnderline;
+        }
+
+        private void NewVersionAvailableLinkLabel_Leave(object sender, EventArgs e)
+        {
+            NewVersionAvailableLinkLabel.LinkBehavior = LinkBehavior.HoverUnderline;
+        }
+        #endregion
+
+        #region Events-OutputTabPage
         private void ClearButton_Click(object sender, EventArgs e)
         {
             Cursor.Current = Cursors.WaitCursor;
@@ -89,12 +146,14 @@ namespace RemoveSpotifyAds.UI
             ClearButton.Enabled = false;
         }
 
-        private void InstallProcessExited(object sender, EventArgs e)
-            => _installExitCode = ((Process)sender).ExitCode;
-
         private void OutputTextBox_TextChanged(object sender, EventArgs e)
-            => this.Update();
+        {
+            this.Update();
+            ClearButton.Enabled = true;
+        }
+        #endregion
 
+        #region Events-AboutTabPage
         private void AboutGithubLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Cursor.Current = Cursors.WaitCursor;
@@ -131,14 +190,15 @@ namespace RemoveSpotifyAds.UI
 
             try
             {
-                var client = new GithubClient("RemoveSpotifyAds");
+                var client = new GithubClient(Application.ProductName);
                 var repository = await client.GetRepositoryAsync("https://api.github.com/repositories/283887091/releases/latest");
 
                 var releaseVersion = new Version(repository.TagName.Substring(1));
 
                 if (releaseVersion.CompareTo(new Version(Application.ProductVersion)) > 0) // TODO Change to bigger ('>')
                 {
-                    NewVersionAvailableLabel.Visible = true;
+                    NewVersionAvailableLinkLabel.Visible = true;
+                    WriteToRegistry(NewVersionAvailableRegistryKey, true);
 
                     var dialogResult = MessageBox.Show(
                         "New version available! Do you want to download it now?",
@@ -148,7 +208,7 @@ namespace RemoveSpotifyAds.UI
 
                     if (dialogResult == DialogResult.Yes)
                     {
-                        InstallNewVersion(repository.Assets[0].BrowserDownloadUrl);
+                        InstallNewVersion(repository.Assets.First().BrowserDownloadUrl);
                     }
                 }
                 else
@@ -170,8 +230,9 @@ namespace RemoveSpotifyAds.UI
             }
         }
         #endregion
+        #endregion
 
-        #region Private Procedures
+        #region Private Methods
         private void SetCheckboxState(bool visible)
         {
             InstallCheckBox.Checked = visible;
@@ -179,8 +240,22 @@ namespace RemoveSpotifyAds.UI
             WarningLabel.Visible = !visible;
         }
 
+        private void SetStartRevertState(bool done)
+        {
+            SetButtonState(done);
+            InstallCheckBox.Visible = !done;
+
+            WriteToRegistry(AdsRemovedRegistryKey, done);
+        }
+
+        private void SetButtonState(bool done)
+        {
+            RevertButton.Enabled = done;
+            StartButton.Enabled = !done;
+        }
+
         /// <summary>
-        /// Executes the Spotify installer and waits until it terminates
+        /// Executes the Spotify installer and waits until it terminates.
         /// </summary>
         private bool InstallSpotify()
         {
@@ -217,12 +292,24 @@ namespace RemoveSpotifyAds.UI
         /// <summary>
         /// Denies access for all users to the "Update"-directory to prevent Spotify from updating itself
         /// </summary>
-        private void DenyAccessToUpdateDirectory() //TODO check if access is already denied
+        private void DenyAccessToUpdateDirectory()
         {
             OutputTextBox.AppendText("Denying access to \"Update\" directory...");
 
             var updatePath = Path.Combine(_localDirectory, "Update");
-            Directory.CreateDirectory(updatePath);
+            var testPath = Path.Combine(updatePath, "Test");
+
+            try
+            {
+                Directory.CreateDirectory(testPath);
+            }
+            catch (UnauthorizedAccessException)
+            {
+                OutputTextBox.AppendText(" Already done!\r\n");
+                return;
+            }
+
+            Directory.Delete(testPath);
 
             var directoryInfo = new DirectoryInfo(updatePath);
             var directorySecurity = directoryInfo.GetAccessControl(AccessControlSections.All);
@@ -247,22 +334,6 @@ namespace RemoveSpotifyAds.UI
         }
 
         /// <summary>
-        /// Contains all Spotify Ad-URLs 
-        /// </summary>
-        private static List<string> UrlsToBlock()
-            => new List<string>
-            {
-                "adclick.g.doublecklick.net",
-                "googleads.g.doubleclick.net",
-                "googleadservices.com",
-                "pubads.g.doubleclick.net",
-                "securepubads.g.doubleclick.net",
-                "pagead2.googlesyndication.com",
-                "spclient.wg.spotify.com",
-                "audio2.spotify.com"
-            };
-
-        /// <summary>
         /// Block all Spotify ad-servers through writing to the hosts-file
         /// </summary>
         private void WriteToHostFile()
@@ -271,7 +342,7 @@ namespace RemoveSpotifyAds.UI
 
             var hostsPath = Path.Combine(Environment.SystemDirectory, @"drivers\etc\hosts");
 
-            var filteredUrls = FilterBlockedUrlsIfHostsFileAlreadyContains(hostsPath);
+            var filteredUrls = CheckIfHostsFileAlreadyContains(hostsPath);
 
             if (filteredUrls.Count == 0)
             {
@@ -294,25 +365,6 @@ namespace RemoveSpotifyAds.UI
             }
 
             OutputTextBox.AppendText(FinishedKeyWord);
-        }
-
-        /// <summary>
-        /// Removes the URLs from the list that the hosts-file is already containing
-        /// </summary>
-        /// <param name="hostsPath">The path to the hosts-file</param>
-        /// <returns>A <see cref="List{T}"/> that contains all URLs that are not already written to the hosts-file.
-        /// The <see cref="List{T}"/> is empty if the hosts-file already contains all of them.</returns>
-        private static List<string> FilterBlockedUrlsIfHostsFileAlreadyContains(string hostsPath)
-        {
-            var fileContent = File.ReadAllText(hostsPath);
-            var urls = UrlsToBlock();
-
-            foreach (var url in urls.ToList().Where(u => fileContent.Contains(u)))
-            {
-                urls.Remove(url);
-            }
-
-            return urls;
         }
 
         /// <summary>
@@ -347,7 +399,7 @@ namespace RemoveSpotifyAds.UI
             {
                 var downloader = new Downloader(url, zipPath)
                 {
-                    Headers = new List<(string name, string value)> { ("user-agent", "RemoveSpotifyAds") },
+                    Headers = new List<(string name, string value)> { ("user-agent", Application.ProductName) },
                     AbortMessage = ShowAbortMessageBox
                 };
 
@@ -368,6 +420,8 @@ namespace RemoveSpotifyAds.UI
 
                 ZipFile.ExtractToDirectory(zipPath, Application.StartupPath);
 
+                WriteToRegistry(NewVersionAvailableRegistryKey, false);
+
                 MessageBox.Show(
                     "Update successfully installed! The application will restart now.",
                     "Finished!",
@@ -382,16 +436,6 @@ namespace RemoveSpotifyAds.UI
             }
         }
 
-        private static DialogResult ShowAbortMessageBox()
-        {
-            return MessageBox.Show(
-                "Do you really want to cancel the download?",
-                "Are you sure?",
-                MessageBoxButtons.OKCancel,
-                MessageBoxIcon.Question,
-                MessageBoxDefaultButton.Button2);
-        }
-
         protected override bool ProcessDialogKey(Keys keyData)
         {
             // ReSharper disable once InvertIf
@@ -404,5 +448,84 @@ namespace RemoveSpotifyAds.UI
             return base.ProcessDialogKey(keyData);
         }
         #endregion
+
+        #region Static Methods
+        private static void WriteToRegistry(string keyName, bool keyValue)
+        {
+            var key = Registry.CurrentUser.OpenSubKey("Software", true);
+
+            key.CreateSubKey(Application.ProductName, true).SetValue(keyName, keyValue ? 1 : 0);
+        }
+
+        private static void WriteToRegistry(string keyName, string keyValue)
+        {
+            var key = Registry.CurrentUser.OpenSubKey("Software", true);
+
+            key.CreateSubKey(Application.ProductName, true).SetValue(keyName, keyValue);
+        }
+
+        private static object GetValueFromRegistry(string keyName, bool isString = false)
+        {
+            var adsRemoved = Registry.CurrentUser
+                .OpenSubKey("Software")?
+                .OpenSubKey(Application.ProductName)?
+                .GetValue(keyName);
+
+            if (isString)
+            {
+                return adsRemoved;
+            }
+
+            return adsRemoved != null && (int)adsRemoved == 1;
+        }
+
+        private static DialogResult ShowAbortMessageBox()
+        {
+            return MessageBox.Show(
+                "Do you really want to cancel the download?",
+                "Are you sure?",
+                MessageBoxButtons.OKCancel,
+                MessageBoxIcon.Question,
+                MessageBoxDefaultButton.Button2);
+        }
+
+        /// <summary>
+        /// Contains all Spotify Ad-URLs 
+        /// </summary>
+        private static List<string> UrlsToBlock()
+        {
+            return new List<string>
+            {
+                "adclick.g.doublecklick.net",
+                "googleads.g.doubleclick.net",
+                "googleadservices.com",
+                "pubads.g.doubleclick.net",
+                "securepubads.g.doubleclick.net",
+                "pagead2.googlesyndication.com",
+                "spclient.wg.spotify.com",
+                "audio2.spotify.com"
+            };
+        }
+
+        /// <summary>
+        /// Removes the URLs from the list that the hosts-file is already containing
+        /// </summary>
+        /// <param name="hostsPath">The path to the hosts-file</param>
+        /// <returns>A <see cref="List{T}"/> that contains all URLs that are not already written to the hosts-file.
+        /// The <see cref="List{T}"/> is empty if the hosts-file already contains all of them.</returns>
+        private static List<string> CheckIfHostsFileAlreadyContains(string hostsPath)
+        {
+            var fileContent = File.ReadAllText(hostsPath);
+            var urls = UrlsToBlock();
+
+            foreach (var url in urls.ToList().Where(u => fileContent.Contains(u)))
+            {
+                urls.Remove(url);
+            }
+
+            return urls;
+        }
+        #endregion
     }
 }
+

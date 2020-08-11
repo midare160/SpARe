@@ -48,8 +48,6 @@ namespace RemoveSpotifyAds.UI
         #region Events-Form
         private void RemoveSpotifyAds_Load(object sender, EventArgs e)
         {
-            SetCheckboxState(File.Exists(Path.Combine(Application.StartupPath, @"Data\spotify_installer1.0.8.exe")));
-
             if (!string.Equals((string)GetValueFromRegistry(ProductVersionRegistryKey, true), Application.ProductVersion))
             {
                 Registry.CurrentUser
@@ -62,6 +60,7 @@ namespace RemoveSpotifyAds.UI
             var removalAlreadyDone = (bool)GetValueFromRegistry(AdsRemovedRegistryKey);
             SetButtonState(removalAlreadyDone);
             InstallCheckBox.Enabled = File.Exists(Path.Combine(_roamingDirectory, "Spotify.exe")) && !removalAlreadyDone;
+            SetCheckboxState(File.Exists(Path.Combine(Application.StartupPath, @"Data\spotify_installer1.0.8.exe")));
 
             NewVersionAvailableLinkLabel.Visible = (bool)GetValueFromRegistry(NewVersionAvailableRegistryKey);
             VersionLabel.Text = $"v.{Application.ProductVersion}";
@@ -313,23 +312,12 @@ namespace RemoveSpotifyAds.UI
 
             var directoryInfo = new DirectoryInfo(updatePath);
             var directorySecurity = directoryInfo.GetAccessControl(AccessControlSections.All);
-
-            // Cast with enum, otherwise the variable would be an object
-            foreach (var sidType in (WellKnownSidType[])Enum.GetValues(typeof(WellKnownSidType)))
-            {
-                try
-                {
-                    var user = new SecurityIdentifier(sidType, null);
-                    var accessRule = new FileSystemAccessRule(user, FileSystemRights.FullControl, AccessControlType.Deny);
-                    directorySecurity.AddAccessRule(accessRule);
-                }
-                catch (ArgumentException)
-                {
-                    // Access cant be denied for some users, if thats the case just skip them
-                }
-            }
-
+            var user = new SecurityIdentifier(WellKnownSidType.WorldSid, null);
+            var accessRule = new FileSystemAccessRule(user, FileSystemRights.FullControl, AccessControlType.Deny);
+            
+            directorySecurity.AddAccessRule(accessRule);
             directoryInfo.SetAccessControl(directorySecurity);
+
             OutputTextBox.AppendText(FinishedKeyWord);
         }
 

@@ -1,4 +1,5 @@
 ﻿using Daubert.Forms;
+using Daubert.Tools.RegistryTools;
 using RemoveSpotifyAds.API;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,6 @@ using System.Net.Http;
 using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Windows.Forms;
-using Microsoft.Win32;
 
 namespace RemoveSpotifyAds.UI
 {
@@ -32,6 +32,9 @@ namespace RemoveSpotifyAds.UI
         private readonly string _roamingDirectory;
         private readonly string _localDirectory;
         private int _installExitCode;
+
+        private readonly RegistryReader _registryReader;
+        private readonly RegistryWriter _registryWriter;
         #endregion
 
         #region Constructors
@@ -41,6 +44,9 @@ namespace RemoveSpotifyAds.UI
 
             _roamingDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Spotify");
             _localDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Spotify");
+
+            _registryReader = new RegistryReader();
+            _registryWriter = new RegistryWriter();
         }
         #endregion
 
@@ -48,21 +54,19 @@ namespace RemoveSpotifyAds.UI
         #region Events-Form
         private void RemoveSpotifyAds_Load(object sender, EventArgs e)
         {
-            if (!string.Equals((string)GetValueFromRegistry(ProductVersionRegistryKey, true), Application.ProductVersion))
+            if (!string.Equals((string)_registryReader.GetValue(ProductVersionRegistryKey), Application.ProductVersion))
             {
-                Registry.CurrentUser
-                    .OpenSubKey("Software", true)?
-                    .DeleteSubKeyTree(Application.ProductName, false);
+                _registryWriter.DeleteSubSubKey();
             }
 
-            WriteToRegistry(ProductVersionRegistryKey, Application.ProductVersion);
+            _registryWriter.SetValue(ProductVersionRegistryKey, Application.ProductVersion);
 
-            var removalAlreadyDone = (bool)GetValueFromRegistry(AdsRemovedRegistryKey);
+            var removalAlreadyDone = Convert.ToBoolean(_registryReader.GetValue(AdsRemovedRegistryKey));
             SetButtonState(removalAlreadyDone);
             InstallCheckBox.Enabled = File.Exists(Path.Combine(_roamingDirectory, "Spotify.exe")) && !removalAlreadyDone;
             SetCheckboxState(File.Exists(Path.Combine(Application.StartupPath, @"Data\spotify_installer1.0.8.exe")));
 
-            NewVersionAvailableLinkLabel.Visible = (bool)GetValueFromRegistry(NewVersionAvailableRegistryKey);
+            NewVersionAvailableLinkLabel.Visible = Convert.ToBoolean(_registryReader.GetValue(NewVersionAvailableRegistryKey));
             VersionLabel.Text = $"v.{Application.ProductVersion}";
         }
 
@@ -194,10 +198,10 @@ namespace RemoveSpotifyAds.UI
 
                 var releaseVersion = new Version(repository.TagName.Substring(1));
 
-                if (releaseVersion.CompareTo(new Version(Application.ProductVersion)) > 0) // TODO Change to bigger ('>')
+                if (releaseVersion.CompareTo(new Version(Application.ProductVersion)) != 0) // TODO Change to bigger ('>')
                 {
                     NewVersionAvailableLinkLabel.Visible = true;
-                    WriteToRegistry(NewVersionAvailableRegistryKey, true);
+                    _registryWriter.SetValue(NewVersionAvailableRegistryKey, 1);
 
                     var dialogResult = MessageBox.Show(
                         "New version available! Do you want to download it now?",
@@ -244,7 +248,7 @@ namespace RemoveSpotifyAds.UI
             SetButtonState(done);
             InstallCheckBox.Visible = !done;
 
-            WriteToRegistry(AdsRemovedRegistryKey, done);
+            _registryWriter.SetValue(AdsRemovedRegistryKey, Convert.ToInt32(done));
         }
 
         private void SetButtonState(bool done)
@@ -314,7 +318,7 @@ namespace RemoveSpotifyAds.UI
             var directorySecurity = directoryInfo.GetAccessControl(AccessControlSections.All);
             var user = new SecurityIdentifier(WellKnownSidType.WorldSid, null);
             var accessRule = new FileSystemAccessRule(user, FileSystemRights.FullControl, AccessControlType.Deny);
-            
+
             directorySecurity.AddAccessRule(accessRule);
             directoryInfo.SetAccessControl(directorySecurity);
 
@@ -408,7 +412,7 @@ namespace RemoveSpotifyAds.UI
 
                 ZipFile.ExtractToDirectory(zipPath, Application.StartupPath);
 
-                WriteToRegistry(NewVersionAvailableRegistryKey, false);
+                _registryWriter.SetValue(NewVersionAvailableRegistryKey, 0);
 
                 MessageBox.Show(
                     "Update successfully installed! The application will restart now.",
@@ -438,35 +442,6 @@ namespace RemoveSpotifyAds.UI
         #endregion
 
         #region Static Methods
-        private static void WriteToRegistry(string keyName, bool keyValue)
-        {
-            var key = Registry.CurrentUser.OpenSubKey("Software", true);
-
-            key.CreateSubKey(Application.ProductName, true).SetValue(keyName, keyValue ? 1 : 0);
-        }
-
-        private static void WriteToRegistry(string keyName, string keyValue)
-        {
-            var key = Registry.CurrentUser.OpenSubKey("Software", true);
-
-            key.CreateSubKey(Application.ProductName, true).SetValue(keyName, keyValue);
-        }
-
-        private static object GetValueFromRegistry(string keyName, bool isString = false)
-        {
-            var adsRemoved = Registry.CurrentUser
-                .OpenSubKey("Software")?
-                .OpenSubKey(Application.ProductName)?
-                .GetValue(keyName);
-
-            if (isString)
-            {
-                return adsRemoved;
-            }
-
-            return adsRemoved != null && (int)adsRemoved == 1;
-        }
-
         private static DialogResult ShowAbortMessageBox()
         {
             return MessageBox.Show(

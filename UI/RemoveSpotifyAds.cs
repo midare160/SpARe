@@ -56,15 +56,11 @@ namespace RemoveSpotifyAds.UI
         {
             if (!string.Equals((string)_registryReader.GetValue(ProductVersionRegistryKey), Application.ProductVersion))
             {
-                _registryWriter.DeleteSubSubKey();
+                _registryWriter.DeleteValue(NewVersionAvailableRegistryKey);
+                _registryWriter.SetValue(ProductVersionRegistryKey, Application.ProductVersion);
             }
 
-            _registryWriter.SetValue(ProductVersionRegistryKey, Application.ProductVersion);
-
-            var removalAlreadyDone = Convert.ToBoolean(_registryReader.GetValue(AdsRemovedRegistryKey));
-            SetButtonState(removalAlreadyDone);
-            InstallCheckBox.Enabled = File.Exists(Path.Combine(_roamingDirectory, "Spotify.exe")) && !removalAlreadyDone;
-            SetCheckboxState(File.Exists(Path.Combine(Application.StartupPath, @"Data\spotify_installer1.0.8.exe")));
+            SetUiAndRegistry(Convert.ToBoolean(_registryReader.GetValue(AdsRemovedRegistryKey)));
 
             NewVersionAvailableLinkLabel.Visible = Convert.ToBoolean(_registryReader.GetValue(NewVersionAvailableRegistryKey));
             VersionLabel.Text = $"v.{Application.ProductVersion}";
@@ -97,9 +93,7 @@ namespace RemoveSpotifyAds.UI
             WriteToHostFile();
             DeleteAdSpaFile();
 
-            InstallCheckBox.Enabled = true;
-            SetStartRevertState(true);
-
+            SetUiAndRegistry(true);
             OutputTextBox.AppendText("\r\nAds removed successfully!");
             SystemSounds.Asterisk.Play();
         }
@@ -117,8 +111,7 @@ namespace RemoveSpotifyAds.UI
 
             // TODO revert code here
 
-            SetStartRevertState(false);
-
+            SetUiAndRegistry(false);
             OutputTextBox.AppendText("\r\nAll changes successfully reverted!");
             SystemSounds.Asterisk.Play();
         }
@@ -236,25 +229,21 @@ namespace RemoveSpotifyAds.UI
         #endregion
 
         #region Private Methods
-        private void SetCheckboxState(bool visible)
+        private void SetUiAndRegistry(bool adsRemoved)
         {
-            InstallCheckBox.Checked = visible;
-            InstallCheckBox.Visible = visible;
-            WarningLabel.Visible = !visible;
-        }
+            var installerAvailable = File.Exists(Path.Combine(Application.StartupPath, @"Data\spotify_installer1.0.8.exe"));
+            var alreadyInstalled = File.Exists(Path.Combine(_roamingDirectory, "Spotify.exe"));
 
-        private void SetStartRevertState(bool done)
-        {
-            SetButtonState(done);
-            InstallCheckBox.Visible = !done;
+            InstallCheckBox.Visible = installerAvailable && !adsRemoved;
+            InstallCheckBox.Checked = installerAvailable;
+            InstallCheckBox.Enabled = alreadyInstalled;
 
-            _registryWriter.SetValue(AdsRemovedRegistryKey, Convert.ToInt32(done));
-        }
+            WarningLabel.Visible = !installerAvailable;
 
-        private void SetButtonState(bool done)
-        {
-            RevertButton.Enabled = done;
-            StartButton.Enabled = !done;
+            RevertButton.Enabled = adsRemoved;
+            StartButton.Enabled = !adsRemoved;
+
+            _registryWriter.SetValue(AdsRemovedRegistryKey, Convert.ToInt32(adsRemoved));
         }
 
         /// <summary>

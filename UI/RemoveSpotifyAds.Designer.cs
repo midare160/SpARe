@@ -33,9 +33,12 @@
             this.StartButton = new System.Windows.Forms.Button();
             this.FormTabControl = new System.Windows.Forms.TabControl();
             this.StartTabPage = new System.Windows.Forms.TabPage();
+            this.RevertButton = new System.Windows.Forms.Button();
+            this.NewVersionAvailableLinkLabel = new System.Windows.Forms.LinkLabel();
             this.InstallCheckBox = new System.Windows.Forms.CheckBox();
             this.WarningLabel = new System.Windows.Forms.Label();
             this.OutputTabPage = new System.Windows.Forms.TabPage();
+            this.OutputTextBox = new RemoveSpotifyAds.CustomControls.ReadOnlyRichTextBox();
             this.ClearButton = new System.Windows.Forms.Button();
             this.HelpTabPage = new System.Windows.Forms.TabPage();
             this.VersionLabel = new System.Windows.Forms.Label();
@@ -43,9 +46,6 @@
             this.GithubLabel = new System.Windows.Forms.LinkLabel();
             this.CopyrightLabel = new System.Windows.Forms.Label();
             this.ControlToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.NewVersionAvailableLinkLabel = new System.Windows.Forms.LinkLabel();
-            this.OutputTextBox = new RemoveSpotifyAds.CustomControls.ReadOnlyRichTextBox();
-            this.RevertButton = new System.Windows.Forms.Button();
             this.FormTabControl.SuspendLayout();
             this.StartTabPage.SuspendLayout();
             this.OutputTabPage.SuspendLayout();
@@ -89,12 +89,41 @@
             this.StartTabPage.Text = "Start";
             this.StartTabPage.UseVisualStyleBackColor = true;
             // 
+            // RevertButton
+            // 
+            this.RevertButton.Enabled = false;
+            this.RevertButton.Location = new System.Drawing.Point(169, 54);
+            this.RevertButton.Name = "RevertButton";
+            this.RevertButton.Size = new System.Drawing.Size(75, 23);
+            this.RevertButton.TabIndex = 5;
+            this.RevertButton.Text = "&Revert";
+            this.RevertButton.UseVisualStyleBackColor = true;
+            this.RevertButton.Click += new System.EventHandler(this.RevertButton_Click);
+            // 
+            // NewVersionAvailableLinkLabel
+            // 
+            this.NewVersionAvailableLinkLabel.ActiveLinkColor = System.Drawing.Color.Lime;
+            this.NewVersionAvailableLinkLabel.AutoSize = true;
+            this.NewVersionAvailableLinkLabel.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
+            this.NewVersionAvailableLinkLabel.LinkColor = System.Drawing.Color.Green;
+            this.NewVersionAvailableLinkLabel.Location = new System.Drawing.Point(202, 10);
+            this.NewVersionAvailableLinkLabel.Name = "NewVersionAvailableLinkLabel";
+            this.NewVersionAvailableLinkLabel.Size = new System.Drawing.Size(114, 13);
+            this.NewVersionAvailableLinkLabel.TabIndex = 4;
+            this.NewVersionAvailableLinkLabel.TabStop = true;
+            this.NewVersionAvailableLinkLabel.Text = "New version available!";
+            this.NewVersionAvailableLinkLabel.Visible = false;
+            this.NewVersionAvailableLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.NewVersionAvailableLinkLabel_LinkClicked);
+            this.NewVersionAvailableLinkLabel.Enter += new System.EventHandler(this.NewVersionAvailableLinkLabel_Enter);
+            this.NewVersionAvailableLinkLabel.Leave += new System.EventHandler(this.NewVersionAvailableLinkLabel_Leave);
+            // 
             // InstallCheckBox
             // 
             this.InstallCheckBox.AutoSize = true;
             this.InstallCheckBox.Checked = true;
             this.InstallCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
             this.InstallCheckBox.Enabled = false;
+            this.InstallCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.InstallCheckBox.Location = new System.Drawing.Point(68, 87);
             this.InstallCheckBox.Name = "InstallCheckBox";
             this.InstallCheckBox.Size = new System.Drawing.Size(189, 17);
@@ -126,6 +155,21 @@
             this.OutputTabPage.TabIndex = 1;
             this.OutputTabPage.Text = "Output";
             this.OutputTabPage.UseVisualStyleBackColor = true;
+            // 
+            // OutputTextBox
+            // 
+            this.OutputTextBox.Cursor = System.Windows.Forms.Cursors.Default;
+            this.OutputTextBox.DetectUrls = false;
+            this.OutputTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.OutputTextBox.HideSelection = false;
+            this.OutputTextBox.Location = new System.Drawing.Point(3, 3);
+            this.OutputTextBox.Name = "OutputTextBox";
+            this.OutputTextBox.ReadOnly = true;
+            this.OutputTextBox.Size = new System.Drawing.Size(318, 123);
+            this.OutputTextBox.TabIndex = 0;
+            this.OutputTextBox.TabStop = false;
+            this.OutputTextBox.Text = "";
+            this.OutputTextBox.TextChanged += new System.EventHandler(this.OutputTextBox_TextChanged);
             // 
             // ClearButton
             // 
@@ -204,49 +248,6 @@
             this.ControlToolTip.AutoPopDelay = 10000;
             this.ControlToolTip.InitialDelay = 500;
             this.ControlToolTip.ReshowDelay = 100;
-            // 
-            // NewVersionAvailableLinkLabel
-            // 
-            this.NewVersionAvailableLinkLabel.ActiveLinkColor = System.Drawing.Color.Lime;
-            this.NewVersionAvailableLinkLabel.AutoSize = true;
-            this.NewVersionAvailableLinkLabel.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
-            this.NewVersionAvailableLinkLabel.LinkColor = System.Drawing.Color.Green;
-            this.NewVersionAvailableLinkLabel.Location = new System.Drawing.Point(202, 10);
-            this.NewVersionAvailableLinkLabel.Name = "NewVersionAvailableLinkLabel";
-            this.NewVersionAvailableLinkLabel.Size = new System.Drawing.Size(114, 13);
-            this.NewVersionAvailableLinkLabel.TabIndex = 4;
-            this.NewVersionAvailableLinkLabel.TabStop = true;
-            this.NewVersionAvailableLinkLabel.Text = "&New version available!";
-            this.NewVersionAvailableLinkLabel.Visible = false;
-            this.NewVersionAvailableLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.NewVersionAvailableLinkLabel_LinkClicked);
-            this.NewVersionAvailableLinkLabel.Enter += new System.EventHandler(this.NewVersionAvailableLinkLabel_Enter);
-            this.NewVersionAvailableLinkLabel.Leave += new System.EventHandler(this.NewVersionAvailableLinkLabel_Leave);
-            // 
-            // OutputTextBox
-            // 
-            this.OutputTextBox.Cursor = System.Windows.Forms.Cursors.Default;
-            this.OutputTextBox.DetectUrls = false;
-            this.OutputTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OutputTextBox.HideSelection = false;
-            this.OutputTextBox.Location = new System.Drawing.Point(3, 3);
-            this.OutputTextBox.Name = "OutputTextBox";
-            this.OutputTextBox.ReadOnly = true;
-            this.OutputTextBox.Size = new System.Drawing.Size(318, 123);
-            this.OutputTextBox.TabIndex = 0;
-            this.OutputTextBox.TabStop = false;
-            this.OutputTextBox.Text = "";
-            this.OutputTextBox.TextChanged += new System.EventHandler(this.OutputTextBox_TextChanged);
-            // 
-            // RevertButton
-            // 
-            this.RevertButton.Enabled = false;
-            this.RevertButton.Location = new System.Drawing.Point(169, 54);
-            this.RevertButton.Name = "RevertButton";
-            this.RevertButton.Size = new System.Drawing.Size(75, 23);
-            this.RevertButton.TabIndex = 5;
-            this.RevertButton.Text = "&Revert";
-            this.RevertButton.UseVisualStyleBackColor = true;
-            this.RevertButton.Click += new System.EventHandler(this.RevertButton_Click);
             // 
             // RemoveSpotifyAdsForm
             // 

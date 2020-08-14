@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(RemoveSpotifyAdsForm));
             this.StartButton = new System.Windows.Forms.Button();
             this.FormTabControl = new System.Windows.Forms.TabControl();
@@ -38,14 +37,13 @@
             this.InstallCheckBox = new System.Windows.Forms.CheckBox();
             this.WarningLabel = new System.Windows.Forms.Label();
             this.OutputTabPage = new System.Windows.Forms.TabPage();
-            this.OutputTextBox = new RemoveSpotifyAds.CustomControls.ReadOnlyRichTextBox();
             this.ClearButton = new System.Windows.Forms.Button();
             this.HelpTabPage = new System.Windows.Forms.TabPage();
             this.VersionLabel = new System.Windows.Forms.Label();
             this.CheckUpdatesButton = new System.Windows.Forms.Button();
             this.GithubLabel = new System.Windows.Forms.LinkLabel();
             this.CopyrightLabel = new System.Windows.Forms.Label();
-            this.ControlToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.OutputTextBox = new RemoveSpotifyAds.CustomControls.ReadOnlyRichTextBox();
             this.FormTabControl.SuspendLayout();
             this.StartTabPage.SuspendLayout();
             this.OutputTabPage.SuspendLayout();
@@ -54,10 +52,10 @@
             // 
             // StartButton
             // 
-            this.StartButton.Location = new System.Drawing.Point(80, 54);
+            this.StartButton.Location = new System.Drawing.Point(80, 68);
             this.StartButton.Name = "StartButton";
             this.StartButton.Size = new System.Drawing.Size(75, 23);
-            this.StartButton.TabIndex = 1;
+            this.StartButton.TabIndex = 0;
             this.StartButton.Text = "&Start";
             this.StartButton.UseVisualStyleBackColor = true;
             this.StartButton.Click += new System.EventHandler(this.StartButton_Click);
@@ -92,56 +90,59 @@
             // RevertButton
             // 
             this.RevertButton.Enabled = false;
-            this.RevertButton.Location = new System.Drawing.Point(169, 54);
+            this.RevertButton.Location = new System.Drawing.Point(169, 68);
             this.RevertButton.Name = "RevertButton";
             this.RevertButton.Size = new System.Drawing.Size(75, 23);
-            this.RevertButton.TabIndex = 5;
+            this.RevertButton.TabIndex = 1;
             this.RevertButton.Text = "&Revert";
             this.RevertButton.UseVisualStyleBackColor = true;
             this.RevertButton.Click += new System.EventHandler(this.RevertButton_Click);
             // 
             // NewVersionAvailableLinkLabel
             // 
-            this.NewVersionAvailableLinkLabel.ActiveLinkColor = System.Drawing.Color.Lime;
+            this.NewVersionAvailableLinkLabel.ActiveLinkColor = System.Drawing.Color.MediumSeaGreen;
+            this.NewVersionAvailableLinkLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.NewVersionAvailableLinkLabel.AutoSize = true;
-            this.NewVersionAvailableLinkLabel.LinkBehavior = System.Windows.Forms.LinkBehavior.HoverUnderline;
-            this.NewVersionAvailableLinkLabel.LinkColor = System.Drawing.Color.Green;
+            this.NewVersionAvailableLinkLabel.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
+            this.NewVersionAvailableLinkLabel.LinkColor = System.Drawing.Color.DarkGreen;
             this.NewVersionAvailableLinkLabel.Location = new System.Drawing.Point(202, 10);
             this.NewVersionAvailableLinkLabel.Name = "NewVersionAvailableLinkLabel";
             this.NewVersionAvailableLinkLabel.Size = new System.Drawing.Size(114, 13);
-            this.NewVersionAvailableLinkLabel.TabIndex = 4;
+            this.NewVersionAvailableLinkLabel.TabIndex = 3;
             this.NewVersionAvailableLinkLabel.TabStop = true;
             this.NewVersionAvailableLinkLabel.Text = "New version available!";
+            this.NewVersionAvailableLinkLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.NewVersionAvailableLinkLabel.Visible = false;
             this.NewVersionAvailableLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.NewVersionAvailableLinkLabel_LinkClicked);
-            this.NewVersionAvailableLinkLabel.Enter += new System.EventHandler(this.NewVersionAvailableLinkLabel_Enter);
-            this.NewVersionAvailableLinkLabel.Leave += new System.EventHandler(this.NewVersionAvailableLinkLabel_Leave);
             // 
             // InstallCheckBox
             // 
+            this.InstallCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.InstallCheckBox.AutoSize = true;
             this.InstallCheckBox.Checked = true;
             this.InstallCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.InstallCheckBox.Enabled = false;
             this.InstallCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.InstallCheckBox.Location = new System.Drawing.Point(68, 87);
+            this.InstallCheckBox.Location = new System.Drawing.Point(95, 101);
             this.InstallCheckBox.Name = "InstallCheckBox";
-            this.InstallCheckBox.Size = new System.Drawing.Size(189, 17);
+            this.InstallCheckBox.Size = new System.Drawing.Size(135, 17);
             this.InstallCheckBox.TabIndex = 2;
-            this.InstallCheckBox.Text = "(Re)&Install Spotify (Recommended)";
-            this.ControlToolTip.SetToolTip(this.InstallCheckBox, "Installs Spotify (necessary), if its already installed it will override the previ" +
-        "ous installation (recommended)");
+            this.InstallCheckBox.Text = "&Install Spotify (required)";
+            this.InstallCheckBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.InstallCheckBox.UseVisualStyleBackColor = true;
+            this.InstallCheckBox.SizeChanged += new System.EventHandler(this.InstallCheckBox_SizeChanged);
+            this.InstallCheckBox.Click += new System.EventHandler(this.InstallCheckBox_Click);
             // 
             // WarningLabel
             // 
+            this.WarningLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.WarningLabel.AutoSize = true;
             this.WarningLabel.ForeColor = System.Drawing.Color.Red;
-            this.WarningLabel.Location = new System.Drawing.Point(75, 87);
+            this.WarningLabel.Location = new System.Drawing.Point(98, 101);
             this.WarningLabel.Name = "WarningLabel";
-            this.WarningLabel.Size = new System.Drawing.Size(174, 13);
+            this.WarningLabel.Size = new System.Drawing.Size(128, 13);
             this.WarningLabel.TabIndex = 0;
-            this.WarningLabel.Text = "Spotify install-executable not found!";
+            this.WarningLabel.Text = "Spotify installer not found!";
+            this.WarningLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.WarningLabel.Visible = false;
             // 
             // OutputTabPage
@@ -155,21 +156,6 @@
             this.OutputTabPage.TabIndex = 1;
             this.OutputTabPage.Text = "Output";
             this.OutputTabPage.UseVisualStyleBackColor = true;
-            // 
-            // OutputTextBox
-            // 
-            this.OutputTextBox.Cursor = System.Windows.Forms.Cursors.Default;
-            this.OutputTextBox.DetectUrls = false;
-            this.OutputTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OutputTextBox.HideSelection = false;
-            this.OutputTextBox.Location = new System.Drawing.Point(3, 3);
-            this.OutputTextBox.Name = "OutputTextBox";
-            this.OutputTextBox.ReadOnly = true;
-            this.OutputTextBox.Size = new System.Drawing.Size(318, 123);
-            this.OutputTextBox.TabIndex = 0;
-            this.OutputTextBox.TabStop = false;
-            this.OutputTextBox.Text = "";
-            this.OutputTextBox.TextChanged += new System.EventHandler(this.OutputTextBox_TextChanged);
             // 
             // ClearButton
             // 
@@ -228,7 +214,6 @@
             this.GithubLabel.TabStop = true;
             this.GithubLabel.Text = "Github Repository";
             this.GithubLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.ControlToolTip.SetToolTip(this.GithubLabel, "https://github.com/midare160/RemoveSpotifyAds");
             this.GithubLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.AboutGithubLabel_LinkClicked);
             this.GithubLabel.Enter += new System.EventHandler(this.AboutGithubLabel_Enter);
             this.GithubLabel.Leave += new System.EventHandler(this.AboutGithubLabel_Leave);
@@ -243,11 +228,20 @@
             this.CopyrightLabel.Text = "©2020 MIDARE16";
             this.CopyrightLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // ControlToolTip
+            // OutputTextBox
             // 
-            this.ControlToolTip.AutoPopDelay = 10000;
-            this.ControlToolTip.InitialDelay = 500;
-            this.ControlToolTip.ReshowDelay = 100;
+            this.OutputTextBox.Cursor = System.Windows.Forms.Cursors.Default;
+            this.OutputTextBox.DetectUrls = false;
+            this.OutputTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.OutputTextBox.HideSelection = false;
+            this.OutputTextBox.Location = new System.Drawing.Point(3, 3);
+            this.OutputTextBox.Name = "OutputTextBox";
+            this.OutputTextBox.ReadOnly = true;
+            this.OutputTextBox.Size = new System.Drawing.Size(318, 123);
+            this.OutputTextBox.TabIndex = 0;
+            this.OutputTextBox.TabStop = false;
+            this.OutputTextBox.Text = "";
+            this.OutputTextBox.TextChanged += new System.EventHandler(this.OutputTextBox_TextChanged);
             // 
             // RemoveSpotifyAdsForm
             // 
@@ -264,7 +258,7 @@
             this.Name = "RemoveSpotifyAdsForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Remove Spotify Ads";
-            this.Load += new System.EventHandler(this.RemoveSpotifyAds_Load);
+            this.Load += new System.EventHandler(this.RemoveSpotifyAdsForm_Load);
             this.FormTabControl.ResumeLayout(false);
             this.StartTabPage.ResumeLayout(false);
             this.StartTabPage.PerformLayout();
@@ -285,7 +279,6 @@
         private System.Windows.Forms.TabPage HelpTabPage;
         private System.Windows.Forms.Button ClearButton;
         private System.Windows.Forms.CheckBox InstallCheckBox;
-        private System.Windows.Forms.ToolTip ControlToolTip;
         private System.Windows.Forms.LinkLabel GithubLabel;
         private System.Windows.Forms.Label CopyrightLabel;
         private System.Windows.Forms.Label WarningLabel;

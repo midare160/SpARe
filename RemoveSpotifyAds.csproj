@@ -103,6 +103,7 @@
     </Compile>
     <Compile Include="API\GithubClient.cs" />
     <Compile Include="API\Json\Repository.cs" />
+    <Compile Include="Registry\RegistryKeys.cs" />
     <Compile Include="UI\RemoveSpotifyAds.cs">
       <SubType>Form</SubType>
     </Compile>

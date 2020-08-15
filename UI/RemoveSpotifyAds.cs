@@ -1,18 +1,19 @@
-﻿using Daubert.Forms;
+﻿using Daubert.Extensions;
+using Daubert.Forms;
 using Daubert.Tools;
 using Daubert.Tools.RegistryTools;
 using RemoveSpotifyAds.API;
-using RemoveSpotifyAds.Registry;
+using RemoveSpotifyAds.POCO;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Media;
 using System.Net;
 using System.Net.Http;
-using System.Security.AccessControl;
 using System.Security.Principal;
 using System.Windows.Forms;
 
@@ -23,19 +24,21 @@ namespace RemoveSpotifyAds.UI
         #region Static Fields
         private const string HostsHeader = "# Block Spotify ads";
         private const string Mapping = "0.0.0.0";
+        private const string AlreadyDoneString = " Already done!\r\n";
         private const string TaskFinishedString = "\r\n";
-        private const string OutputTextBoxSeparator = "\r\n- - - - - - - - - - - - - - - - - - - - - - - -\r\n\r\n";
         #endregion
 
         #region Fields
         private readonly string _roamingDirectory;
-        private readonly string _localDirectory;
+        private readonly string _updateDirectory;
         private readonly string _hostsPath;
         private readonly string _bakPath;
-        private int _installExitCode;
 
+        private readonly DirectoryAccess _directoryAccess;
         private readonly RegistryReader _registryReader;
         private readonly RegistryWriter _registryWriter;
+
+        private int _installExitCode;
         #endregion
 
         #region Constructors
@@ -43,11 +46,14 @@ namespace RemoveSpotifyAds.UI
         {
             InitializeComponent();
 
+            this.TopMost = true;
+
             _roamingDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Spotify");
-            _localDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Spotify");
+            _updateDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Spotify", "Update");
             _hostsPath = Path.Combine(Environment.SystemDirectory, "drivers", "etc", "hosts");
             _bakPath = $"{Path.GetFileNameWithoutExtension(Application.ExecutablePath)}.bak";
 
+            _directoryAccess = new DirectoryAccess(_updateDirectory, WellKnownSidType.WorldSid);
             _registryReader = new RegistryReader();
             _registryWriter = new RegistryWriter();
         }
@@ -84,11 +90,7 @@ namespace RemoveSpotifyAds.UI
             Cursor.Current = Cursors.WaitCursor;
 
             FormTabControl.SelectTab(OutputTabPage);
-
-            if (!string.IsNullOrEmpty(OutputTextBox.Text))
-            {
-                OutputTextBox.AppendText(OutputTextBoxSeparator);
-            }
+            AppendSeparator();
 
             if (InstallCheckBox.Checked && !InstallSpotify())
             {
@@ -102,7 +104,7 @@ namespace RemoveSpotifyAds.UI
             DeleteAdSpaFile();
 
             SetUiAndRegistry(true);
-            OutputTextBox.AppendText("\r\nAds removed successfully!");
+            OutputTextBox.AppendColoredText("\r\nAds removed successfully!", Color.Green);
             SystemSounds.Asterisk.Play();
         }
 
@@ -111,17 +113,13 @@ namespace RemoveSpotifyAds.UI
             Cursor.Current = Cursors.WaitCursor;
 
             FormTabControl.SelectTab(OutputTabPage);
-
-            if (!string.IsNullOrEmpty(OutputTextBox.Text))
-            {
-                OutputTextBox.AppendText(OutputTextBoxSeparator);
-            }
+            AppendSeparator();
 
             RemoveUrlsFromHostsFile();
-            // TODO revert code here
+            AllowAccessToUpdateDirectory();
 
             SetUiAndRegistry(false);
-            OutputTextBox.AppendText("\r\nAll changes successfully reverted!");
+            OutputTextBox.AppendColoredText("\r\nAll changes successfully reverted!", Color.Green);
             SystemSounds.Asterisk.Play();
         }
 
@@ -133,7 +131,7 @@ namespace RemoveSpotifyAds.UI
             if (!InstallCheckBox.AutoCheck)
             {
                 MessageBox.Show(
-                    "Spotify is not installed, therefore it must be installed first before any ads can be removed!",
+                    "Spotify must be installed first before any ads can be removed!",
                     "Warning!",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Warning);
@@ -142,7 +140,7 @@ namespace RemoveSpotifyAds.UI
 
         private void NewVersionAvailableLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            FormTabControl.SelectTab(HelpTabPage);
+            FormTabControl.SelectTab(AboutTabPage);
             CheckUpdatesButton.PerformClick();
         }
         #endregion
@@ -201,7 +199,7 @@ namespace RemoveSpotifyAds.UI
 
                 var releaseVersion = new Version(repository.TagName.Substring(1));
 
-                if (releaseVersion.CompareTo(new Version(Application.ProductVersion)) > 0) // TODO Change to bigger ('>')
+                if (releaseVersion.CompareTo(new Version(Application.ProductVersion)) > 0)
                 {
                     NewVersionAvailableLinkLabel.Visible = true;
                     _registryWriter.SetValue(RegistryKeys.NewVersionAvailable, 1);
@@ -261,6 +259,15 @@ namespace RemoveSpotifyAds.UI
             _registryWriter.SetValue(RegistryKeys.AdsRemoved, Convert.ToInt32(adsRemoved));
         }
 
+        private void AppendSeparator()
+        {
+            if (!string.IsNullOrEmpty(OutputTextBox.Text))
+            {
+                OutputTextBox.AppendText(
+                    "\r\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\r\n\r\n");
+            }
+        }
+
         /// <summary>
         /// Executes the Spotify installer and waits until it terminates.
         /// </summary>
@@ -269,7 +276,10 @@ namespace RemoveSpotifyAds.UI
             OutputTextBox.AppendText("Installing Spotify...");
 
             // HACK Start the Spotify installer with non-admin rights, otherwise it wouldnt execute
-            Process.Start("explorer.exe", Path.Combine(Application.StartupPath, "Data", "spotify_installer1.0.8.exe"))?.WaitForExit();
+            Process.Start(
+                "explorer.exe",
+                Path.Combine(Application.StartupPath, "Data", "spotify_installer1.0.8.exe"))?
+                .WaitForExit();
 
             try
             {
@@ -293,19 +303,18 @@ namespace RemoveSpotifyAds.UI
                 return true;
             }
 
-            OutputTextBox.AppendText(" Aborted!\r\n");
+            OutputTextBox.AppendColoredText(" Aborted!\r\n", Color.Red);
             return false;
         }
 
         /// <summary>
-        /// Denies access for all users to the "Update"-directory to prevent Spotify from updating itself
+        /// Denies access to the "Update"-directory to prevent Spotify from automatically updating itself
         /// </summary>
         private void DenyAccessToUpdateDirectory()
         {
             OutputTextBox.AppendText("Denying access to \"Update\" directory...");
 
-            var updatePath = Path.Combine(_localDirectory, "Update");
-            var testPath = Path.Combine(updatePath, "Test");
+            var testPath = Path.Combine(_updateDirectory, "Test");
 
             try
             {
@@ -313,25 +322,28 @@ namespace RemoveSpotifyAds.UI
             }
             catch (UnauthorizedAccessException)
             {
-                OutputTextBox.AppendText(" Already done!\r\n");
+                OutputTextBox.AppendColoredText(AlreadyDoneString, Color.Green);
                 return;
             }
 
             Directory.Delete(testPath);
 
-            var directoryInfo = new DirectoryInfo(updatePath);
-            var directorySecurity = directoryInfo.GetAccessControl(AccessControlSections.All);
-            var user = new SecurityIdentifier(WellKnownSidType.WorldSid, null);
-            var accessRule = new FileSystemAccessRule(user, FileSystemRights.FullControl, AccessControlType.Deny);
+            _directoryAccess.DenyAccess();
 
-            directorySecurity.AddAccessRule(accessRule);
-            directoryInfo.SetAccessControl(directorySecurity);
+            OutputTextBox.AppendText(TaskFinishedString);
+        }
+
+        private void AllowAccessToUpdateDirectory()
+        {
+            OutputTextBox.AppendText("Removing access restriction from \"Update\" directory...");
+
+            _directoryAccess.AllowAccess();
 
             OutputTextBox.AppendText(TaskFinishedString);
         }
 
         /// <summary>
-        /// Block all Spotify ad-servers through writing to the hosts-file
+        /// Blocks all Spotify ad-servers through writing to the hosts-file
         /// </summary>
         private void WriteToHostsFile()
         {
@@ -341,7 +353,7 @@ namespace RemoveSpotifyAds.UI
 
             if (filteredUrls.Count == 0)
             {
-                OutputTextBox.AppendText(" Already done!\r\n");
+                OutputTextBox.AppendColoredText(AlreadyDoneString, Color.Green);
                 return;
             }
 
@@ -410,7 +422,7 @@ namespace RemoveSpotifyAds.UI
             }
             else
             {
-                OutputTextBox.AppendText(" Does not exist!\r\n");
+                OutputTextBox.AppendColoredText(" Does not exist!\r\n", Color.Green);
             }
         }
 

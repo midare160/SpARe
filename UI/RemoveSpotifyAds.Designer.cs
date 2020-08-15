@@ -37,17 +37,17 @@
             this.InstallCheckBox = new System.Windows.Forms.CheckBox();
             this.WarningLabel = new System.Windows.Forms.Label();
             this.OutputTabPage = new System.Windows.Forms.TabPage();
+            this.OutputTextBox = new RemoveSpotifyAds.CustomControls.ReadOnlyRichTextBox();
             this.ClearButton = new System.Windows.Forms.Button();
-            this.HelpTabPage = new System.Windows.Forms.TabPage();
+            this.AboutTabPage = new System.Windows.Forms.TabPage();
             this.VersionLabel = new System.Windows.Forms.Label();
             this.CheckUpdatesButton = new System.Windows.Forms.Button();
             this.GithubLabel = new System.Windows.Forms.LinkLabel();
             this.CopyrightLabel = new System.Windows.Forms.Label();
-            this.OutputTextBox = new RemoveSpotifyAds.CustomControls.ReadOnlyRichTextBox();
             this.FormTabControl.SuspendLayout();
             this.StartTabPage.SuspendLayout();
             this.OutputTabPage.SuspendLayout();
-            this.HelpTabPage.SuspendLayout();
+            this.AboutTabPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // StartButton
@@ -64,7 +64,7 @@
             // 
             this.FormTabControl.Controls.Add(this.StartTabPage);
             this.FormTabControl.Controls.Add(this.OutputTabPage);
-            this.FormTabControl.Controls.Add(this.HelpTabPage);
+            this.FormTabControl.Controls.Add(this.AboutTabPage);
             this.FormTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.FormTabControl.Location = new System.Drawing.Point(0, 0);
             this.FormTabControl.Name = "FormTabControl";
@@ -157,6 +157,21 @@
             this.OutputTabPage.Text = "Output";
             this.OutputTabPage.UseVisualStyleBackColor = true;
             // 
+            // OutputTextBox
+            // 
+            this.OutputTextBox.Cursor = System.Windows.Forms.Cursors.Default;
+            this.OutputTextBox.DetectUrls = false;
+            this.OutputTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.OutputTextBox.HideSelection = false;
+            this.OutputTextBox.Location = new System.Drawing.Point(3, 3);
+            this.OutputTextBox.Name = "OutputTextBox";
+            this.OutputTextBox.ReadOnly = true;
+            this.OutputTextBox.Size = new System.Drawing.Size(318, 123);
+            this.OutputTextBox.TabIndex = 0;
+            this.OutputTextBox.TabStop = false;
+            this.OutputTextBox.Text = "";
+            this.OutputTextBox.TextChanged += new System.EventHandler(this.OutputTextBox_TextChanged);
+            // 
             // ClearButton
             // 
             this.ClearButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -170,19 +185,19 @@
             this.ClearButton.UseVisualStyleBackColor = true;
             this.ClearButton.Click += new System.EventHandler(this.ClearButton_Click);
             // 
-            // HelpTabPage
+            // AboutTabPage
             // 
-            this.HelpTabPage.Controls.Add(this.VersionLabel);
-            this.HelpTabPage.Controls.Add(this.CheckUpdatesButton);
-            this.HelpTabPage.Controls.Add(this.GithubLabel);
-            this.HelpTabPage.Controls.Add(this.CopyrightLabel);
-            this.HelpTabPage.Location = new System.Drawing.Point(4, 22);
-            this.HelpTabPage.Name = "HelpTabPage";
-            this.HelpTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.HelpTabPage.Size = new System.Drawing.Size(324, 158);
-            this.HelpTabPage.TabIndex = 2;
-            this.HelpTabPage.Text = "Help";
-            this.HelpTabPage.UseVisualStyleBackColor = true;
+            this.AboutTabPage.Controls.Add(this.VersionLabel);
+            this.AboutTabPage.Controls.Add(this.CheckUpdatesButton);
+            this.AboutTabPage.Controls.Add(this.GithubLabel);
+            this.AboutTabPage.Controls.Add(this.CopyrightLabel);
+            this.AboutTabPage.Location = new System.Drawing.Point(4, 22);
+            this.AboutTabPage.Name = "AboutTabPage";
+            this.AboutTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.AboutTabPage.Size = new System.Drawing.Size(324, 158);
+            this.AboutTabPage.TabIndex = 2;
+            this.AboutTabPage.Text = "About";
+            this.AboutTabPage.UseVisualStyleBackColor = true;
             // 
             // VersionLabel
             // 
@@ -228,21 +243,6 @@
             this.CopyrightLabel.Text = "©2020 MIDARE16";
             this.CopyrightLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // OutputTextBox
-            // 
-            this.OutputTextBox.Cursor = System.Windows.Forms.Cursors.Default;
-            this.OutputTextBox.DetectUrls = false;
-            this.OutputTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.OutputTextBox.HideSelection = false;
-            this.OutputTextBox.Location = new System.Drawing.Point(3, 3);
-            this.OutputTextBox.Name = "OutputTextBox";
-            this.OutputTextBox.ReadOnly = true;
-            this.OutputTextBox.Size = new System.Drawing.Size(318, 123);
-            this.OutputTextBox.TabIndex = 0;
-            this.OutputTextBox.TabStop = false;
-            this.OutputTextBox.Text = "";
-            this.OutputTextBox.TextChanged += new System.EventHandler(this.OutputTextBox_TextChanged);
-            // 
             // RemoveSpotifyAdsForm
             // 
             this.AcceptButton = this.StartButton;
@@ -263,8 +263,8 @@
             this.StartTabPage.ResumeLayout(false);
             this.StartTabPage.PerformLayout();
             this.OutputTabPage.ResumeLayout(false);
-            this.HelpTabPage.ResumeLayout(false);
-            this.HelpTabPage.PerformLayout();
+            this.AboutTabPage.ResumeLayout(false);
+            this.AboutTabPage.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -276,7 +276,7 @@
         private System.Windows.Forms.TabPage StartTabPage;
         private System.Windows.Forms.TabPage OutputTabPage;
         private CustomControls.ReadOnlyRichTextBox OutputTextBox;
-        private System.Windows.Forms.TabPage HelpTabPage;
+        private System.Windows.Forms.TabPage AboutTabPage;
         private System.Windows.Forms.Button ClearButton;
         private System.Windows.Forms.CheckBox InstallCheckBox;
         private System.Windows.Forms.LinkLabel GithubLabel;

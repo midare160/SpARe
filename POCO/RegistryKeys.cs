@@ -1,4 +1,4 @@
-﻿namespace RemoveSpotifyAds.Registry
+﻿namespace RemoveSpotifyAds.POCO
 {
     public class RegistryKeys
     {

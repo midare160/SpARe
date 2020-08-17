@@ -1,1 +1,1 @@
-# RemoveSpotifyAds
+# Spotify Ad Remover

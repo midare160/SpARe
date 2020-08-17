@@ -7,8 +7,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{65BDCC3C-BFC4-4CB3-8432-8C0297CB390C}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>RemoveSpotifyAds</RootNamespace>
-    <AssemblyName>RemoveSpotifyAds</AssemblyName>
+    <RootNamespace>SpotifyAdRemover</RootNamespace>
+    <AssemblyName>SpotifyAdRemover</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -36,14 +36,15 @@
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup />
   <PropertyGroup>
-    <ApplicationManifest>app.manifest</ApplicationManifest>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartupObject>RemoveSpotifyAds.Program</StartupObject>
+    <StartupObject>SpotifyAdRemover.Program</StartupObject>
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Images\remove-ads.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Costura, Version=4.1.0.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
@@ -59,6 +60,7 @@
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.DirectoryServices" />
     <Reference Include="System.IO.Compression.FileSystem" />
     <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL" />
     <Reference Include="System.Net.Http.Formatting, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -95,27 +97,33 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="API\Json\Asset.cs" />
-    <Compile Include="API\Json\Author.cs" />
-    <Compile Include="API\Json\Uploader.cs" />
-    <Compile Include="CustomControls\ReadOnlyRichTextBox.cs">
+    <Compile Include="src\API\Json\Asset.cs" />
+    <Compile Include="src\API\Json\Author.cs" />
+    <Compile Include="src\API\Json\Uploader.cs" />
+    <Compile Include="src\CustomControls\ReadOnlyRichTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="API\GithubClient.cs" />
-    <Compile Include="API\Json\Repository.cs" />
-    <Compile Include="DirectoryAccess.cs" />
-    <Compile Include="POCO\RegistryKeys.cs" />
-    <Compile Include="UI\RemoveSpotifyAds.cs">
+    <Compile Include="src\API\GithubClient.cs" />
+    <Compile Include="src\API\Json\Repository.cs" />
+    <Compile Include="src\FileAccess\DirectoryAccessController.cs" />
+    <Compile Include="src\FileAccess\SpotifyAppDirectoryAccess.cs" />
+    <Compile Include="src\FileAccess\SpotifyInstaller.cs" />
+    <Compile Include="src\FileAccess\SpotifyUpdateDirectoryAccess.cs" />
+    <Compile Include="src\FileAccess\HostsFileAccess.cs" />
+    <Compile Include="src\UI\SpotifyAdRemoverForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="UI\RemoveSpotifyAds.Designer.cs">
-      <DependentUpon>RemoveSpotifyAds.cs</DependentUpon>
+    <Compile Include="src\UI\SpotifyAdRemoverForm.Designer.cs">
+      <DependentUpon>SpotifyAdRemoverForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />
+    <Compile Include="src\Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Properties\licenses.licx" />
-    <EmbeddedResource Include="UI\RemoveSpotifyAds.resx">
-      <DependentUpon>RemoveSpotifyAds.cs</DependentUpon>
+    <Compile Include="src\FileAccess\Updater.cs" />
+    <EmbeddedResource Include="src\UI\SpotifyAdRemoverForm.en.resx">
+      <DependentUpon>SpotifyAdRemoverForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="src\UI\SpotifyAdRemoverForm.resx">
+      <DependentUpon>SpotifyAdRemoverForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -125,6 +133,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="app.config" />
     <None Include="app.manifest" />

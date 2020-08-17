@@ -1,20 +1,20 @@
-﻿using RemoveSpotifyAds.UI;
-using System;
+﻿using System;
 using System.Windows.Forms;
+using SpotifyAdRemover.UI;
 
-namespace RemoveSpotifyAds
+namespace SpotifyAdRemover
 {
     public static class Program
     {
         /// <summary>
-        /// Der Haupteinstiegspunkt für die Anwendung.
+        /// The main entry point for the application.
         /// </summary>
         [STAThread]
         private static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new RemoveSpotifyAdsForm());
+            Application.Run(new SpotifyAdRemoverForm());
         }
     }
 }

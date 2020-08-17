@@ -3,9 +3,9 @@ using System.IO;
 using System.Security.AccessControl;
 using System.Security.Principal;
 
-namespace RemoveSpotifyAds
+namespace SpotifyAdRemover.FileAccess
 {
-    public class DirectoryAccess
+    public class DirectoryAccessor
     {
         #region Properties
         public string Path { get; }
@@ -17,7 +17,7 @@ namespace RemoveSpotifyAds
         #endregion
 
         #region Constructors
-        public DirectoryAccess(string path, WellKnownSidType wellKnownSidType)
+        public DirectoryAccessor(string path, WellKnownSidType wellKnownSidType)
         {
             if (string.IsNullOrEmpty(path))
             {
@@ -27,8 +27,10 @@ namespace RemoveSpotifyAds
             Path = path;
             WellKnownSidType = wellKnownSidType;
 
-            var user = new SecurityIdentifier(WellKnownSidType, null);
-            _accessRule = new FileSystemAccessRule(user, FileSystemRights.FullControl, AccessControlType.Deny);
+            _accessRule = new FileSystemAccessRule(
+                new SecurityIdentifier(WellKnownSidType, null),
+                FileSystemRights.FullControl,
+                AccessControlType.Deny);
         }
         #endregion
 
@@ -46,7 +48,9 @@ namespace RemoveSpotifyAds
         {
             AllowOrDenyAccess(true);
         }
+        #endregion
 
+        #region Private Procedures
         private void AllowOrDenyAccess(bool allow)
         {
             Directory.CreateDirectory(Path);

@@ -1,11 +1,12 @@
 ﻿using System;
-using RemoveSpotifyAds.API.Json;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using SpotifyAdRemover.API.Json;
 
-namespace RemoveSpotifyAds.API
+namespace SpotifyAdRemover.API
 {
     public class GithubClient : HttpClient
     {
@@ -14,7 +15,7 @@ namespace RemoveSpotifyAds.API
         {
             if (string.IsNullOrEmpty(userAgent))
             {
-                throw new ArgumentNullException();
+                userAgent = Application.ProductName;
             }
 
             DefaultRequestHeaders.Accept.Clear();
@@ -28,7 +29,7 @@ namespace RemoveSpotifyAds.API
         {
             if (string.IsNullOrEmpty(repoUrl))
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(repoUrl));
             }
 
             return await JsonSerializer.DeserializeAsync<Repository>(await this.GetStreamAsync(repoUrl));

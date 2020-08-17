@@ -2,7 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
-namespace RemoveSpotifyAds.CustomControls
+namespace SpotifyAdRemover.CustomControls
 {
     public class ReadOnlyRichTextBox : RichTextBox
     {

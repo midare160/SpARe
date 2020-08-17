@@ -54,7 +54,6 @@ namespace SpotifyAdRemover.FileAccess
 
             using (var sw = File.AppendText(_hostsPath))
             {
-                sw.WriteLine();
                 sw.WriteLine(Header);
 
                 foreach (var url in filteredUrls)

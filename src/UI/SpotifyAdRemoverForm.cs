@@ -23,7 +23,7 @@ namespace SpotifyAdRemover.UI
         private const string AdsRemovedKey = "AdsRemoved";
         private const string NewVersionAvailableKey = "NewVersionAvailable";
         private const string ProductVersionKey = "ProductVersion";
-        private const string Separator = "\r\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\r\n\r\n";
+        private const string Separator = "\r\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\r\n";
         #endregion
 
         #region Fields
@@ -55,6 +55,8 @@ namespace SpotifyAdRemover.UI
         #region Events-Form
         private void RemoveSpotifyAdsForm_Load(object sender, EventArgs e)
         {
+            FormHelpProvider.SetShowHelp(this, true);
+
             if (File.Exists(_updater.BakPath))
             {
                 File.Delete(_updater.BakPath);
@@ -179,7 +181,7 @@ namespace SpotifyAdRemover.UI
             Cursor.Current = Cursors.WaitCursor;
 
             GithubLabel.LinkVisited = true;
-            Process.Start("https://github.com/midare160/RemoveSpotifyAds");
+            Process.Start("https://github.com/midare160/SpotifyAdRemover");
         }
 
         private void AboutGithubLabel_Enter(object sender, EventArgs e)

@@ -49,6 +49,7 @@ namespace SpotifyAdRemover.UI
             this.InstallCheckboxToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.FormToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.OutputTextBox = new SpotifyAdRemover.CustomControls.ReadOnlyRichTextBox();
+            this.FormHelpProvider = new System.Windows.Forms.HelpProvider();
             this.FormTabControl.SuspendLayout();
             this.StartTabPage.SuspendLayout();
             this.OutputTabPage.SuspendLayout();
@@ -222,7 +223,7 @@ namespace SpotifyAdRemover.UI
             this.GithubLabel.TabStop = true;
             this.GithubLabel.Text = "Github Repository";
             this.GithubLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.FormToolTip.SetToolTip(this.GithubLabel, "https://github.com/midare160/RemoveSpotifyAds");
+            this.FormToolTip.SetToolTip(this.GithubLabel, "https://github.com/midare160/SpotifyAdRemover");
             this.GithubLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.AboutGithubLabel_LinkClicked);
             this.GithubLabel.Enter += new System.EventHandler(this.AboutGithubLabel_Enter);
             this.GithubLabel.Leave += new System.EventHandler(this.AboutGithubLabel_Leave);
@@ -259,6 +260,10 @@ namespace SpotifyAdRemover.UI
             this.OutputTextBox.TabStop = false;
             this.OutputTextBox.Text = "";
             this.OutputTextBox.TextChanged += new System.EventHandler(this.OutputTextBox_TextChanged);
+            // 
+            // FormHelpProvider
+            // 
+            this.FormHelpProvider.HelpNamespace = "https://github.com/midare160/SpotifyAdRemover/blob/master/README.md";
             // 
             // SpotifyAdRemoverForm
             // 
@@ -306,6 +311,7 @@ namespace SpotifyAdRemover.UI
         internal CustomControls.ReadOnlyRichTextBox OutputTextBox;
         private System.Windows.Forms.ToolTip InstallCheckboxToolTip;
         private System.Windows.Forms.ToolTip FormToolTip;
+        private System.Windows.Forms.HelpProvider FormHelpProvider;
     }
 }
 

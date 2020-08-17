@@ -43,7 +43,7 @@ namespace SpotifyAdRemover.FileAccess
             }
             else
             {
-                OutputTextBox.AppendColoredText(" Doesn't exist!\r\n", Color.Green);
+                OutputTextBox.AppendColoredText(" Doesnt exist!\r\n", Color.Green);
             }
         }
         #endregion

@@ -11,7 +11,7 @@ namespace SpotifyAdRemover.FileAccess
     public class SpotifyUpdateDirectoryAccess
     {
         #region Properties
-        public RichTextBox OutputTextBox { get; set; }
+        public RichTextBox OutputTextBox { get; }
         #endregion
 
         #region Fields
@@ -42,14 +42,13 @@ namespace SpotifyAdRemover.FileAccess
             try
             {
                 Directory.CreateDirectory(testPath);
+                Directory.Delete(testPath);
             }
             catch (UnauthorizedAccessException)
             {
                 OutputTextBox.AppendColoredText(SpotifyAdRemoverForm.AlreadyDoneString, Color.Green);
                 return;
             }
-
-            Directory.Delete(testPath);
 
             _directoryAccessor.DenyAccess();
 

@@ -12,6 +12,10 @@ namespace SpotifyAdRemover.FileAccess
 {
     public class HostsFileAccess
     {
+        #region Properties
+        public RichTextBox OutputTextBox { get; }
+        #endregion
+
         #region Static
         private const string Header = "# Block Spotify ads";
         private const string Mapping = "0.0.0.0";
@@ -19,10 +23,6 @@ namespace SpotifyAdRemover.FileAccess
 
         #region Fields
         private readonly string _hostsPath;
-        #endregion
-
-        #region Properties
-        public RichTextBox OutputTextBox { get; }
         #endregion
 
         #region Constructors
@@ -71,7 +71,7 @@ namespace SpotifyAdRemover.FileAccess
             OutputTextBox.AppendText("Unblocking ad servers...");
 
             var newFile = File.ReadAllLines(_hostsPath)
-                .Where(line => !UrlsToBlock().Any(s => string.Equals(line, $"{Mapping} {s}", StringComparison.OrdinalIgnoreCase)))
+                .Where(line => !AdServerUrls().Any(s => string.Equals(line, $"{Mapping} {s}", StringComparison.OrdinalIgnoreCase)))
                 .ToList();
 
             LanguageUtils.IgnoreErrors<ArgumentOutOfRangeException>(() => newFile.RemoveAt(newFile.IndexOf(Header)));
@@ -90,7 +90,7 @@ namespace SpotifyAdRemover.FileAccess
         /// The <see cref="List{T}"/> is empty if the hosts-file already contains all of them.</returns>
         private List<string> CheckIfHostsFileAlreadyContains()
         {
-            var urls = UrlsToBlock();
+            var urls = AdServerUrls();
 
             foreach (var url in urls.ToList().Where(File.ReadAllText(_hostsPath).Contains))
             {
@@ -103,7 +103,7 @@ namespace SpotifyAdRemover.FileAccess
         /// <summary>
         /// Contains all Spotify Ad-URLs 
         /// </summary>
-        private static List<string> UrlsToBlock()
+        private static List<string> AdServerUrls()
         {
             return new List<string>
             {

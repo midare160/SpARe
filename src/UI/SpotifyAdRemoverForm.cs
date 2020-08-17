@@ -40,7 +40,6 @@ namespace SpotifyAdRemover.UI
         public SpotifyAdRemoverForm()
         {
             InitializeComponent();
-            this.TopMost = true;
 
             _updater = new Updater();
             _registryReader = new RegistryReader();
@@ -179,19 +178,8 @@ namespace SpotifyAdRemover.UI
         {
             Cursor.Current = Cursors.WaitCursor;
 
-            try
-            {
-                GithubLabel.LinkVisited = true;
-                Process.Start("https://github.com/midare160/RemoveSpotifyAds");
-            }
-            catch (Exception)
-            {
-                MessageBox.Show(
-                    "Unable to open the link!",
-                    "Error!",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error);
-            }
+            GithubLabel.LinkVisited = true;
+            Process.Start("https://github.com/midare160/RemoveSpotifyAds");
         }
 
         private void AboutGithubLabel_Enter(object sender, EventArgs e)

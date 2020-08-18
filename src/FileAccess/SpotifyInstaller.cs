@@ -14,7 +14,31 @@ namespace SpotifyAdRemover.FileAccess
     {
         #region Properties
         public RichTextBox OutputTextBox { get; }
-        public string InstallerPath => Path.Combine(Application.StartupPath, "Data", "spotify_installer1.0.8.exe");
+        public string Path => System.IO.Path.Combine(Application.StartupPath, "Data", "spotify_installer1.0.8.exe");
+
+        public bool Exists
+        {
+            get
+            {
+                if (!File.Exists(Path))
+                {
+                    return false;
+                }
+
+                using (var md5 = MD5.Create())
+                {
+                    using (var stream = File.OpenRead(Path))
+                    {
+                        return string.Equals(
+                            BitConverter
+                                .ToString(md5.ComputeHash(stream))
+                                .Replace("-", null),
+                            InstallerHash,
+                            StringComparison.OrdinalIgnoreCase);
+                    }
+                }
+            }
+        }
         #endregion
 
         #region Static
@@ -38,27 +62,6 @@ namespace SpotifyAdRemover.FileAccess
         #endregion
 
         #region Methods
-        public bool InstallerExists()
-        {
-            if (!File.Exists(InstallerPath))
-            {
-                return false;
-            }
-
-            using (var md5 = MD5.Create())
-            {
-                using (var stream = File.OpenRead(InstallerPath))
-                {
-                    return string.Equals(
-                        BitConverter
-                            .ToString(md5.ComputeHash(stream))
-                            .Replace("-", null),
-                        InstallerHash,
-                        StringComparison.OrdinalIgnoreCase);
-                }
-            }
-        }
-
         /// <summary>
         /// Executes the Spotify installer and waits until it terminates.
         /// </summary>
@@ -67,11 +70,11 @@ namespace SpotifyAdRemover.FileAccess
             OutputTextBox.AppendText("Installing Spotify...");
 
             // HACK Start the Spotify installer with non-admin rights, otherwise it wouldnt execute
-            Process.Start("explorer.exe", InstallerPath)?.WaitForExit();
+            Process.Start("explorer.exe", Path)?.WaitForExit();
 
             try
             {
-                using (var installProcess = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(InstallerPath)).First())
+                using (var installProcess = Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(Path)).First())
                 {
                     installProcess.EnableRaisingEvents = true;
                     installProcess.Exited += InstallProcessExited;

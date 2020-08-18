@@ -1,17 +1,42 @@
 ﻿using Daubert.Extensions;
+using SpotifyAdRemover.UI;
 using System;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
-using SpotifyAdRemover.UI;
 
 namespace SpotifyAdRemover.FileAccess
 {
     public class SpotifyAppDirectoryAccess
     {
         #region Properties
-        public bool AlreadyInstalled => File.Exists(Path.Combine(_roamingDirectory, "Spotify.exe"));
+        public (bool alreadyInstalled, bool correctVersion) AlreadyInstalled
+        {
+            get
+            {
+                var executablePath = Path.Combine(_roamingDirectory, "Spotify.exe");
+                var executableExists = File.Exists(executablePath);
+
+                if (!executableExists)
+                {
+                    return (false, false);
+                }
+
+                var executableVersion = new Version(
+                    FileVersionInfo
+                        .GetVersionInfo(executablePath)
+                        .FileVersion);
+
+                return (true, executableVersion.CompareTo(new Version(TargetVersion)) == 0);
+            }
+        }
+
         public RichTextBox OutputTextBox { get; }
+        #endregion
+
+        #region Static
+        private const string TargetVersion = "1.0.80.474";
         #endregion
 
         #region Fields

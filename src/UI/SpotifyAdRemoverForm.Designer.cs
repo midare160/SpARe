@@ -36,9 +36,10 @@ namespace SpotifyAdRemover.UI
             this.FormTabControl = new System.Windows.Forms.TabControl();
             this.StartTabPage = new System.Windows.Forms.TabPage();
             this.RevertButton = new System.Windows.Forms.Button();
-            this.NewVersionAvailableLinkLabel = new System.Windows.Forms.LinkLabel();
             this.InstallCheckBox = new System.Windows.Forms.CheckBox();
+            this.CorrectVersionInstalledLabel = new System.Windows.Forms.Label();
             this.WarningLabel = new System.Windows.Forms.Label();
+            this.NewVersionAvailableLinkLabel = new System.Windows.Forms.LinkLabel();
             this.OutputTabPage = new System.Windows.Forms.TabPage();
             this.ClearButton = new System.Windows.Forms.Button();
             this.AboutTabPage = new System.Windows.Forms.TabPage();
@@ -48,8 +49,8 @@ namespace SpotifyAdRemover.UI
             this.CopyrightLabel = new System.Windows.Forms.Label();
             this.InstallCheckboxToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.FormToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.OutputTextBox = new SpotifyAdRemover.CustomControls.ReadOnlyRichTextBox();
             this.FormHelpProvider = new System.Windows.Forms.HelpProvider();
+            this.OutputTextBox = new SpotifyAdRemover.CustomControls.ReadOnlyRichTextBox();
             this.FormTabControl.SuspendLayout();
             this.StartTabPage.SuspendLayout();
             this.OutputTabPage.SuspendLayout();
@@ -58,7 +59,7 @@ namespace SpotifyAdRemover.UI
             // 
             // StartButton
             // 
-            this.StartButton.Location = new System.Drawing.Point(80, 68);
+            this.StartButton.Location = new System.Drawing.Point(125, 68);
             this.StartButton.Name = "StartButton";
             this.StartButton.Size = new System.Drawing.Size(75, 23);
             this.StartButton.TabIndex = 0;
@@ -80,11 +81,12 @@ namespace SpotifyAdRemover.UI
             // 
             // StartTabPage
             // 
-            this.StartTabPage.Controls.Add(this.RevertButton);
-            this.StartTabPage.Controls.Add(this.NewVersionAvailableLinkLabel);
-            this.StartTabPage.Controls.Add(this.InstallCheckBox);
             this.StartTabPage.Controls.Add(this.StartButton);
+            this.StartTabPage.Controls.Add(this.RevertButton);
+            this.StartTabPage.Controls.Add(this.InstallCheckBox);
+            this.StartTabPage.Controls.Add(this.CorrectVersionInstalledLabel);
             this.StartTabPage.Controls.Add(this.WarningLabel);
+            this.StartTabPage.Controls.Add(this.NewVersionAvailableLinkLabel);
             this.StartTabPage.Location = new System.Drawing.Point(4, 22);
             this.StartTabPage.Name = "StartTabPage";
             this.StartTabPage.Padding = new System.Windows.Forms.Padding(3);
@@ -95,14 +97,57 @@ namespace SpotifyAdRemover.UI
             // 
             // RevertButton
             // 
-            this.RevertButton.Enabled = false;
-            this.RevertButton.Location = new System.Drawing.Point(169, 68);
+            this.RevertButton.Location = new System.Drawing.Point(125, 68);
             this.RevertButton.Name = "RevertButton";
             this.RevertButton.Size = new System.Drawing.Size(75, 23);
             this.RevertButton.TabIndex = 1;
             this.RevertButton.Text = "&Revert";
             this.RevertButton.UseVisualStyleBackColor = true;
             this.RevertButton.Click += new System.EventHandler(this.RevertButton_Click);
+            // 
+            // InstallCheckBox
+            // 
+            this.InstallCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.InstallCheckBox.AutoSize = true;
+            this.InstallCheckBox.Checked = true;
+            this.InstallCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.InstallCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.InstallCheckBox.Location = new System.Drawing.Point(95, 101);
+            this.InstallCheckBox.Name = "InstallCheckBox";
+            this.InstallCheckBox.Size = new System.Drawing.Size(135, 17);
+            this.InstallCheckBox.TabIndex = 2;
+            this.InstallCheckBox.Text = "&Install Spotify (required)";
+            this.InstallCheckBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.InstallCheckboxToolTip.SetToolTip(this.InstallCheckBox, "Spotify must be installed first before any ads can be removed!");
+            this.InstallCheckBox.UseVisualStyleBackColor = true;
+            this.InstallCheckBox.CheckedChanged += new System.EventHandler(this.InstallCheckBox_CheckedChanged);
+            this.InstallCheckBox.SizeChanged += new System.EventHandler(this.InstallCheckBox_SizeChanged);
+            this.InstallCheckBox.VisibleChanged += new System.EventHandler(this.InstallCheckBox_VisibleChanged);
+            this.InstallCheckBox.Click += new System.EventHandler(this.InstallCheckBox_Click);
+            // 
+            // CorrectVersionInstalledLabel
+            // 
+            this.CorrectVersionInstalledLabel.AutoSize = true;
+            this.CorrectVersionInstalledLabel.ForeColor = System.Drawing.Color.DarkGreen;
+            this.CorrectVersionInstalledLabel.Location = new System.Drawing.Point(65, 101);
+            this.CorrectVersionInstalledLabel.Name = "CorrectVersionInstalledLabel";
+            this.CorrectVersionInstalledLabel.Size = new System.Drawing.Size(194, 13);
+            this.CorrectVersionInstalledLabel.TabIndex = 4;
+            this.CorrectVersionInstalledLabel.Text = "Correct Spotify version already installed!";
+            this.CorrectVersionInstalledLabel.Visible = false;
+            // 
+            // WarningLabel
+            // 
+            this.WarningLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.WarningLabel.AutoSize = true;
+            this.WarningLabel.ForeColor = System.Drawing.Color.Red;
+            this.WarningLabel.Location = new System.Drawing.Point(98, 101);
+            this.WarningLabel.Name = "WarningLabel";
+            this.WarningLabel.Size = new System.Drawing.Size(128, 13);
+            this.WarningLabel.TabIndex = 0;
+            this.WarningLabel.Text = "Spotify installer not found!";
+            this.WarningLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.WarningLabel.Visible = false;
             // 
             // NewVersionAvailableLinkLabel
             // 
@@ -121,37 +166,6 @@ namespace SpotifyAdRemover.UI
             this.FormToolTip.SetToolTip(this.NewVersionAvailableLinkLabel, "Click to install new version");
             this.NewVersionAvailableLinkLabel.Visible = false;
             this.NewVersionAvailableLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.NewVersionAvailableLinkLabel_LinkClicked);
-            // 
-            // InstallCheckBox
-            // 
-            this.InstallCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.InstallCheckBox.AutoSize = true;
-            this.InstallCheckBox.Checked = true;
-            this.InstallCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.InstallCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.InstallCheckBox.Location = new System.Drawing.Point(95, 101);
-            this.InstallCheckBox.Name = "InstallCheckBox";
-            this.InstallCheckBox.Size = new System.Drawing.Size(135, 17);
-            this.InstallCheckBox.TabIndex = 2;
-            this.InstallCheckBox.Text = "&Install Spotify (required)";
-            this.InstallCheckBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.InstallCheckboxToolTip.SetToolTip(this.InstallCheckBox, "Spotify must be installed first before any ads can be removed!");
-            this.InstallCheckBox.UseVisualStyleBackColor = true;
-            this.InstallCheckBox.SizeChanged += new System.EventHandler(this.InstallCheckBox_SizeChanged);
-            this.InstallCheckBox.Click += new System.EventHandler(this.InstallCheckBox_Click);
-            // 
-            // WarningLabel
-            // 
-            this.WarningLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.WarningLabel.AutoSize = true;
-            this.WarningLabel.ForeColor = System.Drawing.Color.Red;
-            this.WarningLabel.Location = new System.Drawing.Point(98, 101);
-            this.WarningLabel.Name = "WarningLabel";
-            this.WarningLabel.Size = new System.Drawing.Size(128, 13);
-            this.WarningLabel.TabIndex = 0;
-            this.WarningLabel.Text = "Spotify installer not found!";
-            this.WarningLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.WarningLabel.Visible = false;
             // 
             // OutputTabPage
             // 
@@ -246,6 +260,10 @@ namespace SpotifyAdRemover.UI
             this.InstallCheckboxToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Warning;
             this.InstallCheckboxToolTip.ToolTipTitle = "Important";
             // 
+            // FormHelpProvider
+            // 
+            this.FormHelpProvider.HelpNamespace = "https://github.com/midare160/SpotifyAdRemover/blob/master/README.md";
+            // 
             // OutputTextBox
             // 
             this.OutputTextBox.Cursor = System.Windows.Forms.Cursors.Default;
@@ -260,10 +278,6 @@ namespace SpotifyAdRemover.UI
             this.OutputTextBox.TabStop = false;
             this.OutputTextBox.Text = "";
             this.OutputTextBox.TextChanged += new System.EventHandler(this.OutputTextBox_TextChanged);
-            // 
-            // FormHelpProvider
-            // 
-            this.FormHelpProvider.HelpNamespace = "https://github.com/midare160/SpotifyAdRemover/blob/master/README.md";
             // 
             // SpotifyAdRemoverForm
             // 
@@ -282,6 +296,7 @@ namespace SpotifyAdRemover.UI
             this.Text = "Spotify Ad Remover";
             this.TopMost = true;
             this.Load += new System.EventHandler(this.RemoveSpotifyAdsForm_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.SpotifyAdRemoverForm_KeyDown);
             this.FormTabControl.ResumeLayout(false);
             this.StartTabPage.ResumeLayout(false);
             this.StartTabPage.PerformLayout();
@@ -307,11 +322,12 @@ namespace SpotifyAdRemover.UI
         private System.Windows.Forms.Button CheckUpdatesButton;
         private System.Windows.Forms.Label VersionLabel;
         private System.Windows.Forms.LinkLabel NewVersionAvailableLinkLabel;
-        private System.Windows.Forms.Button RevertButton;
         internal CustomControls.ReadOnlyRichTextBox OutputTextBox;
         private System.Windows.Forms.ToolTip InstallCheckboxToolTip;
         private System.Windows.Forms.ToolTip FormToolTip;
         private System.Windows.Forms.HelpProvider FormHelpProvider;
+        private System.Windows.Forms.Label CorrectVersionInstalledLabel;
+        private System.Windows.Forms.Button RevertButton;
     }
 }
 

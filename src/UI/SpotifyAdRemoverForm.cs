@@ -1,5 +1,6 @@
 ﻿using Daubert.Extensions;
 using Daubert.Tools.RegistryTools;
+using SpotifyAdRemover.FileAccess;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -8,7 +9,6 @@ using System.Media;
 using System.Net;
 using System.Net.Http;
 using System.Windows.Forms;
-using SpotifyAdRemover.FileAccess;
 
 namespace SpotifyAdRemover.UI
 {
@@ -34,6 +34,8 @@ namespace SpotifyAdRemover.UI
         private readonly SpotifyUpdateDirectoryAccess _spotifyUpdateDirectoryAccess;
         private readonly SpotifyAppDirectoryAccess _spotifyAppDirectoryAccess;
         private readonly SpotifyInstaller _spotifyInstaller;
+
+        private bool _alreadyInstalled;
         #endregion
 
         #region Constructors
@@ -73,6 +75,14 @@ namespace SpotifyAdRemover.UI
             NewVersionAvailableLinkLabel.Visible = Convert.ToBoolean(_registryReader.GetValue(NewVersionAvailableKey));
             VersionLabel.Text = $"v.{Application.ProductVersion}";
         }
+
+        private void SpotifyAdRemoverForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F5)
+            {
+                Application.Restart();
+            }
+        }
         #endregion
 
         #region Events-StartTabPage
@@ -84,11 +94,24 @@ namespace SpotifyAdRemover.UI
             {
                 FormTabControl.SelectTab(OutputTabPage);
 
-                if (InstallCheckBox.Checked && !_spotifyInstaller.Install())
+                try
                 {
-                    OutputTextBox.AppendText("\r\nNo changes have been made!");
-                    SystemSounds.Hand.Play();
-                    return;
+                    if (InstallCheckBox.Checked)
+                    {
+                        this.WindowState = FormWindowState.Minimized;
+
+                        if (!_spotifyInstaller.Install())
+                        {
+                            OutputTextBox.AppendText("\r\nNo changes have been made!");
+                            SystemSounds.Hand.Play();
+
+                            return;
+                        }
+                    }
+                }
+                finally
+                {
+                    this.WindowState = FormWindowState.Normal;
                 }
 
                 _spotifyUpdateDirectoryAccess.Deny();
@@ -96,6 +119,7 @@ namespace SpotifyAdRemover.UI
                 _spotifyAppDirectoryAccess.DeleteAdSpaFile();
 
                 SetUiAndRegistry(true);
+
                 OutputTextBox.AppendColoredText("\r\nAds successfully removed!", Color.Green);
                 SystemSounds.Asterisk.Play();
             }
@@ -107,48 +131,53 @@ namespace SpotifyAdRemover.UI
 
         private void RevertButton_Click(object sender, EventArgs e)
         {
-            try
-            {
-                this.UseWaitCursor = true;
-
-                var dialogResult = MessageBox.Show(
+            var dialogResult = MessageBox.Show(
                     "Do you really want to revert all changes?",
                     "Are you sure?",
                     MessageBoxButtons.YesNo,
                     MessageBoxIcon.Question,
                     MessageBoxDefaultButton.Button2);
 
-                if (dialogResult != DialogResult.Yes)
-                {
-                    return;
-                }
-
-                FormTabControl.SelectTab(OutputTabPage);
-
-                _hostsFileAccess.RemoveUrls();
-                _spotifyUpdateDirectoryAccess.Allow();
-
-                SetUiAndRegistry(false);
-                OutputTextBox.AppendColoredText("\r\nAll changes successfully reverted!", Color.Green);
-                SystemSounds.Asterisk.Play();
-            }
-            finally
+            if (dialogResult != DialogResult.Yes)
             {
-                OutputTextBox.AppendText(Separator);
-                this.UseWaitCursor = false;
+                return;
             }
-        }
 
-        private void InstallCheckBox_SizeChanged(object sender, EventArgs e)
-            => InstallCheckBox.Left = (this.ClientSize.Width - InstallCheckBox.Width) / 2;
+            Cursor.Current = Cursors.WaitCursor;
+
+            FormTabControl.SelectTab(OutputTabPage);
+
+            _hostsFileAccess.RemoveUrls();
+            _spotifyUpdateDirectoryAccess.Allow();
+
+            SetUiAndRegistry(false);
+
+            OutputTextBox.AppendColoredText("\r\nAll changes successfully reverted!", Color.Green);
+            OutputTextBox.AppendText(Separator);
+            SystemSounds.Asterisk.Play();
+        }
 
         private void InstallCheckBox_Click(object sender, EventArgs e)
         {
-            if (!InstallCheckBox.AutoCheck)
+            if (!_alreadyInstalled)
             {
                 InstallCheckboxToolTip.Show(InstallCheckboxToolTip.GetToolTip(InstallCheckBox), InstallCheckBox, 10000);
             }
         }
+
+        private void InstallCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!_alreadyInstalled)
+            {
+                StartButton.Enabled = InstallCheckBox.Checked;
+            }
+        }
+
+        private void InstallCheckBox_VisibleChanged(object sender, EventArgs e)
+            => InstallCheckBox.Checked = InstallCheckBox.Visible;
+
+        private void InstallCheckBox_SizeChanged(object sender, EventArgs e)
+            => InstallCheckBox.Left = (this.ClientSize.Width - InstallCheckBox.Width) / 2;
 
         private void NewVersionAvailableLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
@@ -260,33 +289,34 @@ namespace SpotifyAdRemover.UI
         #region Private Procedures
         private void SetUiAndRegistry(bool adsRemoved)
         {
-            var installerAvailable = _spotifyInstaller.InstallerExists();
-            var alreadyInstalled = _spotifyAppDirectoryAccess.AlreadyInstalled;
+            var installerExists = _spotifyInstaller.Exists;
+            var (alreadyInstalled, correctVersionInstalled) = _spotifyAppDirectoryAccess.AlreadyInstalled;
+            _alreadyInstalled = alreadyInstalled;
 
-            InstallCheckBox.Visible = installerAvailable && !adsRemoved;
-            InstallCheckBox.Checked = installerAvailable;
-            InstallCheckBox.AutoCheck = alreadyInstalled;
+            InstallCheckBox.Visible = installerExists && !correctVersionInstalled && !adsRemoved;
             InstallCheckBox.Text = alreadyInstalled ? "&Downgrade Spotify (recommended)" : "&Install Spotify (required)";
             InstallCheckboxToolTip.Active = !alreadyInstalled;
 
-            WarningLabel.Visible = !installerAvailable;
+            CorrectVersionInstalledLabel.Visible = installerExists && !adsRemoved && correctVersionInstalled;
+            WarningLabel.Visible = !installerExists && !adsRemoved;
 
-            RevertButton.Enabled = adsRemoved;
-            StartButton.Enabled = !adsRemoved;
+            RevertButton.Visible = adsRemoved;
+            StartButton.Visible = !adsRemoved;
+            this.AcceptButton = adsRemoved ? RevertButton : StartButton;
 
             _registryWriter.SetValue(AdsRemovedKey, Convert.ToInt32(adsRemoved));
         }
 
         protected override bool ProcessDialogKey(Keys keyData)
         {
-            // ReSharper disable once InvertIf
-            if (Form.ModifierKeys == Keys.None && keyData == Keys.Escape)
+            if (Form.ModifierKeys != Keys.None || keyData != Keys.Escape)
             {
-                Application.Exit();
-                return true;
+                return base.ProcessDialogKey(keyData);
             }
 
-            return base.ProcessDialogKey(keyData);
+            Application.Exit();
+            return true;
+
         }
         #endregion
     }

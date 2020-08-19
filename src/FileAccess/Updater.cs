@@ -46,16 +46,16 @@ namespace SpotifyAdRemover.FileAccess
             {
                 Directory.CreateDirectory(updatePath);
 
-                var downloader = new Downloader(downloadUrl, zipPath)
+                using (var downloader = new Downloader(downloadUrl, zipPath))
                 {
-                    Headers = new List<(string name, string value)> { ("user-agent", Application.ProductName) },
-                    AbortMessage = ShowAbortMessageBox
-                };
+                    downloader.Headers = new List<(string name, string value)> { ("user-agent", Application.ProductName) };
+                    downloader.AbortMessage = ShowAbortMessageBox;
+                    downloader.Start();
 
-                downloader.Start();
-                if (downloader.ShowDialog(owner) == DialogResult.Cancel)
-                {
-                    return false;
+                    if (downloader.ShowDialog(owner) == DialogResult.Cancel)
+                    {
+                        return false;
+                    }
                 }
 
                 UnzipFiles(zipPath);

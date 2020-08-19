@@ -148,12 +148,14 @@ namespace SpotifyAdRemover.UI
             this.WarningLabel.Text = "Spotify installer not found!";
             this.WarningLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.WarningLabel.Visible = false;
+            this.WarningLabel.VisibleChanged += new System.EventHandler(this.WarningLabel_VisibleChanged);
             // 
             // NewVersionAvailableLinkLabel
             // 
             this.NewVersionAvailableLinkLabel.ActiveLinkColor = System.Drawing.Color.MediumSeaGreen;
             this.NewVersionAvailableLinkLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.NewVersionAvailableLinkLabel.AutoSize = true;
+            this.NewVersionAvailableLinkLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.NewVersionAvailableLinkLabel.LinkBehavior = System.Windows.Forms.LinkBehavior.NeverUnderline;
             this.NewVersionAvailableLinkLabel.LinkColor = System.Drawing.Color.DarkGreen;
             this.NewVersionAvailableLinkLabel.Location = new System.Drawing.Point(202, 10);
@@ -166,6 +168,9 @@ namespace SpotifyAdRemover.UI
             this.FormToolTip.SetToolTip(this.NewVersionAvailableLinkLabel, "Click to install new version");
             this.NewVersionAvailableLinkLabel.Visible = false;
             this.NewVersionAvailableLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.NewVersionAvailableLinkLabel_LinkClicked);
+            this.NewVersionAvailableLinkLabel.Enter += new System.EventHandler(this.NewVersionAvailableLinkLabel_MouseEnter);
+            this.NewVersionAvailableLinkLabel.MouseEnter += new System.EventHandler(this.NewVersionAvailableLinkLabel_MouseEnter);
+            this.NewVersionAvailableLinkLabel.MouseLeave += new System.EventHandler(this.NewVersionAvailableLinkLabel_MouseLeave);
             // 
             // OutputTabPage
             // 

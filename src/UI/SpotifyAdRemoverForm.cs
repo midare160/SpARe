@@ -8,6 +8,7 @@ using System.IO;
 using System.Media;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SpotifyAdRemover.UI
@@ -57,30 +58,18 @@ namespace SpotifyAdRemover.UI
         #region Events-Form
         private void RemoveSpotifyAdsForm_Load(object sender, EventArgs e)
         {
-            FormHelpProvider.SetShowHelp(this, true);
+            Cursor.Current = Cursors.WaitCursor;
+            InitForm();
 
-            if (File.Exists(_updater.BakPath))
-            {
-                File.Delete(_updater.BakPath);
-            }
-
-            if (!string.Equals((string)_registryReader.GetValue(ProductVersionKey), Application.ProductVersion))
-            {
-                _registryWriter.DeleteValue(NewVersionAvailableKey);
-                _registryWriter.SetValue(ProductVersionKey, Application.ProductVersion);
-            }
-
-            SetUiAndRegistry(Convert.ToBoolean(_registryReader.GetValue(AdsRemovedKey)));
-
-            NewVersionAvailableLinkLabel.Visible = Convert.ToBoolean(_registryReader.GetValue(NewVersionAvailableKey));
-            VersionLabel.Text = $"v.{Application.ProductVersion}";
+            Task.Run(CheckForInstaller);
         }
 
         private void SpotifyAdRemoverForm_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.F5)
             {
-                Application.Restart();
+                Cursor.Current = Cursors.WaitCursor;
+                InitForm();
             }
         }
         #endregion
@@ -186,6 +175,17 @@ namespace SpotifyAdRemover.UI
             FormTabControl.SelectTab(AboutTabPage);
             CheckUpdatesButton.PerformClick();
         }
+
+        private void NewVersionAvailableLinkLabel_MouseEnter(object sender, EventArgs e)
+            => NewVersionAvailableLinkLabel.LinkColor = Color.MediumSeaGreen;
+
+        private void NewVersionAvailableLinkLabel_MouseLeave(object sender, EventArgs e)
+            => NewVersionAvailableLinkLabel.LinkColor = Color.DarkGreen;
+
+        private void WarningLabel_VisibleChanged(object sender, EventArgs e)
+        {
+            StartButton.Enabled = !WarningLabel.Visible;
+        }
         #endregion
 
         #region Events-OutputTabPage
@@ -287,6 +287,27 @@ namespace SpotifyAdRemover.UI
         #endregion
 
         #region Private Procedures
+        private void InitForm()
+        {
+            FormHelpProvider.SetShowHelp(this, true);
+
+            if (File.Exists(_updater.BakPath))
+            {
+                File.Delete(_updater.BakPath);
+            }
+
+            if (!string.Equals((string)_registryReader.GetValue(ProductVersionKey), Application.ProductVersion))
+            {
+                _registryWriter.DeleteValue(NewVersionAvailableKey);
+                _registryWriter.SetValue(ProductVersionKey, Application.ProductVersion);
+            }
+
+            SetUiAndRegistry(Convert.ToBoolean(_registryReader.GetValue(AdsRemovedKey)));
+
+            NewVersionAvailableLinkLabel.Visible = Convert.ToBoolean(_registryReader.GetValue(NewVersionAvailableKey));
+            VersionLabel.Text = $"v.{Application.ProductVersion}";
+        }
+
         private void SetUiAndRegistry(bool adsRemoved)
         {
             var installerExists = _spotifyInstaller.Exists;
@@ -316,7 +337,24 @@ namespace SpotifyAdRemover.UI
 
             Application.Exit();
             return true;
+        }
+        #endregion
 
+        #region Async
+        private async void CheckForInstaller()
+        {
+            var enabled = _spotifyInstaller.Exists;
+
+            while (true)
+            {
+                await Task.Delay(1000);
+
+                if (enabled != _spotifyInstaller.Exists)
+                {
+                    Invoke((MethodInvoker)InitForm);
+                    enabled = !enabled;
+                }
+            }
         }
         #endregion
     }

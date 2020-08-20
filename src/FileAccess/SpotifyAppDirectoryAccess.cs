@@ -64,12 +64,9 @@ namespace SpotifyAdRemover.FileAccess
             if (File.Exists(adspaPath))
             {
                 File.Delete(adspaPath);
-                OutputTextBox.AppendText(SpotifyAdRemoverForm.TaskFinishedString);
             }
-            else
-            {
-                OutputTextBox.AppendColoredText(" Doesnt exist!\r\n", Color.Green);
-            }
+
+            OutputTextBox.AppendColoredText(SpotifyAdRemoverForm.TaskFinishedString, Color.Green);
         }
         #endregion
     }

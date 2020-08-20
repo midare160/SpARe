@@ -45,7 +45,7 @@ namespace SpotifyAdRemover.FileAccess
 
             if (filteredUrls.Count == 0)
             {
-                OutputTextBox.AppendColoredText(SpotifyAdRemoverForm.AlreadyDoneString, Color.Green);
+                OutputTextBox.AppendColoredText(SpotifyAdRemoverForm.TaskFinishedString, Color.Green);
                 return;
             }
 
@@ -62,7 +62,7 @@ namespace SpotifyAdRemover.FileAccess
                 }
             }
 
-            OutputTextBox.AppendText(SpotifyAdRemoverForm.TaskFinishedString);
+            OutputTextBox.AppendColoredText(SpotifyAdRemoverForm.TaskFinishedString, Color.Green);
         }
 
         public void RemoveUrls()
@@ -77,7 +77,7 @@ namespace SpotifyAdRemover.FileAccess
 
             File.WriteAllLines(_hostsPath, newFile);
 
-            OutputTextBox.AppendText(SpotifyAdRemoverForm.TaskFinishedString);
+            OutputTextBox.AppendColoredText(SpotifyAdRemoverForm.TaskFinishedString, Color.Green);
         }
         #endregion
 

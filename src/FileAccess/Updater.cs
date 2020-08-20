@@ -77,7 +77,7 @@ namespace SpotifyAdRemover.FileAccess
                 File.Delete(BakPath);
             }
 
-            // Executable cant be replaced at runtime but renamed
+            // Executable cant be replaced at runtime, but renamed
             File.Move(Application.ExecutablePath, BakPath);
             Directory.Delete(Path.Combine(Application.StartupPath, "Data"), true);
 

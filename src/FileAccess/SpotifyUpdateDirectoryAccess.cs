@@ -46,13 +46,13 @@ namespace SpotifyAdRemover.FileAccess
             }
             catch (UnauthorizedAccessException)
             {
-                OutputTextBox.AppendColoredText(SpotifyAdRemoverForm.AlreadyDoneString, Color.Green);
+                OutputTextBox.AppendColoredText(SpotifyAdRemoverForm.TaskFinishedString, Color.Green);
                 return;
             }
 
             _directoryAccessor.DenyAccess();
 
-            OutputTextBox.AppendText(SpotifyAdRemoverForm.TaskFinishedString);
+            OutputTextBox.AppendColoredText(SpotifyAdRemoverForm.TaskFinishedString, Color.Green);
         }
 
         public void Allow()
@@ -61,7 +61,7 @@ namespace SpotifyAdRemover.FileAccess
 
             _directoryAccessor.AllowAccess();
 
-            OutputTextBox.AppendText(SpotifyAdRemoverForm.TaskFinishedString);
+            OutputTextBox.AppendColoredText(SpotifyAdRemoverForm.TaskFinishedString, Color.Green);
         }
         #endregion
     }

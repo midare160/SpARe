@@ -1,4 +1,5 @@
 ﻿using Daubert.Extensions;
+using SpotifyAdRemover.UI;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -6,7 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Windows.Forms;
-using SpotifyAdRemover.UI;
 
 namespace SpotifyAdRemover.FileAccess
 {
@@ -90,7 +90,7 @@ namespace SpotifyAdRemover.FileAccess
 
             if (_installExitCode == 0)
             {
-                OutputTextBox.AppendText(SpotifyAdRemoverForm.TaskFinishedString);
+                OutputTextBox.AppendColoredText(SpotifyAdRemoverForm.TaskFinishedString, Color.Green);
                 return true;
             }
 

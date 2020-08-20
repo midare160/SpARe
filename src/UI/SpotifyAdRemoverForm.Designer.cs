@@ -271,6 +271,7 @@ namespace SpotifyAdRemover.UI
             // 
             // OutputTextBox
             // 
+            this.OutputTextBox.CausesValidation = false;
             this.OutputTextBox.Cursor = System.Windows.Forms.Cursors.Default;
             this.OutputTextBox.DetectUrls = false;
             this.OutputTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
@@ -278,6 +279,7 @@ namespace SpotifyAdRemover.UI
             this.OutputTextBox.Location = new System.Drawing.Point(3, 3);
             this.OutputTextBox.Name = "OutputTextBox";
             this.OutputTextBox.ReadOnly = true;
+            this.OutputTextBox.ShortcutsEnabled = false;
             this.OutputTextBox.Size = new System.Drawing.Size(318, 123);
             this.OutputTextBox.TabIndex = 0;
             this.OutputTextBox.TabStop = false;

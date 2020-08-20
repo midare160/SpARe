@@ -8,6 +8,7 @@ using System.IO;
 using System.Media;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -16,8 +17,7 @@ namespace SpotifyAdRemover.UI
     public partial class SpotifyAdRemoverForm : Form
     {
         #region Static Properties
-        public const string AlreadyDoneString = " Already done!\r\n";
-        public const string TaskFinishedString = "\r\n";
+        public const string TaskFinishedString = " OK\r\n";
         #endregion
 
         #region Static Fields
@@ -58,12 +58,10 @@ namespace SpotifyAdRemover.UI
         #region Events-Form
         private void RemoveSpotifyAdsForm_Load(object sender, EventArgs e)
         {
-            Cursor.Current = Cursors.WaitCursor;
             InitForm();
-
             Task.Run(CheckForInstaller);
         }
-
+        
         private void SpotifyAdRemoverForm_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.F5)
@@ -150,7 +148,10 @@ namespace SpotifyAdRemover.UI
         {
             if (!_alreadyInstalled)
             {
-                InstallCheckboxToolTip.Show(InstallCheckboxToolTip.GetToolTip(InstallCheckBox), InstallCheckBox, 10000);
+                InstallCheckboxToolTip.Show(
+                    InstallCheckboxToolTip.GetToolTip(InstallCheckBox), 
+                    InstallCheckBox,
+                    InstallCheckboxToolTip.AutoPopDelay);
             }
         }
 
@@ -341,13 +342,13 @@ namespace SpotifyAdRemover.UI
         #endregion
 
         #region Async
-        private async void CheckForInstaller()
+        private void CheckForInstaller()
         {
             var enabled = _spotifyInstaller.Exists;
 
             while (true)
             {
-                await Task.Delay(1000);
+                Thread.Sleep(1000);
 
                 if (enabled != _spotifyInstaller.Exists)
                 {

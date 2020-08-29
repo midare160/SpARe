@@ -10,10 +10,6 @@ namespace SpotifyAdRemover.FileAccess
 {
     public class SpotifyUpdateDirectoryAccess
     {
-        #region Properties
-        public RichTextBox OutputTextBox { get; }
-        #endregion
-
         #region Fields
         private readonly string _updateDirectory;
         private readonly DirectoryAccessor _directoryAccessor;
@@ -27,6 +23,10 @@ namespace SpotifyAdRemover.FileAccess
             _updateDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Spotify", "Update");
             _directoryAccessor = new DirectoryAccessor(_updateDirectory, WellKnownSidType.WorldSid);
         }
+        #endregion
+
+        #region Properties
+        public RichTextBox OutputTextBox { get; }
         #endregion
 
         #region Methods

@@ -2,9 +2,11 @@
 using Daubert.Tools.RegistryTools;
 using SpotifyAdRemover.FileAccess;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Media;
 using System.Net;
 using System.Net.Http;
@@ -16,11 +18,9 @@ namespace SpotifyAdRemover.UI
 {
     public partial class SpotifyAdRemoverForm : Form
     {
-        #region Static Properties
+        #region Static
         public const string TaskFinishedString = " OK\r\n";
-        #endregion
 
-        #region Static Fields
         private const string AdsRemovedKey = "AdsRemoved";
         private const string NewVersionAvailableKey = "NewVersionAvailable";
         private const string ProductVersionKey = "ProductVersion";
@@ -155,13 +155,8 @@ namespace SpotifyAdRemover.UI
             }
         }
 
-        private void InstallCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
-            if (!_alreadyInstalled)
-            {
-                StartButton.Enabled = InstallCheckBox.Checked;
-            }
-        }
+        private void InstallCheckBox_CheckedChanged(object sender, EventArgs e) 
+            => StartButton.Enabled = _alreadyInstalled ? StartButton.Enabled : InstallCheckBox.Checked;
 
         private void InstallCheckBox_VisibleChanged(object sender, EventArgs e)
             => InstallCheckBox.Checked = InstallCheckBox.Visible;
@@ -183,10 +178,8 @@ namespace SpotifyAdRemover.UI
         private void NewVersionAvailableLinkLabel_MouseLeave(object sender, EventArgs e)
             => NewVersionAvailableLinkLabel.LinkColor = Color.DarkGreen;
 
-        private void WarningLabel_VisibleChanged(object sender, EventArgs e)
-        {
-            StartButton.Enabled = !WarningLabel.Visible;
-        }
+        private void WarningLabel_VisibleChanged(object sender, EventArgs e) 
+            => StartButton.Enabled = !WarningLabel.Visible;
         #endregion
 
         #region Events-OutputTabPage
@@ -222,11 +215,12 @@ namespace SpotifyAdRemover.UI
 
         private async void CheckUpdatesButton_Click(object sender, EventArgs e)
         {
+            Cursor.Current = Cursors.WaitCursor;
+
             var updateAvailable = false;
 
             try
             {
-                // Cant use Cursors.WaitCursor because 'await' would disable it
                 this.UseWaitCursor = true;
 
                 updateAvailable = await _updater.Check();
@@ -329,19 +323,6 @@ namespace SpotifyAdRemover.UI
             _registryWriter.SetValue(AdsRemovedKey, Convert.ToInt32(adsRemoved));
         }
 
-        protected override bool ProcessDialogKey(Keys keyData)
-        {
-            if (Form.ModifierKeys != Keys.None || keyData != Keys.Escape)
-            {
-                return base.ProcessDialogKey(keyData);
-            }
-
-            Application.Exit();
-            return true;
-        }
-        #endregion
-
-        #region Async
         private void CheckForInstaller()
         {
             var enabled = _spotifyInstaller.Exists;
@@ -356,6 +337,17 @@ namespace SpotifyAdRemover.UI
                     enabled = !enabled;
                 }
             }
+        }
+
+        protected override bool ProcessDialogKey(Keys keyData)
+        {
+            if (Form.ModifierKeys != Keys.None || keyData != Keys.Escape)
+            {
+                return base.ProcessDialogKey(keyData);
+            }
+
+            this.Close();
+            return true;
         }
         #endregion
     }

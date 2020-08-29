@@ -12,6 +12,21 @@ namespace SpotifyAdRemover.FileAccess
 {
     public class SpotifyInstaller
     {
+        #region Static
+        private const string InstallerHash = "a0f36ca24bf9df230afe59b6e4dd4f53";
+        #endregion
+
+        #region Fields
+        private int _installExitCode;
+        #endregion
+
+        #region Constructors
+        public SpotifyInstaller(RichTextBox outputTextBox)
+        {
+            OutputTextBox = outputTextBox;
+        }
+        #endregion
+
         #region Properties
         public RichTextBox OutputTextBox { get; }
         public string Path => System.IO.Path.Combine(Application.StartupPath, "Data", "spotify_installer1.0.8.exe");
@@ -38,21 +53,6 @@ namespace SpotifyAdRemover.FileAccess
                     }
                 }
             }
-        }
-        #endregion
-
-        #region Static
-        private const string InstallerHash = "a0f36ca24bf9df230afe59b6e4dd4f53";
-        #endregion
-
-        #region Fields
-        private int _installExitCode;
-        #endregion
-
-        #region Constructors
-        public SpotifyInstaller(RichTextBox outputTextBox)
-        {
-            OutputTextBox = outputTextBox;
         }
         #endregion
 

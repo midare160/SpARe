@@ -10,6 +10,22 @@ namespace SpotifyAdRemover.FileAccess
 {
     public class SpotifyAppDirectoryAccess
     {
+        #region Static
+        private const string TargetVersion = "1.0.80.474";
+        #endregion
+
+        #region Fields
+        private readonly string _roamingDirectory;
+        #endregion
+
+        #region Constructors
+        public SpotifyAppDirectoryAccess(RichTextBox outputTextBox)
+        {
+            OutputTextBox = outputTextBox;
+            _roamingDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Spotify");
+        }
+        #endregion
+
         #region Properties
         public (bool alreadyInstalled, bool correctVersion) AlreadyInstalled
         {
@@ -33,22 +49,6 @@ namespace SpotifyAdRemover.FileAccess
         }
 
         public RichTextBox OutputTextBox { get; }
-        #endregion
-
-        #region Static
-        private const string TargetVersion = "1.0.80.474";
-        #endregion
-
-        #region Fields
-        private readonly string _roamingDirectory;
-        #endregion
-
-        #region Constructors
-        public SpotifyAppDirectoryAccess(RichTextBox outputTextBox)
-        {
-            OutputTextBox = outputTextBox;
-            _roamingDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Spotify");
-        }
         #endregion
 
         #region Methods

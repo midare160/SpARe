@@ -12,10 +12,6 @@ namespace SpotifyAdRemover.FileAccess
 {
     public class HostsFileAccess
     {
-        #region Properties
-        public RichTextBox OutputTextBox { get; }
-        #endregion
-
         #region Static
         private const string Header = "# Block Spotify ads";
         private const string Mapping = "0.0.0.0";
@@ -31,6 +27,10 @@ namespace SpotifyAdRemover.FileAccess
             OutputTextBox = outputTextBox;
             _hostsPath = Path.Combine(Environment.SystemDirectory, "drivers", "etc", "hosts");
         }
+        #endregion
+
+        #region Properties
+        public RichTextBox OutputTextBox { get; }
         #endregion
 
         #region Methods

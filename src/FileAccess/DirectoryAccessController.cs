@@ -7,11 +7,6 @@ namespace SpotifyAdRemover.FileAccess
 {
     public class DirectoryAccessor
     {
-        #region Properties
-        public string Path { get; }
-        public WellKnownSidType WellKnownSidType { get; }
-        #endregion
-
         #region Fields
         private readonly FileSystemAccessRule _accessRule;
         #endregion
@@ -32,6 +27,11 @@ namespace SpotifyAdRemover.FileAccess
                 FileSystemRights.FullControl,
                 AccessControlType.Deny);
         }
+        #endregion
+
+        #region Properties
+        public string Path { get; }
+        public WellKnownSidType WellKnownSidType { get; }
         #endregion
 
         #region Methods

@@ -7,6 +7,7 @@ namespace SpotifyAdRemover.UI
 {
     public class CustomExceptionMessageBox
     {
+        #region Static
         private static TaskDialog _taskDialog;
         private static Exception _exception;
 
@@ -46,5 +47,6 @@ namespace SpotifyAdRemover.UI
 
         private static void CommandLinkIgnore_Click(object sender, EventArgs e)
             => _taskDialog.Close();
+        #endregion
     }
 }

@@ -13,12 +13,12 @@ namespace SpotifyAdRemover.FileAccess
 {
     public class Updater
     {
-        #region Properties
-        public string BakPath => $"{Path.GetFileNameWithoutExtension(Application.ExecutablePath)}.bak";
-        #endregion
-
         #region Fields
         private Repository _repository;
+        #endregion
+
+        #region Properties
+        public string BakPath => $"{Path.GetFileNameWithoutExtension(Application.ExecutablePath)}.bak";
         #endregion
 
         #region Methods

@@ -2,11 +2,9 @@
 using Daubert.Tools.RegistryTools;
 using SpotifyAdRemover.FileAccess;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Media;
 using System.Net;
 using System.Net.Http;

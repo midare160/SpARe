@@ -153,11 +153,15 @@ namespace SpotifyAdRemover.UI
             }
         }
 
-        private void InstallCheckBox_CheckedChanged(object sender, EventArgs e) 
-            => StartButton.Enabled = _alreadyInstalled ? StartButton.Enabled : InstallCheckBox.Checked;
+        private void InstallCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (_alreadyInstalled)
+            {
+                return;
+            }
 
-        private void InstallCheckBox_VisibleChanged(object sender, EventArgs e)
-            => InstallCheckBox.Checked = InstallCheckBox.Visible;
+            StartButton.Enabled = InstallCheckBox.Checked;
+        }
 
         private void InstallCheckBox_SizeChanged(object sender, EventArgs e)
             => InstallCheckBox.Left = (this.ClientSize.Width - InstallCheckBox.Width) / 2;
@@ -307,7 +311,7 @@ namespace SpotifyAdRemover.UI
             var (alreadyInstalled, correctVersionInstalled) = _spotifyAppDirectoryAccess.AlreadyInstalled;
             _alreadyInstalled = alreadyInstalled;
 
-            InstallCheckBox.Visible = installerExists && !correctVersionInstalled && !adsRemoved;
+            InstallCheckBox.Visible = InstallCheckBox.Checked = installerExists && !correctVersionInstalled && !adsRemoved;
             InstallCheckBox.Text = alreadyInstalled ? "&Downgrade Spotify (recommended)" : "&Install Spotify (required)";
             InstallCheckboxToolTip.Active = !alreadyInstalled;
 
@@ -327,7 +331,7 @@ namespace SpotifyAdRemover.UI
 
             while (true)
             {
-                Thread.Sleep(1000);
+                Thread.Sleep(3000);
 
                 if (enabled != _spotifyInstaller.Exists)
                 {

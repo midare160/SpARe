@@ -41,6 +41,7 @@ namespace SpotifyAdRemover.UI
             this.WarningLabel = new System.Windows.Forms.Label();
             this.NewVersionAvailableLinkLabel = new System.Windows.Forms.LinkLabel();
             this.OutputTabPage = new System.Windows.Forms.TabPage();
+            this.OutputTextBox = new SpotifyAdRemover.CustomControls.ReadOnlyRichTextBox();
             this.ClearButton = new System.Windows.Forms.Button();
             this.AboutTabPage = new System.Windows.Forms.TabPage();
             this.VersionLabel = new System.Windows.Forms.Label();
@@ -50,7 +51,6 @@ namespace SpotifyAdRemover.UI
             this.InstallCheckboxToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.FormToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.FormHelpProvider = new System.Windows.Forms.HelpProvider();
-            this.OutputTextBox = new SpotifyAdRemover.CustomControls.ReadOnlyRichTextBox();
             this.FormTabControl.SuspendLayout();
             this.StartTabPage.SuspendLayout();
             this.OutputTabPage.SuspendLayout();
@@ -122,7 +122,6 @@ namespace SpotifyAdRemover.UI
             this.InstallCheckBox.UseVisualStyleBackColor = true;
             this.InstallCheckBox.CheckedChanged += new System.EventHandler(this.InstallCheckBox_CheckedChanged);
             this.InstallCheckBox.SizeChanged += new System.EventHandler(this.InstallCheckBox_SizeChanged);
-            this.InstallCheckBox.VisibleChanged += new System.EventHandler(this.InstallCheckBox_VisibleChanged);
             this.InstallCheckBox.Click += new System.EventHandler(this.InstallCheckBox_Click);
             // 
             // CorrectVersionInstalledLabel
@@ -183,6 +182,23 @@ namespace SpotifyAdRemover.UI
             this.OutputTabPage.TabIndex = 1;
             this.OutputTabPage.Text = "Output";
             this.OutputTabPage.UseVisualStyleBackColor = true;
+            // 
+            // OutputTextBox
+            // 
+            this.OutputTextBox.CausesValidation = false;
+            this.OutputTextBox.Cursor = System.Windows.Forms.Cursors.Default;
+            this.OutputTextBox.DetectUrls = false;
+            this.OutputTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.OutputTextBox.HideSelection = false;
+            this.OutputTextBox.Location = new System.Drawing.Point(3, 3);
+            this.OutputTextBox.Name = "OutputTextBox";
+            this.OutputTextBox.ReadOnly = true;
+            this.OutputTextBox.ShortcutsEnabled = false;
+            this.OutputTextBox.Size = new System.Drawing.Size(318, 123);
+            this.OutputTextBox.TabIndex = 0;
+            this.OutputTextBox.TabStop = false;
+            this.OutputTextBox.Text = "";
+            this.OutputTextBox.TextChanged += new System.EventHandler(this.OutputTextBox_TextChanged);
             // 
             // ClearButton
             // 
@@ -268,23 +284,6 @@ namespace SpotifyAdRemover.UI
             // FormHelpProvider
             // 
             this.FormHelpProvider.HelpNamespace = "https://github.com/midare160/SpotifyAdRemover/blob/master/README.md";
-            // 
-            // OutputTextBox
-            // 
-            this.OutputTextBox.CausesValidation = false;
-            this.OutputTextBox.Cursor = System.Windows.Forms.Cursors.Default;
-            this.OutputTextBox.DetectUrls = false;
-            this.OutputTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.OutputTextBox.HideSelection = false;
-            this.OutputTextBox.Location = new System.Drawing.Point(3, 3);
-            this.OutputTextBox.Name = "OutputTextBox";
-            this.OutputTextBox.ReadOnly = true;
-            this.OutputTextBox.ShortcutsEnabled = false;
-            this.OutputTextBox.Size = new System.Drawing.Size(318, 123);
-            this.OutputTextBox.TabIndex = 0;
-            this.OutputTextBox.TabStop = false;
-            this.OutputTextBox.Text = "";
-            this.OutputTextBox.TextChanged += new System.EventHandler(this.OutputTextBox_TextChanged);
             // 
             // SpotifyAdRemoverForm
             // 

@@ -32,9 +32,8 @@ namespace SpotifyAdRemover.FileAccess
             get
             {
                 var executablePath = Path.Combine(_roamingDirectory, "Spotify.exe");
-                var executableExists = File.Exists(executablePath);
 
-                if (!executableExists)
+                if (!File.Exists(executablePath))
                 {
                     return (false, false);
                 }

@@ -21,39 +21,13 @@ namespace SpotifyAdRemover.FileAccess
         #endregion
 
         #region Constructors
-        public SpotifyInstaller(RichTextBox outputTextBox)
-        {
-            OutputTextBox = outputTextBox;
-        }
+        public SpotifyInstaller(RichTextBox outputTextBox) 
+            => OutputTextBox = outputTextBox;
         #endregion
 
         #region Properties
         public RichTextBox OutputTextBox { get; }
         public string Path => System.IO.Path.Combine(Application.StartupPath, "Data", "spotify_installer1.0.8.exe");
-
-        public bool Exists
-        {
-            get
-            {
-                if (!File.Exists(Path))
-                {
-                    return false;
-                }
-
-                using (var md5 = MD5.Create())
-                {
-                    using (var stream = File.OpenRead(Path))
-                    {
-                        return string.Equals(
-                            BitConverter
-                                .ToString(md5.ComputeHash(stream))
-                                .Replace("-", null),
-                            InstallerHash,
-                            StringComparison.OrdinalIgnoreCase);
-                    }
-                }
-            }
-        }
         #endregion
 
         #region Events
@@ -62,6 +36,27 @@ namespace SpotifyAdRemover.FileAccess
         #endregion
 
         #region Methods
+        public bool Exists()
+        {
+            if (!File.Exists(Path))
+            {
+                return false;
+            }
+
+            using (var md5 = MD5.Create())
+            {
+                using (var stream = File.OpenRead(Path))
+                {
+                    return string.Equals(
+                        BitConverter
+                            .ToString(md5.ComputeHash(stream))
+                            .Replace("-", null),
+                        InstallerHash,
+                        StringComparison.OrdinalIgnoreCase);
+                }
+            }
+        }
+
         /// <summary>
         /// Executes the Spotify installer and waits until it terminates.
         /// </summary>

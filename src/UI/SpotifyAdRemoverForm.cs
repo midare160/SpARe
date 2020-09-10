@@ -8,8 +8,6 @@ using System.IO;
 using System.Media;
 using System.Net;
 using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace SpotifyAdRemover.UI
@@ -18,11 +16,10 @@ namespace SpotifyAdRemover.UI
     {
         #region Static
         public const string TaskFinishedString = " OK\r\n";
-
         private const string AdsRemovedKey = "AdsRemoved";
         private const string NewVersionAvailableKey = "NewVersionAvailable";
         private const string ProductVersionKey = "ProductVersion";
-        private const string Separator = "\r\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\r\n";
+        private static string Separator;
         #endregion
 
         #region Fields
@@ -33,8 +30,8 @@ namespace SpotifyAdRemover.UI
         private readonly SpotifyUpdateDirectoryAccess _spotifyUpdateDirectoryAccess;
         private readonly SpotifyAppDirectoryAccess _spotifyAppDirectoryAccess;
         private readonly SpotifyInstaller _spotifyInstaller;
-
         private bool _alreadyInstalled;
+        private FileStream _lockedFile;
         #endregion
 
         #region Constructors
@@ -49,23 +46,28 @@ namespace SpotifyAdRemover.UI
             _spotifyUpdateDirectoryAccess = new SpotifyUpdateDirectoryAccess(OutputTextBox);
             _spotifyAppDirectoryAccess = new SpotifyAppDirectoryAccess(OutputTextBox);
             _spotifyInstaller = new SpotifyInstaller(OutputTextBox);
+
+            Separator = "\r\n";
+
+            for (var i = 1; i < 50; i++)
+            {
+                Separator += "- ";
+            }
+
+            Separator += "\r\n";
         }
         #endregion
 
         #region Events
         #region Events-Form
-        private void RemoveSpotifyAdsForm_Load(object sender, EventArgs e)
-        {
-            InitForm();
-            Task.Run(CheckForInstaller);
-        }
-        
+        private void RemoveSpotifyAdsForm_Load(object sender, EventArgs e) 
+            => InitForm();
+
         private void SpotifyAdRemoverForm_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.F5)
+            if (e.KeyCode == Keys.Escape)
             {
-                Cursor.Current = Cursors.WaitCursor;
-                InitForm();
+                this.Close();
             }
         }
         #endregion
@@ -116,6 +118,8 @@ namespace SpotifyAdRemover.UI
 
         private void RevertButton_Click(object sender, EventArgs e)
         {
+            Cursor.Current = Cursors.WaitCursor;
+
             var dialogResult = MessageBox.Show(
                     "Do you really want to revert all changes?",
                     "Are you sure?",
@@ -147,7 +151,7 @@ namespace SpotifyAdRemover.UI
             if (!_alreadyInstalled)
             {
                 InstallCheckboxToolTip.Show(
-                    InstallCheckboxToolTip.GetToolTip(InstallCheckBox), 
+                    InstallCheckboxToolTip.GetToolTip(InstallCheckBox),
                     InstallCheckBox,
                     InstallCheckboxToolTip.AutoPopDelay);
             }
@@ -155,12 +159,10 @@ namespace SpotifyAdRemover.UI
 
         private void InstallCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            if (_alreadyInstalled)
+            if (!_alreadyInstalled)
             {
-                return;
+                StartButton.Enabled = InstallCheckBox.Checked;
             }
-
-            StartButton.Enabled = InstallCheckBox.Checked;
         }
 
         private void InstallCheckBox_SizeChanged(object sender, EventArgs e)
@@ -180,7 +182,7 @@ namespace SpotifyAdRemover.UI
         private void NewVersionAvailableLinkLabel_MouseLeave(object sender, EventArgs e)
             => NewVersionAvailableLinkLabel.LinkColor = Color.DarkGreen;
 
-        private void WarningLabel_VisibleChanged(object sender, EventArgs e) 
+        private void WarningLabel_VisibleChanged(object sender, EventArgs e)
             => StartButton.Enabled = !WarningLabel.Visible;
         #endregion
 
@@ -307,7 +309,7 @@ namespace SpotifyAdRemover.UI
 
         private void SetUiAndRegistry(bool adsRemoved)
         {
-            var installerExists = _spotifyInstaller.Exists;
+            var installerExists = _spotifyInstaller.Exists();
             var (alreadyInstalled, correctVersionInstalled) = _spotifyAppDirectoryAccess.AlreadyInstalled;
             _alreadyInstalled = alreadyInstalled;
 
@@ -318,38 +320,17 @@ namespace SpotifyAdRemover.UI
             CorrectVersionInstalledLabel.Visible = installerExists && !adsRemoved && correctVersionInstalled;
             WarningLabel.Visible = !installerExists && !adsRemoved;
 
+            if (installerExists && _lockedFile == null)
+            {
+                // Lock installer directory
+                _lockedFile = new FileStream(_spotifyInstaller.Path, FileMode.Open, System.IO.FileAccess.Read, FileShare.None);
+            }
+
             RevertButton.Visible = adsRemoved;
             StartButton.Visible = !adsRemoved;
             this.AcceptButton = adsRemoved ? RevertButton : StartButton;
 
             _registryWriter.SetValue(AdsRemovedKey, Convert.ToInt32(adsRemoved));
-        }
-
-        private void CheckForInstaller()
-        {
-            var enabled = _spotifyInstaller.Exists;
-
-            while (true)
-            {
-                Thread.Sleep(3000);
-
-                if (enabled != _spotifyInstaller.Exists)
-                {
-                    Invoke((MethodInvoker)InitForm);
-                    enabled = !enabled;
-                }
-            }
-        }
-
-        protected override bool ProcessDialogKey(Keys keyData)
-        {
-            if (Form.ModifierKeys != Keys.None || keyData != Keys.Escape)
-            {
-                return base.ProcessDialogKey(keyData);
-            }
-
-            this.Close();
-            return true;
         }
         #endregion
     }

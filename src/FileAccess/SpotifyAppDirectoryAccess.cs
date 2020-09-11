@@ -27,30 +27,27 @@ namespace SpotifyAdRemover.FileAccess
         #endregion
 
         #region Properties
-        public (bool alreadyInstalled, bool correctVersion) AlreadyInstalled
-        {
-            get
-            {
-                var executablePath = Path.Combine(_roamingDirectory, "Spotify.exe");
-
-                if (!File.Exists(executablePath))
-                {
-                    return (false, false);
-                }
-
-                var executableVersion = new Version(
-                    FileVersionInfo
-                        .GetVersionInfo(executablePath)
-                        .FileVersion);
-
-                return (true, executableVersion.CompareTo(new Version(TargetVersion)) == 0);
-            }
-        }
-
         public RichTextBox OutputTextBox { get; }
         #endregion
 
         #region Methods
+        public (bool alreadyInstalled, bool correctVersion) AlreadyInstalled()
+        {
+            var executablePath = Path.Combine(_roamingDirectory, "Spotify.exe");
+
+            if (!File.Exists(executablePath))
+            {
+                return (false, false);
+            }
+
+            var executableVersion = new Version(
+                FileVersionInfo
+                    .GetVersionInfo(executablePath)
+                    .FileVersion);
+
+            return (true, executableVersion.CompareTo(new Version(TargetVersion)) == 0);
+        }
+
         /// <summary>
         /// Deletes the ad.spa file (could contain ad data)
         /// </summary>

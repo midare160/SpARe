@@ -1,14 +1,15 @@
-﻿using Daubert.Extensions;
-using Daubert.Tools.RegistryTools;
-using SpotifyAdRemover.FileAccess;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Media;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using Daubert.Extensions;
+using Daubert.Tools.RegistryTools;
+using SpotifyAdRemover.FileAccess;
 
 namespace SpotifyAdRemover.UI
 {
@@ -60,14 +61,14 @@ namespace SpotifyAdRemover.UI
 
         #region Events
         #region Events-Form
-        private void RemoveSpotifyAdsForm_Load(object sender, EventArgs e) 
+        private void RemoveSpotifyAdsForm_Load(object sender, EventArgs e)
             => InitForm();
 
         private void SpotifyAdRemoverForm_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Escape)
             {
-                this.Close();
+                Close();
             }
         }
         #endregion
@@ -85,7 +86,7 @@ namespace SpotifyAdRemover.UI
                 {
                     if (InstallCheckBox.Checked)
                     {
-                        this.WindowState = FormWindowState.Minimized;
+                        WindowState = FormWindowState.Minimized;
 
                         if (!_spotifyInstaller.Install())
                         {
@@ -98,7 +99,7 @@ namespace SpotifyAdRemover.UI
                 }
                 finally
                 {
-                    this.WindowState = FormWindowState.Normal;
+                    WindowState = FormWindowState.Normal;
                 }
 
                 _spotifyUpdateDirectoryAccess.Deny();
@@ -166,7 +167,7 @@ namespace SpotifyAdRemover.UI
         }
 
         private void InstallCheckBox_SizeChanged(object sender, EventArgs e)
-            => InstallCheckBox.Left = (this.ClientSize.Width - InstallCheckBox.Width) / 2;
+            => InstallCheckBox.Left = (ClientSize.Width - InstallCheckBox.Width) / 2;
 
         private void NewVersionAvailableLinkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
@@ -198,7 +199,7 @@ namespace SpotifyAdRemover.UI
         private void OutputTextBox_TextChanged(object sender, EventArgs e)
         {
             ClearButton.Enabled = true;
-            this.Update();
+            Update();
         }
         #endregion
 
@@ -217,68 +218,27 @@ namespace SpotifyAdRemover.UI
         private void AboutGithubLabel_Leave(object sender, EventArgs e)
             => GithubLabel.LinkBehavior = LinkBehavior.HoverUnderline;
 
-        private async void CheckUpdatesButton_Click(object sender, EventArgs e)
+        private void CheckUpdatesButton_Click(object sender, EventArgs e)
         {
             Cursor.Current = Cursors.WaitCursor;
-
-            var updateAvailable = false;
+            var check = CheckForUpdates().Result; // TODO Task.Run cause it stops when synchronous
 
             try
             {
                 this.UseWaitCursor = true;
+                CheckUpdatesButton.Enabled = false;
 
-                updateAvailable = await _updater.Check();
-
-                if (updateAvailable)
+                while (check.repeatCheck)
                 {
-                    var dialogResult = MessageBox.Show(
-                        "New version available! Do you want to download it now?",
-                        "Update available!",
-                        MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Question);
-
-                    if (dialogResult != DialogResult.Yes || !_updater.Install(this))
-                    {
-                        return;
-                    }
-
-                    updateAvailable = false;
-
-                    MessageBox.Show(
-                        "Update successfully installed! Application will restart now.",
-                        "Update installed!",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
-
-                    Application.Restart();
-                }
-                else
-                {
-                    MessageBox.Show(
-                        "You already have the latest version!",
-                        "Up to date!",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information);
-                }
-            }
-            catch (Exception ex) when (ex is WebException | ex is HttpRequestException | ex is HttpListenerException)
-            {
-                var dialogResult = MessageBox.Show(
-                    "Couldn't connect:\r\n\r\n" + ex.Message,
-                    "Connection error!",
-                    MessageBoxButtons.RetryCancel,
-                    MessageBoxIcon.Error);
-
-                if (dialogResult == DialogResult.Retry)
-                {
-                    CheckUpdatesButton.PerformClick();
+                    check = CheckForUpdates().Result;
                 }
             }
             finally
             {
-                NewVersionAvailableLinkLabel.Visible = updateAvailable;
-                _registryWriter.SetValue(NewVersionAvailableKey, Convert.ToInt32(updateAvailable));
+                NewVersionAvailableLinkLabel.Visible = check.updateAvailable;
+                _registryWriter.SetValue(NewVersionAvailableKey, Convert.ToInt32(check.updateAvailable));
 
+                CheckUpdatesButton.Enabled = true;
                 this.UseWaitCursor = false;
             }
         }
@@ -310,7 +270,7 @@ namespace SpotifyAdRemover.UI
         private void SetUiAndRegistry(bool adsRemoved)
         {
             var installerExists = _spotifyInstaller.Exists();
-            var (alreadyInstalled, correctVersionInstalled) = _spotifyAppDirectoryAccess.AlreadyInstalled;
+            var (alreadyInstalled, correctVersionInstalled) = _spotifyAppDirectoryAccess.AlreadyInstalled();
             _alreadyInstalled = alreadyInstalled;
 
             InstallCheckBox.Visible = InstallCheckBox.Checked = installerExists && !correctVersionInstalled && !adsRemoved;
@@ -328,10 +288,63 @@ namespace SpotifyAdRemover.UI
 
             RevertButton.Visible = adsRemoved;
             StartButton.Visible = !adsRemoved;
-            this.AcceptButton = adsRemoved ? RevertButton : StartButton;
+            AcceptButton = adsRemoved ? RevertButton : StartButton;
 
             _registryWriter.SetValue(AdsRemovedKey, Convert.ToInt32(adsRemoved));
         }
         #endregion
+
+        private async Task<(bool repeatCheck, bool updateAvailable)> CheckForUpdates()
+        {
+            var updateAvailable = false;
+
+            try
+            {
+                updateAvailable = await _updater.Check();
+
+                if (updateAvailable)
+                {
+                    var dialogResult = MessageBox.Show(
+                        "New version available! Do you want to download it now?",
+                        "Update available!",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question);
+
+                    if (dialogResult != DialogResult.Yes || !_updater.Install(this))
+                    {
+                        return (false, updateAvailable);
+                    }
+
+                    MessageBox.Show(
+                        "Update successfully installed! Application will restart now.",
+                        "Update installed!",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+
+                    Application.Restart();
+                }
+
+                MessageBox.Show(
+                    "You already have the latest version!",
+                    "Up to date!",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+            }
+            catch (Exception ex) when (ex is WebException | ex is HttpRequestException | ex is HttpListenerException)
+            {
+                var dialogResult = MessageBox.Show(
+                    "Couldn't connect:\r\n\r\n" + ex.Message,
+                    "Connection error!",
+                    MessageBoxButtons.RetryCancel,
+                    MessageBoxIcon.Error);
+
+                if (dialogResult == DialogResult.Retry)
+                {
+                    return (true, updateAvailable);
+                }
+            }
+
+            return (false, false);
+        }
     }
 }

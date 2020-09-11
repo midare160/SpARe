@@ -41,6 +41,7 @@ namespace SpotifyAdRemover.UI
             this.WarningLabel = new System.Windows.Forms.Label();
             this.NewVersionAvailableLinkLabel = new System.Windows.Forms.LinkLabel();
             this.OutputTabPage = new System.Windows.Forms.TabPage();
+            this.OutputTextBox = new SpotifyAdRemover.CustomControls.ReadOnlyRichTextBox();
             this.ClearButton = new System.Windows.Forms.Button();
             this.AboutTabPage = new System.Windows.Forms.TabPage();
             this.VersionLabel = new System.Windows.Forms.Label();
@@ -50,7 +51,6 @@ namespace SpotifyAdRemover.UI
             this.InstallCheckboxToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.FormToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.FormHelpProvider = new System.Windows.Forms.HelpProvider();
-            this.OutputTextBox = new SpotifyAdRemover.CustomControls.ReadOnlyRichTextBox();
             this.FormTabControl.SuspendLayout();
             this.StartTabPage.SuspendLayout();
             this.OutputTabPage.SuspendLayout();
@@ -62,7 +62,7 @@ namespace SpotifyAdRemover.UI
             this.StartButton.Location = new System.Drawing.Point(125, 68);
             this.StartButton.Name = "StartButton";
             this.StartButton.Size = new System.Drawing.Size(75, 23);
-            this.StartButton.TabIndex = 0;
+            this.StartButton.TabIndex = 1;
             this.StartButton.Text = "&Start";
             this.StartButton.UseVisualStyleBackColor = true;
             this.StartButton.Click += new System.EventHandler(this.StartButton_Click);
@@ -160,7 +160,7 @@ namespace SpotifyAdRemover.UI
             this.NewVersionAvailableLinkLabel.Location = new System.Drawing.Point(202, 10);
             this.NewVersionAvailableLinkLabel.Name = "NewVersionAvailableLinkLabel";
             this.NewVersionAvailableLinkLabel.Size = new System.Drawing.Size(114, 13);
-            this.NewVersionAvailableLinkLabel.TabIndex = 3;
+            this.NewVersionAvailableLinkLabel.TabIndex = 0;
             this.NewVersionAvailableLinkLabel.TabStop = true;
             this.NewVersionAvailableLinkLabel.Text = "New version available!";
             this.NewVersionAvailableLinkLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -183,6 +183,22 @@ namespace SpotifyAdRemover.UI
             this.OutputTabPage.Text = "Output";
             this.OutputTabPage.UseVisualStyleBackColor = true;
             // 
+            // OutputTextBox
+            // 
+            this.OutputTextBox.CausesValidation = false;
+            this.OutputTextBox.Cursor = System.Windows.Forms.Cursors.Default;
+            this.OutputTextBox.DetectUrls = false;
+            this.OutputTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.OutputTextBox.HideSelection = false;
+            this.OutputTextBox.Location = new System.Drawing.Point(3, 3);
+            this.OutputTextBox.Name = "OutputTextBox";
+            this.OutputTextBox.ReadOnly = true;
+            this.OutputTextBox.Size = new System.Drawing.Size(318, 123);
+            this.OutputTextBox.TabIndex = 0;
+            this.OutputTextBox.TabStop = false;
+            this.OutputTextBox.Text = "";
+            this.OutputTextBox.TextChanged += new System.EventHandler(this.OutputTextBox_TextChanged);
+            // 
             // ClearButton
             // 
             this.ClearButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
@@ -191,7 +207,7 @@ namespace SpotifyAdRemover.UI
             this.ClearButton.Location = new System.Drawing.Point(246, 132);
             this.ClearButton.Name = "ClearButton";
             this.ClearButton.Size = new System.Drawing.Size(75, 23);
-            this.ClearButton.TabIndex = 0;
+            this.ClearButton.TabIndex = 1;
             this.ClearButton.Text = "&Clear";
             this.ClearButton.UseVisualStyleBackColor = true;
             this.ClearButton.Click += new System.EventHandler(this.ClearButton_Click);
@@ -216,7 +232,7 @@ namespace SpotifyAdRemover.UI
             this.VersionLabel.Location = new System.Drawing.Point(138, 49);
             this.VersionLabel.Name = "VersionLabel";
             this.VersionLabel.Size = new System.Drawing.Size(49, 13);
-            this.VersionLabel.TabIndex = 1;
+            this.VersionLabel.TabIndex = 0;
             this.VersionLabel.Text = "v.1.0.0.0";
             // 
             // CheckUpdatesButton
@@ -224,7 +240,7 @@ namespace SpotifyAdRemover.UI
             this.CheckUpdatesButton.Location = new System.Drawing.Point(204, 132);
             this.CheckUpdatesButton.Name = "CheckUpdatesButton";
             this.CheckUpdatesButton.Size = new System.Drawing.Size(117, 23);
-            this.CheckUpdatesButton.TabIndex = 0;
+            this.CheckUpdatesButton.TabIndex = 3;
             this.CheckUpdatesButton.Text = "&Check for updates";
             this.CheckUpdatesButton.UseVisualStyleBackColor = true;
             this.CheckUpdatesButton.Click += new System.EventHandler(this.CheckUpdatesButton_Click);
@@ -237,7 +253,7 @@ namespace SpotifyAdRemover.UI
             this.GithubLabel.Location = new System.Drawing.Point(117, 97);
             this.GithubLabel.Name = "GithubLabel";
             this.GithubLabel.Size = new System.Drawing.Size(91, 13);
-            this.GithubLabel.TabIndex = 3;
+            this.GithubLabel.TabIndex = 2;
             this.GithubLabel.TabStop = true;
             this.GithubLabel.Text = "Github Repository";
             this.GithubLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -252,7 +268,7 @@ namespace SpotifyAdRemover.UI
             this.CopyrightLabel.Location = new System.Drawing.Point(114, 73);
             this.CopyrightLabel.Name = "CopyrightLabel";
             this.CopyrightLabel.Size = new System.Drawing.Size(97, 13);
-            this.CopyrightLabel.TabIndex = 2;
+            this.CopyrightLabel.TabIndex = 1;
             this.CopyrightLabel.Text = "©2020 MIDARE16";
             this.CopyrightLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -266,24 +282,7 @@ namespace SpotifyAdRemover.UI
             // 
             // FormHelpProvider
             // 
-            this.FormHelpProvider.HelpNamespace = "https://github.com/midare160/SpotifyAdRemover/blob/master/README.md";
-            // 
-            // OutputTextBox
-            // 
-            this.OutputTextBox.CausesValidation = false;
-            this.OutputTextBox.Cursor = System.Windows.Forms.Cursors.Default;
-            this.OutputTextBox.DetectUrls = false;
-            this.OutputTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.OutputTextBox.HideSelection = false;
-            this.OutputTextBox.Location = new System.Drawing.Point(3, 3);
-            this.OutputTextBox.Name = "OutputTextBox";
-            this.OutputTextBox.ReadOnly = true;
-            this.OutputTextBox.ShortcutsEnabled = false;
-            this.OutputTextBox.Size = new System.Drawing.Size(318, 123);
-            this.OutputTextBox.TabIndex = 0;
-            this.OutputTextBox.TabStop = false;
-            this.OutputTextBox.Text = "";
-            this.OutputTextBox.TextChanged += new System.EventHandler(this.OutputTextBox_TextChanged);
+            this.FormHelpProvider.HelpNamespace = "https://github.com/midare160/SpotifyAdRemover";
             // 
             // SpotifyAdRemoverForm
             // 

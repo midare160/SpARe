@@ -65,14 +65,17 @@
     <Reference Include="Costura, Version=4.1.0.0, Culture=neutral, PublicKeyToken=9919ef960d84173d, processorArchitecture=MSIL">
       <HintPath>packages\Costura.Fody.4.1.0\lib\net40\Costura.dll</HintPath>
     </Reference>
-    <Reference Include="Daubert">
-      <HintPath>..\Daubert.Tools\bin\Release\Daubert.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=1.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.Bcl.AsyncInterfaces.1.1.1\lib\net461\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>packages\Microsoft.WindowsAPICodePack-Core.1.1.0.2\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAPICodePack.Shell, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.WindowsAPICodePack-Shell.1.1.0.0\lib\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAPICodePack.ShellExtensions, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\Microsoft.WindowsAPICodePack-Shell.1.1.0.0\lib\Microsoft.WindowsAPICodePack.ShellExtensions.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -127,12 +130,23 @@
     </Compile>
     <Compile Include="src\API\GithubClient.cs" />
     <Compile Include="src\API\Json\Repository.cs" />
+    <Compile Include="src\Extensions\TextBoxExtensions.cs" />
     <Compile Include="src\FileAccess\DirectoryAccessController.cs" />
     <Compile Include="src\FileAccess\SpotifyAppDirectoryAccess.cs" />
     <Compile Include="src\FileAccess\SpotifyInstaller.cs" />
     <Compile Include="src\FileAccess\SpotifyUpdateDirectoryAccess.cs" />
     <Compile Include="src\FileAccess\HostsFileAccess.cs" />
-    <Compile Include="src\UI\CustomExceptionMessageBox.cs" />
+    <Compile Include="src\Tools\IconExtractor.cs" />
+    <Compile Include="src\Tools\LanguageUtils.cs" />
+    <Compile Include="src\Tools\RegistryTools\RegistryReader.cs" />
+    <Compile Include="src\Tools\RegistryTools\RegistryWriter.cs" />
+    <Compile Include="src\UI\Downloader.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="src\UI\Downloader.Designer.cs">
+      <DependentUpon>Downloader.cs</DependentUpon>
+    </Compile>
+    <Compile Include="src\UI\ExceptionBox.cs" />
     <Compile Include="src\UI\SpotifyAdRemoverForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -144,6 +158,9 @@
     <Compile Include="src\FileAccess\Updater.cs" />
     <EmbeddedResource Include="src\CustomControls\ReadOnlyRichTextBox.resx">
       <DependentUpon>ReadOnlyRichTextBox.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="src\UI\Downloader.resx">
+      <DependentUpon>Downloader.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="src\UI\SpotifyAdRemoverForm.en.resx">
       <DependentUpon>SpotifyAdRemoverForm.cs</DependentUpon>
@@ -195,16 +212,14 @@
     <Content Include="Images\spotify-icon.png" />
     <Content Include="Images\logo.ico" />
   </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>Dieses Projekt verweist auf mindestens ein NuGet-Paket, das auf diesem Computer fehlt. Verwenden Sie die Wiederherstellung von NuGet-Paketen, um die fehlenden Dateien herunterzuladen. Weitere Informationen finden Sie unter "http://go.microsoft.com/fwlink/?LinkID=322105". Die fehlende Datei ist "{0}".</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('packages\Costura.Fody.4.1.0\build\Costura.Fody.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Costura.Fody.4.1.0\build\Costura.Fody.props'))" />
-    <Error Condition="!Exists('packages\Fody.6.2.4\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Fody.6.2.4\build\Fody.targets'))" />
+    <Error Condition="!Exists('packages\Fody.6.2.5\build\Fody.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\Fody.6.2.5\build\Fody.targets'))" />
   </Target>
-  <Import Project="packages\Fody.6.2.4\build\Fody.targets" Condition="Exists('packages\Fody.6.2.4\build\Fody.targets')" />
+  <Import Project="packages\Fody.6.2.5\build\Fody.targets" Condition="Exists('packages\Fody.6.2.5\build\Fody.targets')" />
 </Project>

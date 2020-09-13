@@ -1,4 +1,4 @@
-﻿using Daubert.Extensions;
+﻿using SpotifyAdRemover.Extensions;
 using SpotifyAdRemover.UI;
 using System;
 using System.Diagnostics;
@@ -62,7 +62,7 @@ namespace SpotifyAdRemover.FileAccess
                 File.Delete(adspaPath);
             }
 
-            OutputTextBox.AppendColoredText(SpotifyAdRemoverForm.TaskFinishedString, Color.Green);
+            OutputTextBox.AppendText(SpotifyAdRemoverForm.TaskFinishedString, Color.Green);
         }
         #endregion
     }

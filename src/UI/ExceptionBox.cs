@@ -1,17 +1,17 @@
 ﻿using Microsoft.WindowsAPICodePack.Dialogs;
 using System;
 using System.Diagnostics;
-using System.Windows;
+using System.Windows.Forms;
 
 namespace SpotifyAdRemover.UI
 {
-    public class CustomExceptionMessageBox
+    public class ExceptionBox
     {
         #region Static
         private static TaskDialog _taskDialog;
         private static Exception _exception;
 
-        public static TaskDialogResult Show(Exception exception)
+        public static TaskDialogResult Show(IWin32Window owner, Exception exception)
         {
             _exception = exception;
 
@@ -22,14 +22,15 @@ namespace SpotifyAdRemover.UI
                 Icon = TaskDialogStandardIcon.Error,
                 Cancelable = true,
                 DetailsExpandedText = exception.ToString(),
-                StartupLocation = TaskDialogStartupLocation.CenterScreen
+                StartupLocation = TaskDialogStartupLocation.CenterScreen,
+                OwnerWindowHandle = owner.Handle
             };
 
             var commandLinkSend = new TaskDialogCommandLink("buttonSendFeedback", "Report", "Create an issue on Github (Stacktrace will be copied to clipboard).");
             commandLinkSend.Click += CommandLinkSend_Click;
 
             var commandLinkIgnore = new TaskDialogCommandLink("buttonIgnore", "Ignore", "Proceed and ignore this error.");
-            commandLinkIgnore.Click += CommandLinkIgnore_Click;
+            commandLinkIgnore.Click += (sender, e) => _taskDialog.Close();
 
             _taskDialog.Controls.Add(commandLinkSend);
             _taskDialog.Controls.Add(commandLinkIgnore);
@@ -44,9 +45,6 @@ namespace SpotifyAdRemover.UI
 
             _taskDialog.Close();
         }
-
-        private static void CommandLinkIgnore_Click(object sender, EventArgs e)
-            => _taskDialog.Close();
         #endregion
     }
 }

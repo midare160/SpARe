@@ -1,12 +1,12 @@
-﻿using Daubert.Extensions;
-using Daubert.Tools;
+﻿using SpotifyAdRemover.Extensions;
+using SpotifyAdRemover.Tools;
+using SpotifyAdRemover.UI;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows.Forms;
-using SpotifyAdRemover.UI;
 
 namespace SpotifyAdRemover.FileAccess
 {
@@ -45,7 +45,7 @@ namespace SpotifyAdRemover.FileAccess
 
             if (filteredUrls.Count == 0)
             {
-                OutputTextBox.AppendColoredText(SpotifyAdRemoverForm.TaskFinishedString, Color.Green);
+                OutputTextBox.AppendText(SpotifyAdRemoverForm.TaskFinishedString, Color.Green);
                 return;
             }
 
@@ -62,7 +62,7 @@ namespace SpotifyAdRemover.FileAccess
                 }
             }
 
-            OutputTextBox.AppendColoredText(SpotifyAdRemoverForm.TaskFinishedString, Color.Green);
+            OutputTextBox.AppendText(SpotifyAdRemoverForm.TaskFinishedString, Color.Green);
         }
 
         public void RemoveUrls()
@@ -77,7 +77,7 @@ namespace SpotifyAdRemover.FileAccess
 
             File.WriteAllLines(_hostsPath, newFile);
 
-            OutputTextBox.AppendColoredText(SpotifyAdRemoverForm.TaskFinishedString, Color.Green);
+            OutputTextBox.AppendText(SpotifyAdRemoverForm.TaskFinishedString, Color.Green);
         }
         #endregion
 

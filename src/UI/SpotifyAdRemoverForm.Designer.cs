@@ -167,9 +167,10 @@ namespace SpotifyAdRemover.UI
             this.FormToolTip.SetToolTip(this.NewVersionAvailableLinkLabel, "Click to install new version");
             this.NewVersionAvailableLinkLabel.Visible = false;
             this.NewVersionAvailableLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.NewVersionAvailableLinkLabel_LinkClicked);
-            this.NewVersionAvailableLinkLabel.Enter += new System.EventHandler(this.NewVersionAvailableLinkLabel_MouseEnter);
-            this.NewVersionAvailableLinkLabel.MouseEnter += new System.EventHandler(this.NewVersionAvailableLinkLabel_MouseEnter);
-            this.NewVersionAvailableLinkLabel.MouseLeave += new System.EventHandler(this.NewVersionAvailableLinkLabel_MouseLeave);
+            this.NewVersionAvailableLinkLabel.Enter += new System.EventHandler(this.NewVersionAvailableLinkLabel_Enter);
+            this.NewVersionAvailableLinkLabel.Leave += new System.EventHandler(this.NewVersionAvailableLinkLabel_Leave);
+            this.NewVersionAvailableLinkLabel.MouseEnter += new System.EventHandler(this.NewVersionAvailableLinkLabel_Enter);
+            this.NewVersionAvailableLinkLabel.MouseLeave += new System.EventHandler(this.NewVersionAvailableLinkLabel_Leave);
             // 
             // OutputTabPage
             // 

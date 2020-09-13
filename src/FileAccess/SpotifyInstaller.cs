@@ -1,4 +1,4 @@
-﻿using Daubert.Extensions;
+﻿using SpotifyAdRemover.Extensions;
 using SpotifyAdRemover.UI;
 using System;
 using System.Diagnostics;
@@ -57,6 +57,9 @@ namespace SpotifyAdRemover.FileAccess
             }
         }
 
+        public FileStream Lock() 
+            => new FileStream(Path, FileMode.Open, System.IO.FileAccess.Read, FileShare.None);
+
         /// <summary>
         /// Executes the Spotify installer and waits until it terminates.
         /// </summary>
@@ -64,7 +67,7 @@ namespace SpotifyAdRemover.FileAccess
         {
             OutputTextBox.AppendText("Installing Spotify...");
 
-            // HACK Start the Spotify installer with non-admin rights, otherwise it wouldnt execute
+            // HACK: Start the Spotify installer with non-admin rights, otherwise it wouldnt execute
             Process.Start("explorer.exe", Path)?.WaitForExit();
 
             try
@@ -85,11 +88,11 @@ namespace SpotifyAdRemover.FileAccess
 
             if (_installExitCode == 0)
             {
-                OutputTextBox.AppendColoredText(SpotifyAdRemoverForm.TaskFinishedString, Color.Green);
+                OutputTextBox.AppendText(SpotifyAdRemoverForm.TaskFinishedString, Color.Green);
                 return true;
             }
 
-            OutputTextBox.AppendColoredText(" Aborted!\r\n", Color.Red);
+            OutputTextBox.AppendText(" Aborted!\r\n", Color.Red);
             return false;
         }
         #endregion

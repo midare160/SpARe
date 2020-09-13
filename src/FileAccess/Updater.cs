@@ -1,13 +1,12 @@
-﻿using System;
+﻿using SpotifyAdRemover.API;
+using SpotifyAdRemover.API.Json;
+using SpotifyAdRemover.UI;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Daubert.Forms;
-using SpotifyAdRemover.API;
-using SpotifyAdRemover.API.Json;
 
 namespace SpotifyAdRemover.FileAccess
 {
@@ -38,7 +37,7 @@ namespace SpotifyAdRemover.FileAccess
                 throw new NullReferenceException($"{nameof(Check)} has to be called first before {nameof(Install)} can be called!");
             }
 
-            var downloadUrl = _repository.Assets.First().BrowserDownloadUrl;
+            var downloadUrl = _repository.Assets[0].BrowserDownloadUrl;
             var updatePath = Path.Combine(Application.StartupPath, "Update");
             var zipPath = Path.Combine(updatePath, Path.GetFileName(downloadUrl));
 
@@ -46,16 +45,16 @@ namespace SpotifyAdRemover.FileAccess
             {
                 Directory.CreateDirectory(updatePath);
 
-                using (var downloader = new Downloader(downloadUrl, zipPath))
+                var downloader = new Downloader(downloadUrl, zipPath)
                 {
-                    downloader.Headers = new List<(string name, string value)> { ("user-agent", Application.ProductName) };
-                    downloader.AbortMessage = ShowAbortMessageBox;
-                    downloader.Start();
+                    Headers = new List<(string name, string value)> { ("user-agent", Application.ProductName) },
+                    AbortMessage = ShowAbortMessageBox
+                };
+                downloader.Start();
 
-                    if (downloader.ShowDialog(owner) == DialogResult.Cancel)
-                    {
-                        return false;
-                    }
+                if (downloader.ShowDialog(owner) == DialogResult.Cancel)
+                {
+                    return false;
                 }
 
                 UnzipFiles(zipPath);
@@ -64,7 +63,18 @@ namespace SpotifyAdRemover.FileAccess
             }
             finally
             {
-                Directory.Delete(updatePath, true);
+                while (true)
+                {
+                    try
+                    {
+                        Directory.Delete(updatePath, true);
+                        break;
+                    }
+                    catch (Exception ex) when (ex is ObjectDisposedException | ex is UnauthorizedAccessException)
+                    {
+                        // HACK: Try to delete the directory multiple times, because sometimes it throws these Exceptions and I dont know why
+                    }
+                }
             }
         }
         #endregion

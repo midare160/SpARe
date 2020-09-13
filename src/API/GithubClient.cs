@@ -11,17 +11,15 @@ namespace SpotifyAdRemover.API
         #region Constructors
         public GithubClient(string userAgent)
         {
-            DefaultRequestHeaders.Accept.Clear();
-            DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
-            DefaultRequestHeaders.Add("user-agent", userAgent);
+            this.DefaultRequestHeaders.Accept.Clear();
+            this.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
+            this.DefaultRequestHeaders.Add("user-agent", userAgent);
         }
         #endregion
 
         #region Methods
-        public async Task<Repository> GetRepositoryAsync(string repoUrl)
-        {
-            return await JsonSerializer.DeserializeAsync<Repository>(await GetStreamAsync(repoUrl));
-        }
+        public async Task<Repository> GetRepositoryAsync(string repoUrl) 
+            => await JsonSerializer.DeserializeAsync<Repository>(await this.GetStreamAsync(repoUrl));
         #endregion
     }
 }

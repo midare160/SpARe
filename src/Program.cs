@@ -12,22 +12,16 @@ namespace SpotifyAdRemover
         [STAThread]
         private static void Main()
         {
-            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-            Application.ThreadException += Application_ThreadException;
-            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new SpotifyAdRemoverForm());
-        }
+            //Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
 
-        private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
-        {
-            CustomExceptionMessageBox.Show((Exception)e.ExceptionObject);
-        }
+            var form = new SpotifyAdRemoverForm();
 
-        private static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
-        {
-            CustomExceptionMessageBox.Show(e.Exception);
+            //Application.ThreadException += (s, e) => ExceptionBox.Show(form, e.Exception);
+            //AppDomain.CurrentDomain.UnhandledException += (s, e) => ExceptionBox.Show(form, (Exception)e.ExceptionObject);
+
+            Application.Run(form);
         }
     }
 }

@@ -25,20 +25,15 @@ namespace SpotifyAdRemover.CustomControls
         #endregion
 
         #region Procedures
-        protected override void OnGotFocus(EventArgs e)
-        {
-            HideCaret(this.Handle);
-        }
+        protected override void OnGotFocus(EventArgs e) 
+            => HideCaret(this.Handle);
 
-        protected override void OnEnter(EventArgs e)
-        {
-            HideCaret(this.Handle);
-        }
+        protected override void OnEnter(EventArgs e) 
+            => HideCaret(this.Handle);
 
-        private void ReadOnlyRichTextBox_Mouse(object sender, MouseEventArgs e)
-        {
-            HideCaret(this.Handle);
-        }
+        private void ReadOnlyRichTextBox_Mouse(object sender, MouseEventArgs e) 
+            => HideCaret(this.Handle);
+
         #endregion
     }
 }

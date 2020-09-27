@@ -7,6 +7,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using SpotifyAdRemover.Tools;
 
 namespace SpotifyAdRemover.FileAccess
 {

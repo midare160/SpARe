@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Runtime.InteropServices;
 
-namespace SpotifyAdRemover.Tools
+namespace Spare.Tools
 {
     /// <summary>
     /// Provides methods to extract an <see cref="Icon"/> from a dll.

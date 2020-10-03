@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Spotify Ad Remover")]
-[assembly: AssemblyDescription("Remove ads from Spotify.")]
+[assembly: AssemblyTitle("Spare")]
+[assembly: AssemblyDescription("Removes all ads from Spotify.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Spotify Ad Remover")]
-[assembly: AssemblyCopyright("©2020 MIDARE16")]
+[assembly: AssemblyProduct("Spare")]
+[assembly: AssemblyCopyright("©2020 midare160")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

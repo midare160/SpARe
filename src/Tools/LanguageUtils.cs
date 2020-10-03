@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SpotifyAdRemover.Tools
+namespace Spare.Tools
 {
     /// <summary>
     /// Provides methods to handle any <see cref="Exception"/>.

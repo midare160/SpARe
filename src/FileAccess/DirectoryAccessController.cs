@@ -3,7 +3,7 @@ using System.IO;
 using System.Security.AccessControl;
 using System.Security.Principal;
 
-namespace SpotifyAdRemover.FileAccess
+namespace Spare.FileAccess
 {
     public class DirectoryAccessor
     {
@@ -37,7 +37,7 @@ namespace SpotifyAdRemover.FileAccess
         #region Methods
         public void DenyAccess()
         {
-            AllowOrDenyAccess(false);
+            SetAccess(false);
         }
 
         /// <summary>
@@ -46,12 +46,12 @@ namespace SpotifyAdRemover.FileAccess
         /// <exception cref="DirectoryNotFoundException"></exception>
         public void AllowAccess()
         {
-            AllowOrDenyAccess(true);
+            SetAccess(true);
         }
         #endregion
 
         #region Private Procedures
-        private void AllowOrDenyAccess(bool allow)
+        private void SetAccess(bool allow)
         {
             Directory.CreateDirectory(Path);
             var directorySecurity = Directory.GetAccessControl(Path);

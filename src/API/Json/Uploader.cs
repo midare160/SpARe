@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace SpotifyAdRemover.API.Json
+namespace Spare.API.Json
 {
     public class Uploader
     {

@@ -1,15 +1,14 @@
-﻿using SpotifyAdRemover.API;
-using SpotifyAdRemover.API.Json;
-using SpotifyAdRemover.UI;
+﻿using Spare.API;
+using Spare.API.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SpotifyAdRemover.Tools;
+using Spare.UI;
 
-namespace SpotifyAdRemover.FileAccess
+namespace Spare.FileAccess
 {
     public class Updater
     {

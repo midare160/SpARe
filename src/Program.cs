@@ -1,6 +1,6 @@
-﻿using SpotifyAdRemover.UI;
-using System;
+﻿using System;
 using System.Windows.Forms;
+using Spare.UI;
 
 namespace SpotifyAdRemover
 {
@@ -14,12 +14,12 @@ namespace SpotifyAdRemover
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
 
-            var form = new SpotifyAdRemoverForm();
+            var form = new SpareForm();
 
-            //Application.ThreadException += (s, e) => ExceptionBox.Show(form, e.Exception);
-            //AppDomain.CurrentDomain.UnhandledException += (s, e) => ExceptionBox.Show(form, (Exception)e.ExceptionObject);
+            Application.ThreadException += (s, e) => ExceptionBox.Show(form, e.Exception);
+            AppDomain.CurrentDomain.UnhandledException += (s, e) => ExceptionBox.Show(form, (Exception)e.ExceptionObject);
 
             Application.Run(form);
         }

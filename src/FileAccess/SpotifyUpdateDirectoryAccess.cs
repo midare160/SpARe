@@ -1,12 +1,12 @@
-﻿using SpotifyAdRemover.Extensions;
-using SpotifyAdRemover.UI;
+﻿using Spare.Extensions;
+using Spare.UI;
 using System;
 using System.Drawing;
 using System.IO;
 using System.Security.Principal;
 using System.Windows.Forms;
 
-namespace SpotifyAdRemover.FileAccess
+namespace Spare.FileAccess
 {
     public class SpotifyUpdateDirectoryAccess
     {
@@ -46,13 +46,13 @@ namespace SpotifyAdRemover.FileAccess
             }
             catch (UnauthorizedAccessException)
             {
-                OutputTextBox.AppendText(SpotifyAdRemoverForm.TaskFinishedString, Color.Green);
+                OutputTextBox.AppendText(SpareForm.TaskFinishedString, Color.Green);
                 return;
             }
 
             _directoryAccessor.DenyAccess();
 
-            OutputTextBox.AppendText(SpotifyAdRemoverForm.TaskFinishedString, Color.Green);
+            OutputTextBox.AppendText(SpareForm.TaskFinishedString, Color.Green);
         }
 
         public void Allow()
@@ -61,7 +61,7 @@ namespace SpotifyAdRemover.FileAccess
 
             _directoryAccessor.AllowAccess();
 
-            OutputTextBox.AppendText(SpotifyAdRemoverForm.TaskFinishedString, Color.Green);
+            OutputTextBox.AppendText(SpareForm.TaskFinishedString, Color.Green);
         }
         #endregion
     }

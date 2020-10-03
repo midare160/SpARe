@@ -1,5 +1,5 @@
-﻿using SpotifyAdRemover.Extensions;
-using SpotifyAdRemover.UI;
+﻿using Spare.Extensions;
+using Spare.UI;
 using System;
 using System.Diagnostics;
 using System.Drawing;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Windows.Forms;
 
-namespace SpotifyAdRemover.FileAccess
+namespace Spare.FileAccess
 {
     public class SpotifyInstaller
     {
@@ -57,9 +57,6 @@ namespace SpotifyAdRemover.FileAccess
             }
         }
 
-        public FileStream Lock() 
-            => new FileStream(Path, FileMode.Open, System.IO.FileAccess.Read, FileShare.None);
-
         /// <summary>
         /// Executes the Spotify installer and waits until it terminates.
         /// </summary>
@@ -88,7 +85,7 @@ namespace SpotifyAdRemover.FileAccess
 
             if (_installExitCode == 0)
             {
-                OutputTextBox.AppendText(SpotifyAdRemoverForm.TaskFinishedString, Color.Green);
+                OutputTextBox.AppendText(SpareForm.TaskFinishedString, Color.Green);
                 return true;
             }
 

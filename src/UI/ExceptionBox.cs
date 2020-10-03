@@ -1,9 +1,9 @@
-﻿using Microsoft.WindowsAPICodePack.Dialogs;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Windows.Forms;
+using Microsoft.WindowsAPICodePack.Dialogs;
 
-namespace SpotifyAdRemover.UI
+namespace Spare.UI
 {
     public class ExceptionBox
     {
@@ -26,11 +26,11 @@ namespace SpotifyAdRemover.UI
                 OwnerWindowHandle = owner.Handle
             };
 
-            var commandLinkSend = new TaskDialogCommandLink("buttonSendFeedback", "Report", "Create an issue on Github (Stacktrace will be copied to clipboard).");
+            var commandLinkSend = new TaskDialogCommandLink("SendFeedbackButton", "Report", "Create an issue on Github (Stacktrace will be copied to clipboard).");
             commandLinkSend.Click += CommandLinkSend_Click;
 
-            var commandLinkIgnore = new TaskDialogCommandLink("buttonIgnore", "Ignore", "Proceed and ignore this error.");
-            commandLinkIgnore.Click += (sender, e) => _taskDialog.Close();
+            var commandLinkIgnore = new TaskDialogCommandLink("IgnoreButton", "Ignore", "Proceed and ignore this error.");
+            commandLinkIgnore.Click += (s, e) => _taskDialog.Close();
 
             _taskDialog.Controls.Add(commandLinkSend);
             _taskDialog.Controls.Add(commandLinkIgnore);

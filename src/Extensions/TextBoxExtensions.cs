@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace SpotifyAdRemover.Extensions
+namespace Spare.Extensions
 {
     /// <summary>
     /// Provides Extensions for <see cref="TextBoxBase"/> controls

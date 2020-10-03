@@ -1,4 +1,4 @@
-﻿namespace SpotifyAdRemover.UI
+﻿namespace Spare.UI
 {
     partial class Downloader
     {

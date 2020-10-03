@@ -1,10 +1,10 @@
-﻿using SpotifyAdRemover.API.Json;
+﻿using Spare.API.Json;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace SpotifyAdRemover.API
+namespace Spare.API
 {
     public class GithubClient : HttpClient
     {

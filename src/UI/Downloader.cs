@@ -1,14 +1,14 @@
-﻿using Microsoft.WindowsAPICodePack.Taskbar;
-using SpotifyAdRemover.Tools;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Net;
 using System.Windows.Forms;
+using Microsoft.WindowsAPICodePack.Taskbar;
+using Spare.Tools;
 
-namespace SpotifyAdRemover.UI
+namespace Spare.UI
 {
     public partial class Downloader : Form
     {
@@ -79,6 +79,8 @@ namespace SpotifyAdRemover.UI
         private void Downloader_Load(object sender, EventArgs e)
         {
             this.Text = $"Downloading \"{Path.GetFileName(FileName)}\"";
+
+            // TODO add icon to images folder
             this.Icon = FormIcon ?? IconExtractor.Extract("imageres.dll", 175, true); // 175 = index of "Download"-icon in dll
 
             TaskbarManager.Instance.SetProgressState(TaskbarProgressBarState.Normal, this.Handle);

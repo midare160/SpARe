@@ -1,3 +1,1 @@
-# Spotify Ad Remover
-
-// TODO add description
+# **Sp**otify **A**d **Re**mover

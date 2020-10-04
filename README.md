@@ -1,7 +1,7 @@
 # SpARe
 = **Sp**otify **A**d **Re**mover
 
-This softwrae removes/blocks all ads (audio, visual banners) from Spotify Desktop. ***Downloading songs is still not possible without premium!***
+This software removes/blocks all ads (audio, visual banners) from Spotify Desktop. ***Downloading songs is still not possible without premium!***
 
 It is recommended to install/downgrade Spotify with the included installer. Otherwise I can't guarantee that all ads will be blocked.
 

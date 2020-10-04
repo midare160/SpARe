@@ -11,7 +11,6 @@ namespace Spare.UI
 {
     public sealed partial class AboutForm : Form
     {
-        // TODO add info icon
         #region Constructors
         public AboutForm(Updater updater)
         {
@@ -93,12 +92,15 @@ namespace Spare.UI
         #endregion
 
         #region Events
+        private void AboutForm_Load(object sender, EventArgs e)
+            => LinkToolTip.SetToolTip(GithubLabel, $"https://github.com/midare160/{Application.ProductName}");
+
         private void GithubLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             Cursor.Current = Cursors.WaitCursor;
 
             GithubLabel.LinkVisited = true;
-            Process.Start("https://github.com/midare160/SpotifyAdRemover");
+            Process.Start($"https://github.com/midare160/{Application.ProductName}");
         }
 
         private async void CheckUpdatesButton_Click(object sender, EventArgs e)
@@ -147,6 +149,10 @@ namespace Spare.UI
                     "Connection error!",
                     MessageBoxButtons.RetryCancel,
                     MessageBoxIcon.Error);
+            }
+            catch (IOException)
+            {
+                // Occurs when the new version has a different product name
             }
             finally
             {

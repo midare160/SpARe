@@ -197,7 +197,6 @@ namespace Spare.UI
             this.Name = "SpareForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Spare";
-            this.TopMost = true;
             this.HelpButtonClicked += new System.ComponentModel.CancelEventHandler(this.SpareForm_HelpButtonClicked);
             this.Load += new System.EventHandler(this.RemoveSpotifyAdsForm_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.SpareForm_KeyDown);

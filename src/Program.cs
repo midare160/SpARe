@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 using Spare.UI;
 
-namespace SpotifyAdRemover
+namespace Spare
 {
     public static class Program
     {

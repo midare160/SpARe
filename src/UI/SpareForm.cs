@@ -178,6 +178,13 @@ namespace Spare.UI
             this.Text = Application.ProductName;
             InstallerWatcher.Path = Path.GetDirectoryName(_spotifyInstaller.Path);
 
+            if (Settings.Default.UpgradeRequired)
+            {
+                Settings.Default.Upgrade();
+                Settings.Default.UpgradeRequired = false;
+                Settings.Default.Save(true);
+            }
+
             SetUiAndRegistry(Settings.Default.AdsRemoved);
         }
 
@@ -202,8 +209,7 @@ namespace Spare.UI
             AcceptButton = adsRemoved ? RevertButton : StartButton;
 
             Settings.Default.AdsRemoved = adsRemoved;
-            Settings.Default.Save();
-            Settings.Default.Reload();
+            Settings.Default.Save(true);
         }
         #endregion
     }

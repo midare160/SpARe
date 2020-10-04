@@ -96,7 +96,7 @@
             this.ProductNameLabel.Name = "ProductNameLabel";
             this.ProductNameLabel.Size = new System.Drawing.Size(363, 16);
             this.ProductNameLabel.TabIndex = 1;
-            this.ProductNameLabel.Text = "Spare";
+            this.ProductNameLabel.Text = "SpARre";
             this.ProductNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // tableLayoutPanel1

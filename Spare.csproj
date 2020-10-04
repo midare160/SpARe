@@ -8,7 +8,7 @@
     <ProjectGuid>{65BDCC3C-BFC4-4CB3-8432-8C0297CB390C}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>Spare</RootNamespace>
-    <AssemblyName>Spare</AssemblyName>
+    <AssemblyName>SpARe</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -133,6 +133,7 @@
     </Compile>
     <Compile Include="src\API\GithubClient.cs" />
     <Compile Include="src\API\Json\Repository.cs" />
+    <Compile Include="src\Extensions\SettingsExtensions.cs" />
     <Compile Include="src\Extensions\TextBoxExtensions.cs" />
     <Compile Include="src\FileAccess\DirectoryAccessController.cs" />
     <Compile Include="src\FileAccess\SpotifyAppDirectoryAccess.cs" />

@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace Spare.FileAccess
 {
-    public class SpotifyUpdateDirectoryAccess
+    public class UpdateDirectoryAccess
     {
         #region Fields
         private readonly string _updateDirectory;
@@ -16,7 +16,7 @@ namespace Spare.FileAccess
         #endregion
 
         #region Constructors
-        public SpotifyUpdateDirectoryAccess(RichTextBox outputTextBox)
+        public UpdateDirectoryAccess(RichTextBox outputTextBox)
         {
             OutputTextBox = outputTextBox;
 

@@ -8,9 +8,9 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Windows.Forms;
 
-namespace Spare.FileAccess
+namespace Spare.Tools
 {
-    public class SpotifyInstaller
+    public class Installer
     {
         #region Static
         private const string InstallerHash = "a0f36ca24bf9df230afe59b6e4dd4f53";
@@ -21,13 +21,13 @@ namespace Spare.FileAccess
         #endregion
 
         #region Constructors
-        public SpotifyInstaller(RichTextBox outputTextBox) 
+        public Installer(RichTextBox outputTextBox)
             => OutputTextBox = outputTextBox;
         #endregion
 
         #region Properties
         public RichTextBox OutputTextBox { get; }
-        public string Path => System.IO.Path.Combine(Application.StartupPath, "Data", "spotify_installer1.0.8.exe");
+        public string InstallerPath => Path.Combine(Application.StartupPath, "Data", "spotify_installer1.0.8.exe");
         #endregion
 
         #region Events
@@ -38,14 +38,14 @@ namespace Spare.FileAccess
         #region Methods
         public bool Exists()
         {
-            if (!File.Exists(Path))
+            if (!File.Exists(InstallerPath))
             {
                 return false;
             }
 
             using (var md5 = MD5.Create())
             {
-                using (var stream = File.OpenRead(Path))
+                using (var stream = File.OpenRead(InstallerPath))
                 {
                     return string.Equals(
                         BitConverter
@@ -65,16 +65,15 @@ namespace Spare.FileAccess
             OutputTextBox.AppendText("Installing Spotify...");
 
             // HACK: Start the Spotify installer with non-admin rights, otherwise it wouldnt execute
-            Process.Start("explorer.exe", Path)?.WaitForExit();
+            Process.Start("explorer.exe", InstallerPath)?.WaitForExit();
 
             try
             {
-                using (var installProcess = Process.GetProcessesByName(System.IO.Path.GetFileNameWithoutExtension(Path)).First())
+                using (var installProcess = Process.GetProcessesByName(Path.GetFileNameWithoutExtension(InstallerPath)).First())
                 {
                     installProcess.EnableRaisingEvents = true;
                     installProcess.Exited += InstallProcessExited;
 
-                    // ReSharper disable once EmptyEmbeddedStatement
                     while (!installProcess.HasExited) ;
                 }
             }

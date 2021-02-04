@@ -8,21 +8,17 @@ using System.Windows.Forms;
 
 namespace Spare.FileAccess
 {
-    public class SpotifyAppDirectoryAccess
+    public class AppDirectoryAccess
     {
         #region Static
+        public static readonly string RoamingDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Spotify");
         private const string TargetVersion = "1.0.80.474";
         #endregion
 
-        #region Fields
-        private readonly string _roamingDirectory;
-        #endregion
-
         #region Constructors
-        public SpotifyAppDirectoryAccess(RichTextBox outputTextBox)
+        public AppDirectoryAccess(RichTextBox outputTextBox)
         {
             OutputTextBox = outputTextBox;
-            _roamingDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Spotify");
         }
         #endregion
 
@@ -33,17 +29,16 @@ namespace Spare.FileAccess
         #region Methods
         public (bool alreadyInstalled, bool correctVersion) AlreadyInstalled()
         {
-            var executablePath = Path.Combine(_roamingDirectory, "Spotify.exe");
+            var executablePath = Path.Combine(RoamingDirectory, "Spotify.exe");
 
             if (!File.Exists(executablePath))
             {
                 return (false, false);
             }
 
-            var executableVersion = new Version(
-                FileVersionInfo
-                    .GetVersionInfo(executablePath)
-                    .FileVersion);
+            var executableVersion = new Version(FileVersionInfo
+                .GetVersionInfo(executablePath)
+                .FileVersion);
 
             return (true, executableVersion.CompareTo(new Version(TargetVersion)) == 0);
         }
@@ -55,7 +50,7 @@ namespace Spare.FileAccess
         {
             OutputTextBox.AppendText("Deleting ad data...");
 
-            var adspaPath = Path.Combine(_roamingDirectory, "Apps", "ad.spa");
+            var adspaPath = Path.Combine(RoamingDirectory, "Apps", "ad.spa");
 
             if (File.Exists(adspaPath))
             {

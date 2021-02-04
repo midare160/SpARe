@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Spare.UI;
 
-namespace Spare.FileAccess
+namespace Spare.Tools
 {
     public class Updater
     {

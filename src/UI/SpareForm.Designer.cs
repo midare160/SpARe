@@ -43,6 +43,7 @@ namespace Spare.UI
             this.OutputGroupbox = new System.Windows.Forms.GroupBox();
             this.OutputTextBox = new Spare.CustomControls.ReadOnlyRichTextBox();
             this.InstallerWatcher = new System.IO.FileSystemWatcher();
+            this.CleanSpotifyButton = new System.Windows.Forms.Button();
             this.StartGroupbox.SuspendLayout();
             this.OutputGroupbox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.InstallerWatcher)).BeginInit();
@@ -119,6 +120,7 @@ namespace Spare.UI
             // 
             // StartGroupbox
             // 
+            this.StartGroupbox.Controls.Add(this.CleanSpotifyButton);
             this.StartGroupbox.Controls.Add(this.StartButton);
             this.StartGroupbox.Controls.Add(this.RevertButton);
             this.StartGroupbox.Controls.Add(this.InstallCheckBox);
@@ -179,6 +181,16 @@ namespace Spare.UI
             this.InstallerWatcher.Deleted += new System.IO.FileSystemEventHandler(this.InstallerWatcher_Modified);
             this.InstallerWatcher.Renamed += new System.IO.RenamedEventHandler(this.InstallerWatcher_Modified);
             // 
+            // CleanSpotifyButton
+            // 
+            this.CleanSpotifyButton.Location = new System.Drawing.Point(104, 19);
+            this.CleanSpotifyButton.Name = "CleanSpotifyButton";
+            this.CleanSpotifyButton.Size = new System.Drawing.Size(101, 23);
+            this.CleanSpotifyButton.TabIndex = 4;
+            this.CleanSpotifyButton.Text = "Clean Spotify";
+            this.CleanSpotifyButton.UseVisualStyleBackColor = true;
+            this.CleanSpotifyButton.Click += new System.EventHandler(this.CleanSpotifyButton_Click);
+            // 
             // SpareForm
             // 
             this.AcceptButton = this.StartButton;
@@ -221,6 +233,7 @@ namespace Spare.UI
         private ReadOnlyRichTextBox OutputTextBox;
         private System.Windows.Forms.Label WarningLabel;
         private System.IO.FileSystemWatcher InstallerWatcher;
+        private System.Windows.Forms.Button CleanSpotifyButton;
     }
 }
 

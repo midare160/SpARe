@@ -8,6 +8,7 @@ using System.Media;
 using System.Windows.Forms;
 using Spare.Extensions;
 using Spare.FileAccess;
+using Spare.Tools;
 
 namespace Spare.UI
 {
@@ -21,9 +22,9 @@ namespace Spare.UI
         private bool _alreadyInstalled;
         private readonly Updater _updater;
         private readonly HostsFileAccess _hostsFileAccess;
-        private readonly SpotifyUpdateDirectoryAccess _spotifyUpdateDirectoryAccess;
-        private readonly SpotifyAppDirectoryAccess _spotifyAppDirectoryAccess;
-        private readonly SpotifyInstaller _spotifyInstaller;
+        private readonly UpdateDirectoryAccess _spotifyUpdateDirectoryAccess;
+        private readonly AppDirectoryAccess _spotifyAppDirectoryAccess;
+        private readonly Installer _spotifyInstaller;
         private readonly string _textBoxSeparator;
         #endregion
 
@@ -34,9 +35,9 @@ namespace Spare.UI
 
             _updater = new Updater();
             _hostsFileAccess = new HostsFileAccess(OutputTextBox);
-            _spotifyUpdateDirectoryAccess = new SpotifyUpdateDirectoryAccess(OutputTextBox);
-            _spotifyAppDirectoryAccess = new SpotifyAppDirectoryAccess(OutputTextBox);
-            _spotifyInstaller = new SpotifyInstaller(OutputTextBox);
+            _spotifyUpdateDirectoryAccess = new UpdateDirectoryAccess(OutputTextBox);
+            _spotifyAppDirectoryAccess = new AppDirectoryAccess(OutputTextBox);
+            _spotifyInstaller = new Installer(OutputTextBox);
             _textBoxSeparator = "\r\n" + string.Concat(Enumerable.Repeat("- ", 46)) + "\r\n";
         }
         #endregion
@@ -79,11 +80,11 @@ namespace Spare.UI
             {
                 if (InstallCheckBox.Checked)
                 {
-                    this.WindowState = FormWindowState.Minimized;
+                    this.Visible = false;
 
                     if (!_spotifyInstaller.Install())
                     {
-                        this.WindowState = FormWindowState.Normal;
+                        this.Visible = true;
                         OutputTextBox.AppendText("\r\nNo changes have been made!");
                         SystemSounds.Hand.Play();
 
@@ -91,7 +92,7 @@ namespace Spare.UI
                     }
                 }
 
-                this.WindowState = FormWindowState.Normal;
+                this.Visible = true;
 
                 _spotifyUpdateDirectoryAccess.Deny();
                 _hostsFileAccess.WriteUrls();
@@ -104,6 +105,7 @@ namespace Spare.UI
             }
             finally
             {
+                this.Visible = true;
                 OutputTextBox.AppendText(_textBoxSeparator);
             }
         }
@@ -176,7 +178,7 @@ namespace Spare.UI
             }
 
             this.Text = Application.ProductName;
-            InstallerWatcher.Path = Path.GetDirectoryName(_spotifyInstaller.Path);
+            InstallerWatcher.Path = Path.GetDirectoryName(_spotifyInstaller.InstallerPath);
 
             if (Settings.Default.UpgradeRequired)
             {
@@ -212,5 +214,14 @@ namespace Spare.UI
             Settings.Default.Save(true);
         }
         #endregion
+
+        private void CleanSpotifyButton_Click(object sender, EventArgs e)
+        {
+            Cursor.Current = Cursors.WaitCursor;
+
+            // TODO check if alreadyv installed(=>Exception), add Checkbox to Revert instead of extra button
+            var uninstaller = new Uninstaller();
+            uninstaller.UninstallSpotify();
+        }
     }
 }

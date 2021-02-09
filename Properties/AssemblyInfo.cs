@@ -1,16 +1,16 @@
-﻿using System.Resources;
-using System.Reflection;
+﻿using System.Reflection;
+using System.Resources;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("SpARe")]
-[assembly: AssemblyDescription("Removes all ads from Spotify.")]
+[assembly: AssemblyDescription("Removes all ads from Spotify")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("SpAre")]
-[assembly: AssemblyCopyright("©2020 midare160")]
+[assembly: AssemblyCopyright("©2020-2021 midare160")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

@@ -39,11 +39,12 @@ namespace Spare.UI
             this.ClearButton = new System.Windows.Forms.Button();
             this.InstallCheckboxToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.StartGroupbox = new System.Windows.Forms.GroupBox();
+            this.CleanupCheckBox = new System.Windows.Forms.CheckBox();
             this.WarningLabel = new System.Windows.Forms.Label();
             this.OutputGroupbox = new System.Windows.Forms.GroupBox();
             this.OutputTextBox = new Spare.CustomControls.ReadOnlyRichTextBox();
             this.InstallerWatcher = new System.IO.FileSystemWatcher();
-            this.CleanSpotifyButton = new System.Windows.Forms.Button();
+            this.CleanupCheckBoxToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.StartGroupbox.SuspendLayout();
             this.OutputGroupbox.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.InstallerWatcher)).BeginInit();
@@ -78,7 +79,7 @@ namespace Spare.UI
             this.InstallCheckBox.Location = new System.Drawing.Point(87, 86);
             this.InstallCheckBox.Name = "InstallCheckBox";
             this.InstallCheckBox.Size = new System.Drawing.Size(135, 17);
-            this.InstallCheckBox.TabIndex = 1;
+            this.InstallCheckBox.TabIndex = 2;
             this.InstallCheckBox.Text = "&Install Spotify (required)";
             this.InstallCheckBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.InstallCheckboxToolTip.SetToolTip(this.InstallCheckBox, "Spotify must be installed first before any ads can be removed!");
@@ -93,7 +94,7 @@ namespace Spare.UI
             this.CorrectVersionInstalledLabel.Location = new System.Drawing.Point(57, 86);
             this.CorrectVersionInstalledLabel.Name = "CorrectVersionInstalledLabel";
             this.CorrectVersionInstalledLabel.Size = new System.Drawing.Size(194, 13);
-            this.CorrectVersionInstalledLabel.TabIndex = 2;
+            this.CorrectVersionInstalledLabel.TabIndex = 4;
             this.CorrectVersionInstalledLabel.Text = "Correct Spotify version already installed!";
             this.CorrectVersionInstalledLabel.Visible = false;
             // 
@@ -120,10 +121,10 @@ namespace Spare.UI
             // 
             // StartGroupbox
             // 
-            this.StartGroupbox.Controls.Add(this.CleanSpotifyButton);
             this.StartGroupbox.Controls.Add(this.StartButton);
             this.StartGroupbox.Controls.Add(this.RevertButton);
             this.StartGroupbox.Controls.Add(this.InstallCheckBox);
+            this.StartGroupbox.Controls.Add(this.CleanupCheckBox);
             this.StartGroupbox.Controls.Add(this.CorrectVersionInstalledLabel);
             this.StartGroupbox.Controls.Add(this.WarningLabel);
             this.StartGroupbox.Location = new System.Drawing.Point(12, 12);
@@ -133,6 +134,18 @@ namespace Spare.UI
             this.StartGroupbox.TabStop = false;
             this.StartGroupbox.Text = "Start";
             // 
+            // CleanupCheckBox
+            // 
+            this.CleanupCheckBox.AutoSize = true;
+            this.CleanupCheckBox.Location = new System.Drawing.Point(99, 86);
+            this.CleanupCheckBox.Name = "CleanupCheckBox";
+            this.CleanupCheckBox.Size = new System.Drawing.Size(111, 17);
+            this.CleanupCheckBox.TabIndex = 3;
+            this.CleanupCheckBox.Text = "Complete cleanup";
+            this.CleanupCheckBoxToolTip.SetToolTip(this.CleanupCheckBox, "Performs a complete cleanup, including all folders/registry entries affecting Spotify");
+            this.CleanupCheckBox.UseVisualStyleBackColor = true;
+            this.CleanupCheckBox.Visible = false;
+            // 
             // WarningLabel
             // 
             this.WarningLabel.AutoSize = true;
@@ -140,7 +153,7 @@ namespace Spare.UI
             this.WarningLabel.Location = new System.Drawing.Point(90, 86);
             this.WarningLabel.Name = "WarningLabel";
             this.WarningLabel.Size = new System.Drawing.Size(128, 13);
-            this.WarningLabel.TabIndex = 3;
+            this.WarningLabel.TabIndex = 5;
             this.WarningLabel.Text = "Spotify installer not found!";
             this.WarningLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.WarningLabel.Visible = false;
@@ -181,15 +194,13 @@ namespace Spare.UI
             this.InstallerWatcher.Deleted += new System.IO.FileSystemEventHandler(this.InstallerWatcher_Modified);
             this.InstallerWatcher.Renamed += new System.IO.RenamedEventHandler(this.InstallerWatcher_Modified);
             // 
-            // CleanSpotifyButton
+            // CleanupCheckBoxToolTip
             // 
-            this.CleanSpotifyButton.Location = new System.Drawing.Point(104, 19);
-            this.CleanSpotifyButton.Name = "CleanSpotifyButton";
-            this.CleanSpotifyButton.Size = new System.Drawing.Size(101, 23);
-            this.CleanSpotifyButton.TabIndex = 4;
-            this.CleanSpotifyButton.Text = "Clean Spotify";
-            this.CleanSpotifyButton.UseVisualStyleBackColor = true;
-            this.CleanSpotifyButton.Click += new System.EventHandler(this.CleanSpotifyButton_Click);
+            this.CleanupCheckBoxToolTip.AutoPopDelay = 10000;
+            this.CleanupCheckBoxToolTip.InitialDelay = 500;
+            this.CleanupCheckBoxToolTip.ReshowDelay = 100;
+            this.CleanupCheckBoxToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+            this.CleanupCheckBoxToolTip.ToolTipTitle = "Information";
             // 
             // SpareForm
             // 
@@ -233,7 +244,8 @@ namespace Spare.UI
         private ReadOnlyRichTextBox OutputTextBox;
         private System.Windows.Forms.Label WarningLabel;
         private System.IO.FileSystemWatcher InstallerWatcher;
-        private System.Windows.Forms.Button CleanSpotifyButton;
+        private System.Windows.Forms.CheckBox CleanupCheckBox;
+        private System.Windows.Forms.ToolTip CleanupCheckBoxToolTip;
     }
 }
 

@@ -1,4 +1,7 @@
-﻿using Spare.Properties;
+﻿using Spare.Extensions;
+using Spare.FileAccess;
+using Spare.Properties;
+using Spare.Tools;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -6,9 +9,6 @@ using System.IO;
 using System.Linq;
 using System.Media;
 using System.Windows.Forms;
-using Spare.Extensions;
-using Spare.FileAccess;
-using Spare.Tools;
 
 namespace Spare.UI
 {
@@ -55,7 +55,7 @@ namespace Spare.UI
         }
 
         private void InstallerWatcher_Modified(object sender, EventArgs e)
-            => SetUiAndRegistry(Settings.Default.AdsRemoved);
+            => SetUiAndConfig(Settings.Default.AdsRemoved);
 
         private void SpareForm_KeyDown(object sender, KeyEventArgs e)
         {
@@ -84,7 +84,6 @@ namespace Spare.UI
 
                     if (!_spotifyInstaller.Install())
                     {
-                        this.Visible = true;
                         OutputTextBox.AppendText("\r\nNo changes have been made!");
                         SystemSounds.Hand.Play();
 
@@ -98,7 +97,7 @@ namespace Spare.UI
                 _hostsFileAccess.WriteUrls();
                 _spotifyAppDirectoryAccess.DeleteAdSpaFile();
 
-                SetUiAndRegistry(true);
+                SetUiAndConfig(true);
 
                 OutputTextBox.AppendText("\r\nAds successfully removed!", Color.Green);
                 SystemSounds.Asterisk.Play();
@@ -128,7 +127,13 @@ namespace Spare.UI
             _hostsFileAccess.RemoveUrls();
             _spotifyUpdateDirectoryAccess.Allow();
 
-            SetUiAndRegistry(false);
+            if (CleanupCheckBox.Checked)
+            {
+                var uninstaller = new Uninstaller(OutputTextBox);
+                uninstaller.UninstallSpotify();
+            }
+
+            SetUiAndConfig(false);
 
             OutputTextBox.AppendText("\r\nAll changes successfully reverted!", Color.Green);
             OutputTextBox.AppendText(_textBoxSeparator);
@@ -156,15 +161,12 @@ namespace Spare.UI
         private void ClearButton_Click(object sender, EventArgs e)
         {
             Cursor.Current = Cursors.WaitCursor;
-
-            OutputTextBox.Clear();
-            ClearButton.Enabled = false;
+            OutputTextBox.Text = "";
         }
 
         private void OutputTextBox_TextChanged(object sender, EventArgs e)
         {
-            ClearButton.Enabled = true;
-            this.Update();
+            ClearButton.Enabled = !string.IsNullOrEmpty(OutputTextBox.Text);
         }
         #endregion
         #endregion
@@ -187,13 +189,13 @@ namespace Spare.UI
                 Settings.Default.Save(true);
             }
 
-            SetUiAndRegistry(Settings.Default.AdsRemoved);
+            SetUiAndConfig(Settings.Default.AdsRemoved);
         }
 
         private void OpenAboutForm()
             => new AboutForm(_updater).ShowDialog(this);
 
-        private void SetUiAndRegistry(bool adsRemoved)
+        private void SetUiAndConfig(bool adsRemoved)
         {
             var (alreadyInstalled, correctVersionInstalled) = _spotifyAppDirectoryAccess.AlreadyInstalled();
             _alreadyInstalled = alreadyInstalled;
@@ -202,26 +204,18 @@ namespace Spare.UI
             InstallCheckBox.Visible = InstallCheckBox.Checked = installerExists && !correctVersionInstalled && !adsRemoved;
             InstallCheckBox.Text = alreadyInstalled ? "&Downgrade Spotify (recommended)" : "&Install Spotify (required)";
             InstallCheckboxToolTip.Active = !alreadyInstalled;
+            CleanupCheckBox.Visible = adsRemoved;
 
             CorrectVersionInstalledLabel.Visible = installerExists && !adsRemoved && correctVersionInstalled;
             WarningLabel.Visible = !installerExists && !adsRemoved;
 
             RevertButton.Visible = adsRemoved;
             StartButton.Visible = !adsRemoved;
-            AcceptButton = adsRemoved ? RevertButton : StartButton;
+            this.AcceptButton = adsRemoved ? RevertButton : StartButton;
 
             Settings.Default.AdsRemoved = adsRemoved;
             Settings.Default.Save(true);
         }
         #endregion
-
-        private void CleanSpotifyButton_Click(object sender, EventArgs e)
-        {
-            Cursor.Current = Cursors.WaitCursor;
-
-            // TODO check if alreadyv installed(=>Exception), add Checkbox to Revert instead of extra button
-            var uninstaller = new Uninstaller();
-            uninstaller.UninstallSpotify();
-        }
     }
 }

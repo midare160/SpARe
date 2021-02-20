@@ -29,17 +29,14 @@ namespace Spare
         {
             if (newLine)
             {
-                text += Environment.NewLine;
+                text = Environment.NewLine + text;
             }
-            else if (MainForm.OutputTextBox.Lines.Length > 0)
+            else
             {
-                // TODO measure text length to replace magic number 41
-                var maxLength = MainForm.OutputTextBox.Width / TextRenderer.MeasureText("a", MainForm.OutputTextBox.Font, MainForm.OutputTextBox.Size).Width;
-                text = text.PadLeft(41 - MainForm.OutputTextBox.Lines[^1].Length);
+                text = text.PadLeft(39 - MainForm.OutputTextBox.Lines[^1].Length);
             }
 
             MainForm.OutputTextBox.AppendText(text);
-            Debug.Write(text);
         }
     }
 }

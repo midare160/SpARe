@@ -10,6 +10,9 @@
     <Company>-</Company>
     <NeutralLanguage>en</NeutralLanguage>
     <RootNamespace>Spare</RootNamespace>
+    <Copyright>©2020-2021 midare160</Copyright>
+    <RepositoryUrl>https://github.com/midare160/SpARe</RepositoryUrl>
+    <ApplicationIcon>src\Resources\logo.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

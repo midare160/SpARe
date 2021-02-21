@@ -1,7 +1,6 @@
 using Spare.Helpers;
 using Spare.UI;
 using System;
-using System.Diagnostics;
 using System.Windows.Forms;
 
 namespace Spare

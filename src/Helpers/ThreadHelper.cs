@@ -15,11 +15,10 @@ namespace Spare.Helpers
             if (control.InvokeRequired)
             {
                 control.Invoke(action);
+                return;
             }
-            else
-            {
-                action();
-            }
+
+            action();
         }
     }
 }

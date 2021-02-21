@@ -9,13 +9,13 @@ namespace Spare.UI
     public partial class MainForm : Form
     {
         #region Testing - DELETE AFTER
-        private async Task TestMethod()
+        private async Task TestMethodAsync()
         {
             StartButton.Enabled = false;
 
             Program.WriteToOutput("Installing Spotify...", true);
 
-            var process = await ProcessHelper.StartAsNonAdmin(@"C:\Users\Michael Daubert\source\repos\Spare\src\Data\spotify_installer1.0.8.exe");
+            using var process = await ProcessHelper.StartAsNonAdminAsync(@"C:\Users\Michael Daubert\source\repos\Spare\src\Data\spotify_installer1.0.8.exe");
             var exitCode = await process.WaitForExitCodeAsync();
 
             Program.WriteToOutput(exitCode == 0 ? "OK" : "Failed");
@@ -39,7 +39,7 @@ namespace Spare.UI
 
         #region Events
         private async void StartButton_Click(object sender, EventArgs e) =>
-            await TestMethod();
+            await TestMethodAsync();
 
         private void OutputTextBox_TextChanged(object sender, EventArgs e) =>
             ClearButton.Enabled = !string.Equals(OutputTextBox.Text, GreetingString);

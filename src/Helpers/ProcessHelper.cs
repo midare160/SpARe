@@ -7,9 +7,10 @@ namespace Spare.Helpers
 {
     public static class ProcessHelper
     {
-        public static async Task<Process?> StartAsNonAdmin(string processName)
+        public static async Task<Process?> StartAsNonAdminAsync(string processName)
         {
-            await Process.Start("explorer", processName).WaitForExitAsync();
+            using var process = Process.Start("explorer", processName);
+            await process.WaitForExitAsync();
 
             return Process.GetProcessesByName(Path.GetFileNameWithoutExtension(processName)).FirstOrDefault();
         }

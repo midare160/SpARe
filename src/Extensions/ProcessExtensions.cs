@@ -8,7 +8,7 @@ namespace Spare.Extensions
         private const int DefaultExitCode = -1;
 
         /// <summary>
-        /// Waits for the <see cref="Process"/> to exit and then returns it's exit code.
+        /// Waits for the <see cref="Process"/> to exit and then returns its exit code.
         /// </summary>
         /// <returns><see cref="Process.ExitCode"/> or -1, if an error occured or the <see cref="Process"/> is <see langword="null"/>.</returns>
         public static async Task<int> WaitForExitCodeAsync(this Process? process)

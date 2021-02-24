@@ -1,5 +1,6 @@
 ﻿using Spare.Extensions;
 using Spare.Helpers;
+using Spare.src;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -13,12 +14,19 @@ namespace Spare.UI
         {
             StartButton.Enabled = false;
 
-            Program.WriteToOutput("Installing Spotify...", true);
+            Output.Message("Installing Spotify...");
 
-            using var process = await ProcessHelper.StartAsNonAdminAsync(@"C:\Users\Michael Daubert\source\repos\Spare\src\Data\spotify_installer1.0.8.exe");
-            var exitCode = await process.WaitForExitCodeAsync();
+            using var process = await ProcessHelper.StartAsStandardUserAsync(@"C:\Users\Michael Daubert\source\repos\Spare\src\Data\spotify_installer1.0.8.exe");
+            var exitCode = process.WaitForExitCodeAsync();
 
-            Program.WriteToOutput(exitCode == 0 ? "OK" : "Failed");
+            if (await exitCode == 0)
+            {
+                Output.SuccessMessage();
+            }
+            else
+            {
+                Output.FailedMessage();
+            }
 
             StartButton.Enabled = true;
         }
@@ -33,8 +41,11 @@ namespace Spare.UI
         #endregion
 
         #region Events Form
-        private void MainForm_Load(object sender, EventArgs e) =>
+        private void MainForm_Load(object sender, EventArgs e)
+        {
             OutputTextBox.Text = GreetingString;
+            StartButton.Enabled = Spotify.IsInstalled;
+        }
         #endregion
 
         #region Events

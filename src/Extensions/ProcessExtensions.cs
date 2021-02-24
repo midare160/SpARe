@@ -18,13 +18,20 @@ namespace Spare.Extensions
                 return DefaultExitCode;
             }
 
-            int? exitCode = null;
+            try
+            {
+                int? exitCode = null;
 
-            process.EnableRaisingEvents = true;
-            process.Exited += (s, e) => exitCode = (s as Process)?.ExitCode;
-            await process.WaitForExitAsync();
+                process.EnableRaisingEvents = true;
+                process.Exited += (s, e) => exitCode = (s as Process)?.ExitCode;
+                await process.WaitForExitAsync();
 
-            return exitCode ?? DefaultExitCode;
+                return exitCode ?? DefaultExitCode;
+            }
+            catch
+            {
+                return DefaultExitCode;
+            }
         }
     }
 }

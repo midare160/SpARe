@@ -2,8 +2,6 @@
 
   <PropertyGroup>
     <Authors>midare160</Authors>
-    <Company>-</Company>
-    <NeutralLanguage>en</NeutralLanguage>
     <RootNamespace>Spare</RootNamespace>
     <Copyright>©2020-2021 midare160</Copyright>
     <RepositoryUrl>https://github.com/midare160/SpARe</RepositoryUrl>
@@ -11,7 +9,6 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
-    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
     <StartupObject>Spare.Program</StartupObject>
     <Nullable>enable</Nullable>
     <ApplicationIcon>src\Resources\logo.ico</ApplicationIcon>
@@ -19,16 +16,18 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-    <PublishSingleFile>true</PublishSingleFile>
     <PublishTrimmed>true</PublishTrimmed>
+    <PublishSingleFile>true</PublishSingleFile>
     <SelfContained>true</SelfContained>
     <IncludeAllContentForSelfExtract>true</IncludeAllContentForSelfExtract>
-    <DebugType>embedded</DebugType>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
   </PropertyGroup>
 
   <ItemGroup>
     <None Update="src\Data\spotify_installer1.0.8.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <Link>spotify_installer1.0.8.exe</Link>
     </None>
   </ItemGroup>

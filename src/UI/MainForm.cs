@@ -1,6 +1,5 @@
 ﻿using Spare.Extensions;
 using Spare.Helpers;
-using Spare.src;
 using System;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -33,7 +32,7 @@ namespace Spare.UI
         #endregion
 
         #region Static
-        private const string GreetingString = "-- Spotify Ad Remover | by midare160 --\n";
+        private const string GreetingString = "-- Spotify Ad Remover | by midare160 --\n\n";
         #endregion
 
         #region Constructors
@@ -44,7 +43,7 @@ namespace Spare.UI
         private void MainForm_Load(object sender, EventArgs e)
         {
             OutputTextBox.Text = GreetingString;
-            StartButton.Enabled = Spotify.IsInstalled;
+            StartButton.Enabled = Spotify.GetInfo().FileVersion != null;
         }
         #endregion
 
@@ -52,11 +51,20 @@ namespace Spare.UI
         private async void StartButton_Click(object sender, EventArgs e) =>
             await TestMethodAsync();
 
+        private void InfoButton_Click(object sender, EventArgs e)
+        {
+            Cursor.Current = Cursors.WaitCursor;
+            Spotify.OutputInfo();
+        }
+
+        private void ClearButton_Click(object sender, EventArgs e)
+        {
+            Cursor.Current = Cursors.WaitCursor;
+            OutputTextBox.Text = GreetingString;
+        }
+
         private void OutputTextBox_TextChanged(object sender, EventArgs e) =>
             ClearButton.Enabled = !string.Equals(OutputTextBox.Text, GreetingString);
-
-        private void ClearButton_Click(object sender, EventArgs e) =>
-            OutputTextBox.Text = GreetingString;
         #endregion
 
         #region Overrides

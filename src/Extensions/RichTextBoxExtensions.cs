@@ -9,16 +9,11 @@ namespace Spare.Extensions
         /// <summary>
         /// Appends the given <paramref name="text"/> colored with <paramref name="color"/> to a <see cref="RichTextBox"/>.
         /// </summary>
-        public static void AppendText(this RichTextBox textBox, string text, Color color)
+        public static void AppendText(this RichTextBox textBox, string? text, Color color)
         {
             if (textBox == null)
             {
                 throw new ArgumentNullException(nameof(textBox));
-            }
-
-            if (string.IsNullOrEmpty(text))
-            {
-                throw new ArgumentNullException(nameof(text));
             }
 
             textBox.SelectionStart = textBox.TextLength;

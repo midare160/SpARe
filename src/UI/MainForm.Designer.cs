@@ -94,6 +94,7 @@ namespace Spare.UI
             this.InfoButton.TabIndex = 1;
             this.InfoButton.Text = "&Info";
             this.InfoButton.UseVisualStyleBackColor = true;
+            this.InfoButton.Click += new System.EventHandler(this.InfoButton_Click);
             // 
             // StartButton
             // 

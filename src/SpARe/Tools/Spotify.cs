@@ -6,32 +6,31 @@ using System.Windows.Forms;
 
 namespace Spare.Tools
 {
-    public class Spotify
+    public static class Spotify
     {
         #region Static
-        // TODO get version directly from installer file
-        public const string InstallerVersion = "1.0.80.474";
+        private static readonly Version CorrectVersion = new Version(1, 0, 80, 474);
 
-        public static readonly string RoamingDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Spotify");
+        private static readonly string RoamingDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Spotify");
 
         public static FileVersionInfo GetInfo() =>
             FileVersionInfo.GetVersionInfo(Path.Combine(RoamingDirectory, "Spotify.exe"));
 
         public static void OutputInfo()
         {
-            var version = GetInfo().ProductVersion;
-
             Output.Message("--- Info ---", HorizontalAlignment.Center);
             Output.NewLine();
             Output.Message($"Installed version");
+
+            var version = GetInfo().ProductVersion;
 
             switch (version)
             {
                 case null:
                     Output.FailedMessage("NONE");
                     break;
-                case InstallerVersion:
-                    Output.SuccessMessage(version);
+                case var correctVersion when CorrectVersion.ToString() == correctVersion:
+                    Output.SuccessMessage(correctVersion);
                     break;
                 default:
                     Output.Message(version, HorizontalAlignment.Right);

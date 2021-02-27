@@ -7,8 +7,13 @@ namespace Spare.Helpers
 {
     public static class ProcessHelper
     {
-        public static async Task<Process?> StartAsStandardUserAsync(string processName)
+        public static async Task<Process?> StartAsStandardUserAsync(string? processName)
         {
+            if (string.IsNullOrEmpty(processName))
+            {
+                return null;
+            }
+
             using var process = Process.Start("explorer", processName);
             await process.WaitForExitAsync();
 

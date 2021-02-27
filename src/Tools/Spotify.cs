@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Windows.Forms;
 
-namespace Spare
+namespace Spare.Tools
 {
     public class Spotify
     {
@@ -38,8 +37,7 @@ namespace Spare
                     break;
             }
 
-            Output.Message(string.Concat(Enumerable.Repeat('-', Output.Width)));
-            Output.NewLine();
+            Output.EndOfBlock();
         }
         #endregion
     }

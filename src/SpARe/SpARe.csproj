@@ -1,7 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Authors>midare160</Authors>
     <RootNamespace>Spare</RootNamespace>
     <Copyright>©2020-2021 midare160</Copyright>
     <RepositoryUrl>https://github.com/midare160/SpARe</RepositoryUrl>
@@ -13,6 +12,8 @@
     <Nullable>enable</Nullable>
     <ApplicationIcon>Resources\logo.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <AssemblyVersion>2.0.0.0</AssemblyVersion>
+    <FileVersion>2.0.0.0</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">

@@ -38,7 +38,11 @@ namespace Spare.UI
         #endregion
 
         #region Constructors
-        public MainForm() => InitializeComponent();
+        public MainForm()
+        {
+            Settings.Instance.Upgrade();
+            InitializeComponent();
+        }
         #endregion
 
         #region Events Form

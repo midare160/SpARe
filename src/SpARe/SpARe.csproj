@@ -9,7 +9,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net5.0-windows</TargetFramework>
     <UseWindowsForms>true</UseWindowsForms>
-    <StartupObject>Spare.Program</StartupObject>
+    <StartupObject>Spare.Root.Program</StartupObject>
     <Nullable>enable</Nullable>
     <ApplicationIcon>Resources\logo.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>

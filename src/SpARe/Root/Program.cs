@@ -2,7 +2,7 @@ using Spare.UI;
 using System;
 using System.Windows.Forms;
 
-namespace Spare
+namespace Spare.Root
 {
     internal static class Program
     {

@@ -17,7 +17,7 @@ namespace SpARe.Tests
         [Fact]
         public void DeleteInvalidFile()
         {
-            var deletionResult = FileHelper.Delete(@"F:\Test");
+            var deletionResult = FileHelper.Delete(@"F:\?Test");
 
             Assert.False(deletionResult);
         }

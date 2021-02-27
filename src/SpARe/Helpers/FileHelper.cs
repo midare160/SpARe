@@ -7,7 +7,7 @@ namespace Spare.Helpers
         /// <summary>
         /// Deletes the file at the specified <paramref name="filePath"/>.
         /// </summary>
-        /// <returns><see langword="true"/>, if the file exists and was successfuly deleted, otherwise <see langword="false"/>.</returns>
+        /// <returns><see langword="true"/>, if the file exists and was successfully deleted, otherwise <see langword="false"/>.</returns>
         public static bool Delete(string? filePath)
         {
             if (!File.Exists(filePath))
@@ -17,7 +17,9 @@ namespace Spare.Helpers
 
             try
             {
+#nullable disable
                 File.Delete(filePath);
+#nullable enable
 
                 return true;
             }

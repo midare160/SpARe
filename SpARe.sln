@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31005.135
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpARe", "src\SpARe\SpARe.csproj", "{F7C7E87C-C77A-411A-870A-2AFB63F945D7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F7C7E87C-C77A-411A-870A-2AFB63F945D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7C7E87C-C77A-411A-870A-2AFB63F945D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7C7E87C-C77A-411A-870A-2AFB63F945D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7C7E87C-C77A-411A-870A-2AFB63F945D7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F80F3B21-99E1-45CB-82C7-163C45F43429}
+	EndGlobalSection
+EndGlobal

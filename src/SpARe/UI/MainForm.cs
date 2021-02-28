@@ -1,38 +1,12 @@
-﻿using Spare.Extensions;
-using Spare.Helpers;
-using Spare.Root;
+﻿using Spare.Root;
 using Spare.Tools;
 using System;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Spare.UI
 {
     public partial class MainForm : Form
     {
-        #region Testing - DELETE AFTER
-        private async Task TestMethodAsync()
-        {
-            StartButton.Enabled = false;
-
-            Output.Message("Installing Spotify...");
-
-            using var process = await ProcessHelper.StartAsStandardUserAsync(@"C:\Users\Michael Daubert\source\repos\Spare\src\Data\spotify_installer1.0.8.exe");
-            var exitCode = process.WaitForExitCodeAsync();
-
-            if (await exitCode == 0)
-            {
-                Output.SuccessMessage();
-            }
-            else
-            {
-                Output.FailedMessage();
-            }
-
-            StartButton.Enabled = true;
-        }
-        #endregion
-
         #region Static
         private const string GreetingString = "-- Spotify Ad Remover | by midare160 --\n\n";
         #endregion
@@ -54,8 +28,10 @@ namespace Spare.UI
         #endregion
 
         #region Events
-        private async void StartButton_Click(object sender, EventArgs e) =>
-            await TestMethodAsync();
+        private async void StartButton_Click(object sender, EventArgs e)
+        {
+            // TODO begin removing ads here
+        }
 
         private void InfoButton_Click(object sender, EventArgs e)
         {

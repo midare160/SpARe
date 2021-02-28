@@ -37,6 +37,17 @@ namespace Spare.Tools
                     break;
             }
 
+            Output.Message("Ads removed");
+
+            if (Settings.Instance.AdsRemoved)
+            {
+                Output.SuccessMessage("YES");
+            }
+            else
+            {
+                Output.FailedMessage("NO");
+            }
+
             Output.EndOfBlock();
         }
         #endregion

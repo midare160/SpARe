@@ -2,7 +2,7 @@
 
 namespace Spare.Root
 {
-    internal sealed class Settings : ApplicationSettingsBase
+    public sealed class Settings : ApplicationSettingsBase
     {
         #region Static
         private const string FalseString = "False";

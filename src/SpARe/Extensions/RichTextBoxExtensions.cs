@@ -17,7 +17,7 @@ namespace Spare.Extensions
             }
 
             textBox.SelectionStart = textBox.TextLength;
-            textBox.SelectionLength = 0;
+            textBox.SelectionLength = default;
 
             textBox.SelectionColor = color;
             textBox.AppendText(text);

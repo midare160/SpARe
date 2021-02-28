@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Spare.Extensions;
+using System;
 using System.Windows.Forms;
 
 namespace Spare.Helpers
@@ -12,6 +13,9 @@ namespace Spare.Helpers
         /// <param name="action"><see cref="Action"/> to perform on the <paramref name="control"/> thread if invoking is required.</param>
         public static void InvokeControl(Control control, Action action)
         {
+            control.ThrowIfArgumentNull(nameof(control));
+            action.ThrowIfArgumentNull(nameof(action));
+
             if (control.InvokeRequired)
             {
                 control.Invoke(action);

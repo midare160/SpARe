@@ -1,5 +1,4 @@
-﻿using System;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Windows.Forms;
 
 namespace Spare.Extensions
@@ -11,10 +10,7 @@ namespace Spare.Extensions
         /// </summary>
         public static void AppendText(this RichTextBox textBox, string? text, Color color)
         {
-            if (textBox == null)
-            {
-                throw new ArgumentNullException(nameof(textBox));
-            }
+            textBox.ThrowIfArgumentNull(nameof(textBox));
 
             textBox.SelectionStart = textBox.TextLength;
             textBox.SelectionLength = default;

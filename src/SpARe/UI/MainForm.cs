@@ -1,4 +1,5 @@
-﻿using Spare.Root;
+﻿using Spare.Extensions;
+using Spare.Root;
 using Spare.Tools;
 using System;
 using System.Windows.Forms;
@@ -31,13 +32,12 @@ namespace Spare.UI
         private async void StartButton_Click(object sender, EventArgs e)
         {
             // TODO begin removing ads here
+
+            "sdf".ThrowIfArgumentNull();
         }
 
-        private void InfoButton_Click(object sender, EventArgs e)
-        {
-            Cursor.Current = Cursors.WaitCursor;
-            Spotify.OutputInfo();
-        }
+        private async void InfoButton_Click(object sender, EventArgs e) 
+            => await this.RunAsync(Spotify.OutputInfo, InfoButton);
 
         private void ClearButton_Click(object sender, EventArgs e)
         {

@@ -2,6 +2,8 @@
 using Spare.Root;
 using Spare.Tools;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Spare.UI
@@ -16,6 +18,7 @@ namespace Spare.UI
         public MainForm()
         {
             Settings.Instance.Upgrade();
+
             InitializeComponent();
         }
         #endregion
@@ -32,12 +35,10 @@ namespace Spare.UI
         private async void StartButton_Click(object sender, EventArgs e)
         {
             // TODO begin removing ads here
-
-            "sdf".ThrowIfArgumentNull();
         }
 
-        private async void InfoButton_Click(object sender, EventArgs e) 
-            => await this.RunAsync(Spotify.OutputInfo, InfoButton);
+        private async void InfoButton_Click(object sender, EventArgs e)
+            => await this.RunAsync(Spotify.OutputInfo, GetActionButtons());
 
         private void ClearButton_Click(object sender, EventArgs e)
         {
@@ -47,6 +48,20 @@ namespace Spare.UI
 
         private void OutputTextBox_TextChanged(object sender, EventArgs e) =>
             ClearButton.Enabled = !string.Equals(OutputTextBox.Text, GreetingString);
+        #endregion
+
+        #region Private Procedures
+        private List<Button> GetActionButtons()
+        {
+            var buttons = new List<Button>();
+
+            foreach (TabPage tab in ActionsTabControl.TabPages)
+            {
+                buttons.AddRange(tab.Controls.OfType<Button>());
+            }
+
+            return buttons;
+        }
         #endregion
 
         #region Overrides

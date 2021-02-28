@@ -7,7 +7,7 @@ namespace Spare.Tests
     public class FileHelperTests
     {
         [Fact]
-        public void DeleteWhiteSpaceFile()
+        public void Delete_WhiteSpaceFile_False()
         {
             var deletionResult = FileHelper.Delete(" ");
 
@@ -15,7 +15,7 @@ namespace Spare.Tests
         }
 
         [Fact]
-        public void DeleteInvalidFile()
+        public void Delete_InvalidFile_False()
         {
             var deletionResult = FileHelper.Delete(@"F:\?Test");
 
@@ -23,7 +23,7 @@ namespace Spare.Tests
         }
 
         [Fact]
-        public void DeleteTempFile()
+        public void Delete_TempFile_TrueAndFileDeleted()
         {
             var tempFile = Path.GetTempFileName();
             var deletionResult = FileHelper.Delete(tempFile);

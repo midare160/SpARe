@@ -8,6 +8,8 @@
         /// </summary>
         public static string PadCenter(this string str, int totalWidth)
         {
+            str.ThrowIfArgumentNull(nameof(str));
+
             var spaces = totalWidth - str.Length;
             var padLeft = spaces / 2 + str.Length;
 

@@ -7,7 +7,7 @@ namespace Spare.Tests
     public class ObjectExtensionsTests
     {
         [Fact]
-        public void ArgumentNull()
+        public void ThrowIfArgumentNull_ArgumentNull_ExceptionThrown()
         {
             object? testObject = null;
 
@@ -15,15 +15,14 @@ namespace Spare.Tests
         }
 
         [Fact]
-        public void ArgumentNotNull()
+        public void ThrowIfArgumentNull_ArgumentNotNull_Pass()
         {
             var testObject = new object();
-
             testObject.ThrowIfArgumentNull();
         }
 
         [Fact]
-        public void StringArgumentWhiteSpace()
+        public void ThrowIfArgumentNull_StringArgumentWhiteSpace_ExceptionThrown()
         {
             var testString = " ";
 
@@ -31,7 +30,7 @@ namespace Spare.Tests
         }
 
         [Fact]
-        public void StringArgumentNotNull()
+        public void ThrowIfArgumentNull_StringArgumentNotNull_Pass()
         {
             var testString = "TestString";
 

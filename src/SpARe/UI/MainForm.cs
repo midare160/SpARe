@@ -38,7 +38,7 @@ namespace Spare.UI
         }
 
         private async void InfoButton_Click(object sender, EventArgs e)
-            => await this.RunAsync(Spotify.OutputInfo, GetActionButtons());
+            => await this.RunAsync(Spotify.OutputInfo, GetTabPageButtons());
 
         private void ClearButton_Click(object sender, EventArgs e)
         {
@@ -51,16 +51,11 @@ namespace Spare.UI
         #endregion
 
         #region Private Procedures
-        private List<Button> GetActionButtons()
+        private IEnumerable<Button> GetTabPageButtons()
         {
-            var buttons = new List<Button>();
-
-            foreach (TabPage tab in ActionsTabControl.TabPages)
-            {
-                buttons.AddRange(tab.Controls.OfType<Button>());
-            }
-
-            return buttons;
+            return ActionsTabControl.TabPages
+                .Cast<TabPage>()
+                .SelectMany(t => t.Controls.OfType<Button>());
         }
         #endregion
 

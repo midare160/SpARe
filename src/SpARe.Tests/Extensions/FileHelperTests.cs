@@ -2,7 +2,7 @@ using Spare.Helpers;
 using System.IO;
 using Xunit;
 
-namespace Spare.Tests
+namespace Spare.Tests.Extensions
 {
     public class FileHelperTests
     {

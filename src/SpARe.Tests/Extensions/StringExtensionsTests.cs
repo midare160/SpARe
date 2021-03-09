@@ -1,7 +1,7 @@
 ﻿using Spare.Extensions;
 using Xunit;
 
-namespace Spare.Tests
+namespace Spare.Tests.Extensions
 {
     public class StringExtensionsTests
     {

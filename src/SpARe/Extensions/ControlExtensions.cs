@@ -12,9 +12,9 @@ namespace Spare.Extensions
 
         public static async Task RunAsync(this Control control, Action action, IEnumerable<Control> subControlsToDisable)
         {
-            control.ThrowIfArgumentNull(nameof(control));
-            action.ThrowIfArgumentNull(nameof(control));
-            subControlsToDisable.ThrowIfArgumentNull(nameof(subControlsToDisable));
+            control.ThrowIfNull(nameof(control));
+            action.ThrowIfNull(nameof(control));
+            subControlsToDisable.ThrowIfNull(nameof(subControlsToDisable));
 
             try
             {

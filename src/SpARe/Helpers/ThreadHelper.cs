@@ -13,8 +13,8 @@ namespace Spare.Helpers
         /// <param name="action"><see cref="Action"/> to perform on the <paramref name="control"/> thread if invoking is required.</param>
         public static void InvokeControl(Control control, Action action)
         {
-            control.ThrowIfArgumentNull(nameof(control));
-            action.ThrowIfArgumentNull(nameof(action));
+            control.ThrowIfNull(nameof(control));
+            action.ThrowIfNull(nameof(action));
 
             if (control.InvokeRequired)
             {

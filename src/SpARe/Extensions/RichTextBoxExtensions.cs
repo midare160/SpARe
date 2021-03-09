@@ -10,7 +10,7 @@ namespace Spare.Extensions
         /// </summary>
         public static void AppendText(this RichTextBox textBox, string? text, Color color)
         {
-            textBox.ThrowIfArgumentNull(nameof(textBox));
+            textBox.ThrowIfNull(nameof(textBox));
 
             textBox.SelectionStart = textBox.TextLength;
             textBox.SelectionLength = default;

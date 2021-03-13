@@ -41,7 +41,7 @@
   </ItemGroup>
 
    <Target Name="ZipPublishOutput" AfterTargets="Publish"> 
-     <Exec Command="powershell Compress-Archive '$(PublishDir)' '$(PublishDir)$(Configuration)_v$(Version)_$(RuntimeIdentifier).zip' -Force" />
+     <Exec Command="powershell Compress-Archive '$(PublishDir)*' '$(PublishDir)$(Configuration)_v$(Version)_$(RuntimeIdentifier).zip' -Force" />
    </Target> 
 
 </Project>

@@ -1,4 +1,6 @@
-﻿namespace Spare.Extensions
+﻿using System;
+
+namespace Spare.Extensions
 {
     public static class StringExtensions
     {
@@ -8,12 +10,20 @@
         /// </summary>
         public static string PadCenter(this string str, int totalWidth)
         {
-            str.ThrowIfNull(nameof(str));
+            str.ThrowIfNullOrEmpty(nameof(str));
 
             var spaces = totalWidth - str.Length;
             var padLeft = spaces / 2 + str.Length;
 
             return str.PadLeft(padLeft).PadRight(totalWidth);
+        }
+
+        public static void ThrowIfNullOrEmpty(this string? str, string? argumentName = null)
+        {
+            if (string.IsNullOrEmpty(str))
+            {
+                throw new ArgumentNullException(argumentName);
+            }
         }
     }
 }

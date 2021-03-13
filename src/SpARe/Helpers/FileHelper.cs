@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using Spare.Models;
+using System;
+using System.IO;
 
 namespace Spare.Helpers
 {
@@ -7,25 +9,19 @@ namespace Spare.Helpers
         /// <summary>
         /// Deletes the file at the specified <paramref name="filePath"/>.
         /// </summary>
-        /// <returns><see langword="true"/>, if the file exists and was successfully deleted, otherwise <see langword="false"/>.</returns>
-        public static bool Delete(string? filePath)
+        /// <returns>An <see cref="ActionResult"/> with <see langword="true"/>, if the file exists and was successfully deleted, 
+        /// otherwise <see langword="false"/> and the catched <see cref="Exception"/>.</returns>
+        public static ActionResult Delete(string filePath)
         {
-            if (!File.Exists(filePath))
-            {
-                return false;
-            }
-
             try
             {
-#nullable disable
                 File.Delete(filePath);
-#nullable enable
 
-                return true;
+                return new ActionResult(true);
             }
-            catch
+            catch (Exception ex)
             {
-                return false;
+                return new ActionResult(false, ex);
             }
         }
     }

@@ -9,8 +9,7 @@ namespace Spare.Tools
     public static class Spotify
     {
         #region Static
-        private static readonly Version CorrectVersion = new Version(1, 0, 80, 474);
-
+        private static readonly Version CorrectVersion = new(1, 0, 80, 474);
         private static readonly string RoamingDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Spotify");
 
         public static FileVersionInfo GetInfo() =>
@@ -29,7 +28,7 @@ namespace Spare.Tools
                 case null:
                     Output.FailedMessage("NONE");
                     break;
-                case var correctVersion when CorrectVersion.ToString() == correctVersion:
+                case var correctVersion when CorrectVersion == new Version(correctVersion):
                     Output.SuccessMessage(correctVersion);
                     break;
                 default:

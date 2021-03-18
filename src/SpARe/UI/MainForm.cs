@@ -1,4 +1,5 @@
 ﻿using Spare.Extensions;
+using Spare.Helpers;
 using Spare.Root;
 using Spare.Tools;
 using System;
@@ -71,5 +72,20 @@ namespace Spare.UI
             return base.ProcessDialogKey(keyData);
         }
         #endregion
+
+        private async void RevertButton_Click(object sender, EventArgs e)
+        {
+            // TODO launch uninstaller exe first, see legacy project for implementation
+
+            foreach (var directory in Uninstaller.GetDirectories())
+            {
+                //PathHelper.DeleteDirectory(directory);
+            }
+
+            foreach (var key in Uninstaller.GetRegistryKeys())
+            {
+                // TODO delete key
+            }
+        }
     }
 }

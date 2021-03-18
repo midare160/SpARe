@@ -136,6 +136,7 @@ namespace Spare.UI
             this.RevertButton.TabIndex = 0;
             this.RevertButton.Text = "&Revert";
             this.RevertButton.UseVisualStyleBackColor = true;
+            this.RevertButton.Click += new System.EventHandler(this.RevertButton_Click);
             // 
             // OutputGroupBox
             // 

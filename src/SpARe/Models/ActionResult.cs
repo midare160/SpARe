@@ -4,11 +4,9 @@ namespace Spare.Models
 {
     public class ActionResult
     {
-        public ActionResult() { }
-
-        public ActionResult(bool result)
+        public ActionResult(bool result = false)
         {
-            this.Result = result;
+            this.IsSuccessful = result;
         }
 
         public ActionResult(bool result, Exception? exception) : this(result)
@@ -16,7 +14,7 @@ namespace Spare.Models
             this.Exception = exception;
         }
 
-        public bool Result { get; set; }
+        public bool IsSuccessful { get; set; }
         public Exception? Exception { get; set; }
     }
 }

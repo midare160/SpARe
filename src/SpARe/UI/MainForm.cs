@@ -38,8 +38,11 @@ namespace Spare.UI
             // TODO begin removing ads here
         }
 
-        private async void InfoButton_Click(object sender, EventArgs e)
-            => await this.RunAsync(Spotify.OutputInfo, GetTabPageButtons());
+        private async void InfoButton_Click(object sender, EventArgs e) =>
+            await this.RunAsync(Spotify.OutputInfo, GetTabPageButtons());
+
+        private async void RevertButton_Click(object sender, EventArgs e) =>
+            await this.RunAsync(() => Spotify.Uninstall(CleanupCheckBox.Checked), GetTabPageButtons());
 
         private void ClearButton_Click(object sender, EventArgs e)
         {
@@ -72,20 +75,5 @@ namespace Spare.UI
             return base.ProcessDialogKey(keyData);
         }
         #endregion
-
-        private async void RevertButton_Click(object sender, EventArgs e)
-        {
-            // TODO launch uninstaller exe first, see legacy project for implementation
-
-            foreach (var directory in Uninstaller.GetDirectories())
-            {
-                //PathHelper.DeleteDirectory(directory);
-            }
-
-            foreach (var key in Uninstaller.GetRegistryKeys())
-            {
-                // TODO delete key
-            }
-        }
     }
 }

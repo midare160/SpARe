@@ -1,4 +1,5 @@
-﻿using Spare.Root;
+﻿using Spare.Helpers;
+using Spare.Root;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -8,7 +9,6 @@ namespace Spare.Tools
 {
     public static class Spotify
     {
-        #region Static
         private static readonly Version CorrectVersion = new(1, 0, 80, 474);
         private static readonly string RoamingDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Spotify");
 
@@ -49,6 +49,19 @@ namespace Spare.Tools
 
             Output.EndOfBlock();
         }
-        #endregion
+
+        public static void Uninstall(bool cleanUp)
+        {
+            // TODO launch uninstaller exe first, see legacy project for implementation
+
+            if (!cleanUp) return;
+
+            foreach (var directory in Uninstaller.GetDirectories())
+            {
+                PathHelper.DeleteDirectory(directory);
+            }
+
+            Uninstaller.DeleteRegistryKeys();
+        }
     }
 }

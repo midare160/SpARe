@@ -1,7 +1,6 @@
 ﻿using Spare.Extensions;
-using Spare.Helpers;
 using Spare.Root;
-using Spare.Tools;
+using Spare.SpotifyTools;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +27,7 @@ namespace Spare.UI
         private void MainForm_Load(object sender, EventArgs e)
         {
             OutputTextBox.Text = GreetingString;
-            StartButton.Enabled = Spotify.GetInfo().FileVersion != null;
+            StartButton.Enabled = !string.IsNullOrEmpty(Spotify.GetInfo()?.FileVersion);
         }
         #endregion
 

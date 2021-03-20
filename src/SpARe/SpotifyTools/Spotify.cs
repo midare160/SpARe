@@ -5,15 +5,24 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows.Forms;
 
-namespace Spare.Tools
+namespace Spare.SpotifyTools
 {
     public static class Spotify
     {
         private static readonly Version CorrectVersion = new(1, 0, 80, 474);
         private static readonly string RoamingDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Spotify");
 
-        public static FileVersionInfo GetInfo() =>
-            FileVersionInfo.GetVersionInfo(Path.Combine(RoamingDirectory, "Spotify.exe"));
+        public static FileVersionInfo? GetInfo()
+        {
+            var path = Path.Combine(RoamingDirectory, "Spotify.exe");
+
+            if (File.Exists(path))
+            {
+                return FileVersionInfo.GetVersionInfo(path);
+            }
+
+            return null;
+        }
 
         public static void OutputInfo()
         {
@@ -21,7 +30,7 @@ namespace Spare.Tools
             Output.NewLine();
             Output.Message($"Installed version");
 
-            var version = GetInfo().ProductVersion;
+            var version = GetInfo()?.ProductVersion;
 
             switch (version)
             {

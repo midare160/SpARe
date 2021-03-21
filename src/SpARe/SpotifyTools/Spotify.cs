@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -52,8 +53,7 @@ namespace Spare.SpotifyTools
             Output.EndMessage(await Uninstaller.Uninstall());
 
             Output.Message("Deleting directories...");
-            Uninstaller.DeleteDirectories();
-            Output.SuccessMessage();
+            Output.EndMessage(Uninstaller.DeleteDirectories().All(a => a.IsSuccessful));
 
             Output.Message("Deleting registry keys...");
             Uninstaller.DeleteRegistryKeys();

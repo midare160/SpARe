@@ -1,5 +1,7 @@
 ﻿using Microsoft.Win32;
 using Spare.Helpers;
+using Spare.Models;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Security.Principal;
@@ -9,11 +11,11 @@ namespace Spare.SpotifyTools
 {
     public class Uninstaller
     {
-        public static void DeleteDirectories()
+        public static IEnumerable<ActionResult> DeleteDirectories()
         {
             foreach (var dir in new[] { Paths.Local, Paths.Roaming })
             {
-                PathHelper.DeleteDirectory(dir);
+                yield return PathHelper.DeleteDirectory(dir);
             }
         }
 

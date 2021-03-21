@@ -4,18 +4,13 @@ namespace Spare.Models
 {
     public class ActionResult
     {
-        public ActionResult(bool isSuccessful = false)
+        public ActionResult(bool isSuccessful = false) : this(isSuccessful, null) { }
+
+        public ActionResult(Exception? exception) : this(false, exception) { }
+
+        public ActionResult(bool isSuccessful, Exception? exception)
         {
             this.IsSuccessful = isSuccessful;
-        }
-
-        public ActionResult(Exception? exception)
-        {
-            this.Exception = exception;
-        }
-
-        public ActionResult(bool isSuccessful, Exception? exception) : this(isSuccessful)
-        {
             this.Exception = exception;
         }
 

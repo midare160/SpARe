@@ -2,11 +2,11 @@ using Spare.UI;
 using System;
 using System.Windows.Forms;
 
-namespace Spare.Root
+namespace Spare
 {
     internal static class Program
     {
-        public static readonly MainForm MainForm = new();
+        public static MainForm MainForm { get; } = new();
 
         /// <summary>
         /// The main entry point for the application.

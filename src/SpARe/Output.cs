@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace Spare.Root
+namespace Spare
 {
     public static class Output
     {

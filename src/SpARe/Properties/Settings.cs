@@ -1,6 +1,6 @@
 ﻿using System.Configuration;
 
-namespace Spare.Root
+namespace Spare.Properties
 {
     public sealed class Settings : ApplicationSettingsBase
     {
@@ -38,7 +38,7 @@ namespace Spare.Root
 
         public override void Upgrade()
         {
-            if (!this.UpgradeRequired) return;
+            if (!UpgradeRequired) return;
 
             base.Upgrade();
             this.UpgradeRequired = false;

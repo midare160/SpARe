@@ -1,5 +1,5 @@
 ﻿using Spare.Extensions;
-using Spare.Root;
+using Spare.Properties;
 using Spare.SpotifyTools;
 using System;
 using System.Collections.Generic;

@@ -1,8 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <Authors>midare160</Authors>
     <Copyright>©2020-2021 midare160</Copyright>
-    <Company>-</Company>
+    <Company>SpARe</Company>
     <Version>2.0.0</Version>
     <RepositoryUrl>https://github.com/midare160/SpARe</RepositoryUrl>
 
@@ -41,7 +42,7 @@
   </ItemGroup>
 
    <Target Name="ZipPublishOutput" AfterTargets="Publish"> 
-     <Exec Command="powershell Compress-Archive '$(PublishDir)*' '$(PublishDir)$(Configuration)_v$(Version)_$(RuntimeIdentifier).zip' -Force" />
+     <Exec Command="powershell Compress-Archive '$(PublishDir)*.exe' '$(PublishDir)$(Configuration)_v$(Version)_$(RuntimeIdentifier).zip' -Force" />
    </Target> 
 
 </Project>

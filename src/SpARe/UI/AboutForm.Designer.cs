@@ -28,6 +28,7 @@ namespace Spare.UI
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AboutForm));
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
             this.CloseButton = new System.Windows.Forms.Button();
@@ -35,6 +36,7 @@ namespace Spare.UI
             this.VersionLabel = new System.Windows.Forms.Label();
             this.CopyrightLabel = new System.Windows.Forms.Label();
             this.ProductNameLabel = new System.Windows.Forms.Label();
+            this.AboutToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.tableLayoutPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -66,7 +68,7 @@ namespace Spare.UI
             this.CloseButton.Location = new System.Drawing.Point(296, 158);
             this.CloseButton.Name = "CloseButton";
             this.CloseButton.Size = new System.Drawing.Size(75, 23);
-            this.CloseButton.TabIndex = 24;
+            this.CloseButton.TabIndex = 4;
             this.CloseButton.Text = "&Close";
             this.CloseButton.UseVisualStyleBackColor = true;
             this.CloseButton.Click += new System.EventHandler(this.OkButton_Click);
@@ -78,7 +80,7 @@ namespace Spare.UI
             this.GithubLabel.Location = new System.Drawing.Point(3, 108);
             this.GithubLabel.Name = "GithubLabel";
             this.GithubLabel.Size = new System.Drawing.Size(368, 36);
-            this.GithubLabel.TabIndex = 25;
+            this.GithubLabel.TabIndex = 3;
             this.GithubLabel.TabStop = true;
             this.GithubLabel.Text = "Github";
             this.GithubLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -90,7 +92,7 @@ namespace Spare.UI
             this.VersionLabel.Location = new System.Drawing.Point(3, 36);
             this.VersionLabel.Name = "VersionLabel";
             this.VersionLabel.Size = new System.Drawing.Size(368, 36);
-            this.VersionLabel.TabIndex = 26;
+            this.VersionLabel.TabIndex = 1;
             this.VersionLabel.Text = "Version";
             this.VersionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -100,7 +102,7 @@ namespace Spare.UI
             this.CopyrightLabel.Location = new System.Drawing.Point(3, 72);
             this.CopyrightLabel.Name = "CopyrightLabel";
             this.CopyrightLabel.Size = new System.Drawing.Size(368, 36);
-            this.CopyrightLabel.TabIndex = 27;
+            this.CopyrightLabel.TabIndex = 2;
             this.CopyrightLabel.Text = "Copyright";
             this.CopyrightLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -110,7 +112,7 @@ namespace Spare.UI
             this.ProductNameLabel.Location = new System.Drawing.Point(3, 0);
             this.ProductNameLabel.Name = "ProductNameLabel";
             this.ProductNameLabel.Size = new System.Drawing.Size(368, 36);
-            this.ProductNameLabel.TabIndex = 28;
+            this.ProductNameLabel.TabIndex = 0;
             this.ProductNameLabel.Text = "Product Name";
             this.ProductNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -145,5 +147,6 @@ namespace Spare.UI
         private System.Windows.Forms.Label VersionLabel;
         private System.Windows.Forms.Label CopyrightLabel;
         private System.Windows.Forms.Label ProductNameLabel;
+        private System.Windows.Forms.ToolTip AboutToolTip;
     }
 }

@@ -7,13 +7,13 @@ using System.Windows.Forms;
 
 namespace Spare.UI
 {
-    partial class AboutForm : Form
+    public partial class AboutForm : Form
     {
         #region Static
         private static readonly Assembly ExecutingAssembly = Assembly.GetExecutingAssembly();
 
         private static T? GetAttribute<T>() where T : Attribute =>
-            (T?)ExecutingAssembly.GetCustomAttributes(typeof(T), false).FirstOrDefault();
+            ExecutingAssembly.GetCustomAttributes<T>().FirstOrDefault();
         #endregion
 
         #region Constructors
@@ -25,6 +25,8 @@ namespace Spare.UI
             this.ProductNameLabel.Text = AssemblyProduct;
             this.VersionLabel.Text = $"v. {AssemblyVersion}";
             this.CopyrightLabel.Text = AssemblyCopyright;
+
+            AboutToolTip.SetToolTip(GithubLabel, RepositoryUrl);
         }
         #endregion
 
@@ -37,18 +39,20 @@ namespace Spare.UI
 
                 if (string.IsNullOrEmpty(attribute))
                 {
-                    return Path.GetFileNameWithoutExtension(Assembly.GetExecutingAssembly().Location);
+                    return Path.GetFileNameWithoutExtension(ExecutingAssembly.Location);
                 }
 
                 return attribute;
             }
         }
 
-        public static string? AssemblyVersion => ExecutingAssembly.GetName().Version?.ToString();
+        public static string? AssemblyVersion => ExecutingAssembly.GetName().Version?.ToString(3);
 
         public static string? AssemblyProduct => GetAttribute<AssemblyProductAttribute>()?.Product;
 
         public static string? AssemblyCopyright => GetAttribute<AssemblyCopyrightAttribute>()?.Copyright;
+
+        public static string? RepositoryUrl => GetAttribute<AssemblyMetadataAttribute>()?.Value;
         #endregion
 
         #region Events
@@ -60,18 +64,14 @@ namespace Spare.UI
 
         private void GithubLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            if (e.Button != MouseButtons.Left)
-            {
-                return;
-            }
+            if (e.Button != MouseButtons.Left) return;
 
             Cursor.Current = Cursors.WaitCursor;
-
             GithubLabel.LinkVisited = true;
 
             var info = new ProcessStartInfo
             {
-                FileName = $"https://github.com/midare160/{AssemblyProduct}/",
+                FileName = RepositoryUrl ?? throw new NullReferenceException($"{nameof(RepositoryUrl)} not defined!"),
                 UseShellExecute = true
             };
 

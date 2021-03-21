@@ -19,5 +19,8 @@ namespace Spare.Helpers
 
             return Process.GetProcessesByName(Path.GetFileNameWithoutExtension(processName)).LastOrDefault();
         }
+
+        public static Process? GetProcessByName(string? processName) =>
+            Process.GetProcessesByName(processName).LastOrDefault();
     }
 }

@@ -1,8 +1,8 @@
-﻿using Spare.Helpers;
-using Spare.Root;
+﻿using Spare.Root;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Spare.SpotifyTools
@@ -10,18 +10,12 @@ namespace Spare.SpotifyTools
     public static class Spotify
     {
         private static readonly Version CorrectVersion = new(1, 0, 80, 474);
-        private static readonly string RoamingDirectory = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "Spotify");
 
         public static FileVersionInfo? GetInfo()
         {
-            var path = Path.Combine(RoamingDirectory, "Spotify.exe");
+            var exe = Paths.SpotifyExe;
 
-            if (File.Exists(path))
-            {
-                return FileVersionInfo.GetVersionInfo(path);
-            }
-
-            return null;
+            return File.Exists(exe) ? FileVersionInfo.GetVersionInfo(exe) : null;
         }
 
         public static void OutputInfo()
@@ -45,32 +39,27 @@ namespace Spare.SpotifyTools
                     break;
             }
 
+            var removed = Settings.Instance.AdsRemoved;
+
             Output.Message("Ads removed");
-
-            if (Settings.Instance.AdsRemoved)
-            {
-                Output.SuccessMessage("YES");
-            }
-            else
-            {
-                Output.FailedMessage("NO");
-            }
-
+            Output.EndMessage(removed, removed ? "YES" : "NO");
             Output.EndOfBlock();
         }
 
-        public static void Uninstall(bool cleanUp)
+        public static async Task Clean()
         {
-            // TODO launch uninstaller exe first, see legacy project for implementation
+            Output.Message("Uninstalling Spotify...");
+            Output.EndMessage(await Uninstaller.Uninstall());
 
-            if (!cleanUp) return;
+            Output.Message("Deleting directories...");
+            Uninstaller.DeleteDirectories();
+            Output.SuccessMessage();
 
-            foreach (var directory in Uninstaller.GetDirectories())
-            {
-                PathHelper.DeleteDirectory(directory);
-            }
-
+            Output.Message("Deleting registry keys...");
             Uninstaller.DeleteRegistryKeys();
+            Output.SuccessMessage();
+
+            Output.EndOfBlock();
         }
     }
 }

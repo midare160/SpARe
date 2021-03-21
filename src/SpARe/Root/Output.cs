@@ -1,5 +1,4 @@
 ﻿using Spare.Extensions;
-using Spare.Helpers;
 using Spare.UI;
 using System;
 using System.Drawing;
@@ -11,9 +10,11 @@ namespace Spare.Root
     public static class Output
     {
         private const int Width = 39;
+        private const string SuccessMessageString = "OK";
+        private const string FailedMessageString = "FAILED";
 
         private static void InvokeControlForMessage(string? message, HorizontalAlignment align, Color? fontColor = null) =>
-            ThreadHelper.InvokeControl(Program.MainForm.OutputTextBox, () => AppendToOutput(message, align, fontColor));
+            Program.MainForm.OutputTextBox.Invoke(new Action(() => AppendToOutput(message, align, fontColor)));
 
         private static void AppendToOutput(string? text, HorizontalAlignment align, Color? textColor)
         {
@@ -43,18 +44,35 @@ namespace Spare.Root
             InvokeControlForMessage(message, align, textColor);
 
         /// <summary>
-        /// Writes the given <paramref name="message"/> to the <see cref="MainForm.OutputTextBox"/> with <see cref="HorizontalAlignment.Right"/> and <see cref="Color.Green"/> applied.
+        /// Writes the given <paramref name="message"/> to the <see cref="MainForm.OutputTextBox"/> with <see cref="HorizontalAlignment.Right"/> and <see cref="Color.Green"/> applied
         /// and appends an <see cref="Environment.NewLine"/> afterwards.
         /// </summary>
-        public static void SuccessMessage(string? message = "OK") =>
+        public static void SuccessMessage(string? message = SuccessMessageString) =>
             InvokeControlForMessage(message, HorizontalAlignment.Right, Color.Green);
 
         /// <summary>
         /// Writes the given <paramref name="message"/> to the <see cref="MainForm.OutputTextBox"/> with <see cref="HorizontalAlignment.Right"/> and <see cref="Color.Red"/> applied
         /// and appends an <see cref="Environment.NewLine"/> afterwards.
         /// </summary>
-        public static void FailedMessage(string? message = "FAILED") =>
+        public static void FailedMessage(string? message = FailedMessageString) =>
             InvokeControlForMessage(message, HorizontalAlignment.Right, Color.Red);
+
+        /// <summary>
+        /// Appends the <paramref name="message"/> to the <see cref="MainForm.OutputTextBox"/> with <see cref="HorizontalAlignment.Right"/> 
+        /// and either <see cref="Color.Red"/> or <see cref="Color.Green"/> applied, depending on <paramref name="isSuccess"/>'s value.
+        /// </summary>
+        /// <remarks>Appends an <see cref="Environment.NewLine"/> afterwards.</remarks>
+        public static void EndMessage(bool isSuccess, string? message = null)
+        {
+            if (isSuccess)
+            {
+                SuccessMessage(message ?? SuccessMessageString);
+            }
+            else
+            {
+                FailedMessage(message ?? FailedMessageString);
+            }
+        }
 
         public static void NewLine() =>
             InvokeControlForMessage(null, HorizontalAlignment.Center);

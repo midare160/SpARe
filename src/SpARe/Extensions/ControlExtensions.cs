@@ -8,19 +8,25 @@ namespace Spare.Extensions
     public static class ControlExtensions
     {
         public static async Task RunAsync(this Control control, Action action, params Control[] subControlsToDisable) =>
-            await RunAsync(control, action, (IEnumerable<Control>)subControlsToDisable);
+            await control.RunAsync(action, (IEnumerable<Control>)subControlsToDisable);
 
-        public static async Task RunAsync(this Control control, Action action, IEnumerable<Control> subControlsToDisable)
+        public static async Task RunAsync(this Control control, Action action, IEnumerable<Control> subControlsToDisable) =>
+            await control.Run(Task.Run(action), subControlsToDisable);
+
+        public static async Task Run(this Control control, Task task, params Control[] subControlsToDisable) =>
+            await control.Run(task, (IEnumerable<Control>)subControlsToDisable);
+
+        public static async Task Run(this Control control, Task task, IEnumerable<Control> subControlsToDisable)
         {
             control.ThrowIfNull(nameof(control));
-            action.ThrowIfNull(nameof(control));
+            task.ThrowIfNull(nameof(control));
             subControlsToDisable.ThrowIfNull(nameof(subControlsToDisable));
 
             try
             {
                 control.UseWaitCursor = true;
                 SetControlsState(subControlsToDisable, false);
-                await Task.Run(action);
+                await task;
             }
             finally
             {

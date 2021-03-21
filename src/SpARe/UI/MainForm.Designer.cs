@@ -36,7 +36,7 @@ namespace Spare.UI
             this.InfoButton = new System.Windows.Forms.Button();
             this.StartButton = new System.Windows.Forms.Button();
             this.RevertTabPage = new System.Windows.Forms.TabPage();
-            this.CleanupCheckBox = new System.Windows.Forms.CheckBox();
+            this.CleanButton = new System.Windows.Forms.Button();
             this.RevertButton = new System.Windows.Forms.Button();
             this.OutputGroupBox = new System.Windows.Forms.GroupBox();
             this.ClearButton = new System.Windows.Forms.Button();
@@ -60,7 +60,7 @@ namespace Spare.UI
             this.OutputTextBox.ReadOnly = true;
             this.OutputTextBox.ScrollBars = System.Windows.Forms.RichTextBoxScrollBars.Vertical;
             this.OutputTextBox.Size = new System.Drawing.Size(298, 186);
-            this.OutputTextBox.TabIndex = 1;
+            this.OutputTextBox.TabIndex = 0;
             this.OutputTextBox.Text = "";
             this.OutputTextBox.TextChanged += new System.EventHandler(this.OutputTextBox_TextChanged);
             // 
@@ -72,7 +72,8 @@ namespace Spare.UI
             this.ActionsTabControl.Name = "ActionsTabControl";
             this.ActionsTabControl.SelectedIndex = 0;
             this.ActionsTabControl.Size = new System.Drawing.Size(301, 177);
-            this.ActionsTabControl.TabIndex = 2;
+            this.ActionsTabControl.TabIndex = 0;
+            this.ActionsTabControl.SelectedIndexChanged += new System.EventHandler(this.ActionsTabControl_SelectedIndexChanged);
             // 
             // MainTabPage
             // 
@@ -108,7 +109,7 @@ namespace Spare.UI
             // 
             // RevertTabPage
             // 
-            this.RevertTabPage.Controls.Add(this.CleanupCheckBox);
+            this.RevertTabPage.Controls.Add(this.CleanButton);
             this.RevertTabPage.Controls.Add(this.RevertButton);
             this.RevertTabPage.Location = new System.Drawing.Point(4, 24);
             this.RevertTabPage.Name = "RevertTabPage";
@@ -118,19 +119,20 @@ namespace Spare.UI
             this.RevertTabPage.Text = "Revert";
             this.RevertTabPage.UseVisualStyleBackColor = true;
             // 
-            // CleanupCheckBox
+            // CleanButton
             // 
-            this.CleanupCheckBox.AutoSize = true;
-            this.CleanupCheckBox.Location = new System.Drawing.Point(88, 79);
-            this.CleanupCheckBox.Name = "CleanupCheckBox";
-            this.CleanupCheckBox.Size = new System.Drawing.Size(117, 19);
-            this.CleanupCheckBox.TabIndex = 1;
-            this.CleanupCheckBox.Text = "&Perform clean up";
-            this.CleanupCheckBox.UseVisualStyleBackColor = true;
+            this.CleanButton.Enabled = false;
+            this.CleanButton.Location = new System.Drawing.Point(109, 85);
+            this.CleanButton.Name = "CleanButton";
+            this.CleanButton.Size = new System.Drawing.Size(75, 23);
+            this.CleanButton.TabIndex = 1;
+            this.CleanButton.Text = "Cl&ean";
+            this.CleanButton.UseVisualStyleBackColor = true;
+            this.CleanButton.Click += new System.EventHandler(this.CleanButton_Click);
             // 
             // RevertButton
             // 
-            this.RevertButton.Location = new System.Drawing.Point(109, 50);
+            this.RevertButton.Location = new System.Drawing.Point(109, 40);
             this.RevertButton.Name = "RevertButton";
             this.RevertButton.Size = new System.Drawing.Size(75, 23);
             this.RevertButton.TabIndex = 0;
@@ -144,7 +146,7 @@ namespace Spare.UI
             this.OutputGroupBox.Location = new System.Drawing.Point(12, 195);
             this.OutputGroupBox.Name = "OutputGroupBox";
             this.OutputGroupBox.Size = new System.Drawing.Size(304, 208);
-            this.OutputGroupBox.TabIndex = 3;
+            this.OutputGroupBox.TabIndex = 1;
             this.OutputGroupBox.TabStop = false;
             this.OutputGroupBox.Text = "&Output";
             // 
@@ -154,7 +156,7 @@ namespace Spare.UI
             this.ClearButton.Location = new System.Drawing.Point(241, 415);
             this.ClearButton.Name = "ClearButton";
             this.ClearButton.Size = new System.Drawing.Size(75, 23);
-            this.ClearButton.TabIndex = 4;
+            this.ClearButton.TabIndex = 2;
             this.ClearButton.Text = "&Clear";
             this.ClearButton.UseVisualStyleBackColor = true;
             this.ClearButton.Click += new System.EventHandler(this.ClearButton_Click);
@@ -170,17 +172,19 @@ namespace Spare.UI
             this.Controls.Add(this.ActionsTabControl);
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.HelpButton = true;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.KeyPreview = true;
             this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "SpARe";
+            this.HelpButtonClicked += new System.ComponentModel.CancelEventHandler(this.MainForm_HelpButtonClicked);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.ActionsTabControl.ResumeLayout(false);
             this.MainTabPage.ResumeLayout(false);
             this.RevertTabPage.ResumeLayout(false);
-            this.RevertTabPage.PerformLayout();
             this.OutputGroupBox.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -195,8 +199,8 @@ namespace Spare.UI
         private System.Windows.Forms.Button StartButton;
         private System.Windows.Forms.Button InfoButton;
         internal System.Windows.Forms.RichTextBox OutputTextBox;
-        private System.Windows.Forms.CheckBox CleanupCheckBox;
         private System.Windows.Forms.Button RevertButton;
+        private System.Windows.Forms.Button CleanButton;
     }
 }
 

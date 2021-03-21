@@ -1,22 +1,20 @@
 ﻿using Microsoft.Win32;
-using System;
+using Spare.Helpers;
+using System.Diagnostics;
 using System.IO;
 using System.Security.Principal;
+using System.Threading.Tasks;
 
 namespace Spare.SpotifyTools
 {
     public class Uninstaller
     {
-        public static string[] GetDirectories()
+        public static void DeleteDirectories()
         {
-            var local = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            var roaming = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-
-            return new[]
+            foreach (var dir in new[] { Paths.Local, Paths.Roaming })
             {
-                Path.Combine(local, "Spotify"),
-                Path.Combine(roaming, "Spotify")
-            };
+                PathHelper.DeleteDirectory(dir);
+            }
         }
 
         public static void DeleteRegistryKeys()
@@ -31,6 +29,19 @@ namespace Spare.SpotifyTools
             currentUserKey.DeleteSubKeyTree(softwareClasses, throwOnMissing);
             currentUserKey.DeleteSubKeyTree($@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall\Spotify", throwOnMissing);
             currentUserKey.DeleteSubKeyTree(@"SOFTWARE\Spotify", throwOnMissing);
+        }
+
+        public static async Task<bool> Uninstall()
+        {
+            if (File.Exists(Paths.SpotifyExe))
+            {
+                await Process.Start(Paths.SpotifyExe, "/uninstall /qn").WaitForExitAsync();
+                await (ProcessHelper.GetProcessByName("SpotifyUninstall")?.WaitForExitAsync() ?? Task.CompletedTask);
+
+                return !File.Exists(Paths.SpotifyExe);
+            }
+
+            return false;
         }
     }
 }

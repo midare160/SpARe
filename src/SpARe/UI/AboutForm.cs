@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -24,8 +25,6 @@ namespace Spare.UI
             this.ProductNameLabel.Text = AssemblyProduct;
             this.VersionLabel.Text = $"v. {AssemblyVersion}";
             this.CopyrightLabel.Text = AssemblyCopyright;
-            this.CompanyNameLabel.Text = AssemblyCompany;
-            this.DescriptionLabel.Text = AssemblyDescription;
         }
         #endregion
 
@@ -47,13 +46,9 @@ namespace Spare.UI
 
         public static string? AssemblyVersion => ExecutingAssembly.GetName().Version?.ToString();
 
-        public static string? AssemblyDescription => GetAttribute<AssemblyDescriptionAttribute>()?.Description;
-
         public static string? AssemblyProduct => GetAttribute<AssemblyProductAttribute>()?.Product;
 
         public static string? AssemblyCopyright => GetAttribute<AssemblyCopyrightAttribute>()?.Copyright;
-
-        public static string? AssemblyCompany => GetAttribute<AssemblyCompanyAttribute>()?.Company;
         #endregion
 
         #region Events
@@ -61,6 +56,26 @@ namespace Spare.UI
         {
             Cursor.Current = Cursors.WaitCursor;
             this.Close();
+        }
+
+        private void GithubLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            if (e.Button != MouseButtons.Left)
+            {
+                return;
+            }
+
+            Cursor.Current = Cursors.WaitCursor;
+
+            GithubLabel.LinkVisited = true;
+
+            var info = new ProcessStartInfo
+            {
+                FileName = $"https://github.com/midare160/{AssemblyProduct}/",
+                UseShellExecute = true
+            };
+
+            Process.Start(info);
         }
         #endregion
     }

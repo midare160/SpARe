@@ -3,12 +3,12 @@ using System;
 using System.IO;
 using Xunit;
 
-namespace Spare.Tests.Extensions
+namespace Spare.Tests.Helpers
 {
     public class PathHelperTests
     {
         [Fact]
-        public void Delete_WhiteSpaceFile_ReturnsFalse()
+        public void DeleteFile_WhiteSpaceFile_ReturnsFalse()
         {
             var deletionResult = PathHelper.DeleteFile(" ");
 
@@ -17,7 +17,7 @@ namespace Spare.Tests.Extensions
         }
 
         [Fact]
-        public void Delete_InvalidFile_ReturnsFalse()
+        public void DeleteFile_InvalidFile_ReturnsFalse()
         {
             var deletionResult = PathHelper.DeleteFile(@"F:\?Test");
 
@@ -26,7 +26,7 @@ namespace Spare.Tests.Extensions
         }
 
         [Fact]
-        public void Delete_TempFile_ReturnsTrueAndFileIsDeleted()
+        public void DeleteFile_TempFile_ReturnsTrueAndFileIsDeleted()
         {
             var tempFile = Path.GetTempFileName();
             var deletionResult = PathHelper.DeleteFile(tempFile);

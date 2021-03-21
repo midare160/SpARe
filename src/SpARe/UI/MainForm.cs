@@ -37,6 +37,8 @@ namespace Spare.UI
 
         private void MainForm_HelpButtonClicked(object sender, CancelEventArgs e)
         {
+            Cursor.Current = Cursors.WaitCursor;
+
             e.Cancel = true;
 
             if (_aboutForm?.IsDisposed == false)

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Spare.Models
+namespace Spare.Entities
 {
     public class ActionResult
     {

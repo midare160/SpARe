@@ -1,4 +1,4 @@
-﻿using Spare.Models;
+﻿using Spare.Entities;
 using System;
 
 namespace Spare.Helpers

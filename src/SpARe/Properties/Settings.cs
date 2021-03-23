@@ -11,6 +11,10 @@ namespace Spare.Properties
         public static Settings Instance { get; } = (Settings)Synchronized(new Settings());
         #endregion
 
+        #region Constructors
+        private Settings() { }
+        #endregion
+
         #region Properties
         [UserScopedSetting]
         [DefaultSettingValue(FalseString)]

@@ -1,9 +1,10 @@
 ﻿using Microsoft.Win32;
 using Spare.Helpers;
-using Spare.Models;
+using Spare.Entities;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Security.Principal;
 using System.Threading.Tasks;
 
@@ -11,13 +12,8 @@ namespace Spare.SpotifyTools
 {
     public class Uninstaller
     {
-        public static IEnumerable<ActionResult> DeleteDirectories()
-        {
-            foreach (var dir in new[] { Paths.Local, Paths.Roaming })
-            {
-                yield return PathHelper.DeleteDirectory(dir);
-            }
-        }
+        public static IEnumerable<ActionResult> DeleteDirectories() =>
+            (new[] { Paths.Local, Paths.Roaming }).Select(dir => PathHelper.DeleteDirectory(dir));
 
         public static void DeleteRegistryKeys()
         {

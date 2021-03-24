@@ -23,9 +23,9 @@ namespace Spare.Api
         {
             repoUrl.ThrowIfNullOrEmpty(nameof(repoUrl));
 
-            return await JsonSerializer.DeserializeAsync<Repository>(
-                await this.GetStreamAsync(repoUrl), 
-                new JsonSerializerOptions(JsonSerializerDefaults.Web));
+            using var stream = await this.GetStreamAsync(repoUrl);
+
+            return await JsonSerializer.DeserializeAsync<Repository>(stream, new JsonSerializerOptions(JsonSerializerDefaults.Web));
         }
         #endregion
     }

@@ -31,24 +31,27 @@ namespace Spare.UI
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AboutForm));
             this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.CloseButton = new System.Windows.Forms.Button();
             this.GithubLabel = new System.Windows.Forms.LinkLabel();
             this.VersionLabel = new System.Windows.Forms.Label();
             this.CopyrightLabel = new System.Windows.Forms.Label();
             this.ProductNameLabel = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.UpdateButton = new System.Windows.Forms.Button();
+            this.CloseButton = new System.Windows.Forms.Button();
             this.AboutToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.tableLayoutPanel.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tableLayoutPanel
             // 
             this.tableLayoutPanel.ColumnCount = 1;
             this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel.Controls.Add(this.CloseButton, 0, 4);
             this.tableLayoutPanel.Controls.Add(this.GithubLabel, 0, 3);
             this.tableLayoutPanel.Controls.Add(this.VersionLabel, 0, 1);
             this.tableLayoutPanel.Controls.Add(this.CopyrightLabel, 0, 2);
             this.tableLayoutPanel.Controls.Add(this.ProductNameLabel, 0, 0);
+            this.tableLayoutPanel.Controls.Add(this.panel1, 0, 4);
             this.tableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tableLayoutPanel.Location = new System.Drawing.Point(10, 10);
             this.tableLayoutPanel.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
@@ -61,17 +64,6 @@ namespace Spare.UI
             this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 20F));
             this.tableLayoutPanel.Size = new System.Drawing.Size(374, 184);
             this.tableLayoutPanel.TabIndex = 0;
-            // 
-            // CloseButton
-            // 
-            this.CloseButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.CloseButton.Location = new System.Drawing.Point(296, 158);
-            this.CloseButton.Name = "CloseButton";
-            this.CloseButton.Size = new System.Drawing.Size(75, 23);
-            this.CloseButton.TabIndex = 4;
-            this.CloseButton.Text = "&Close";
-            this.CloseButton.UseVisualStyleBackColor = true;
-            this.CloseButton.Click += new System.EventHandler(this.OkButton_Click);
             // 
             // GithubLabel
             // 
@@ -116,9 +108,38 @@ namespace Spare.UI
             this.ProductNameLabel.Text = "Product Name";
             this.ProductNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.UpdateButton);
+            this.panel1.Controls.Add(this.CloseButton);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(3, 147);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(368, 34);
+            this.panel1.TabIndex = 4;
+            // 
+            // UpdateButton
+            // 
+            this.UpdateButton.Location = new System.Drawing.Point(156, 11);
+            this.UpdateButton.Name = "UpdateButton";
+            this.UpdateButton.Size = new System.Drawing.Size(131, 23);
+            this.UpdateButton.TabIndex = 6;
+            this.UpdateButton.Text = "Check for updates";
+            this.UpdateButton.UseVisualStyleBackColor = true;
+            this.UpdateButton.Click += new System.EventHandler(this.UpdateButton_Click);
+            // 
+            // CloseButton
+            // 
+            this.CloseButton.Location = new System.Drawing.Point(293, 11);
+            this.CloseButton.Name = "CloseButton";
+            this.CloseButton.Size = new System.Drawing.Size(75, 23);
+            this.CloseButton.TabIndex = 5;
+            this.CloseButton.Text = "&Close";
+            this.CloseButton.UseVisualStyleBackColor = true;
+            this.CloseButton.Click += new System.EventHandler(this.CloseButton_Click);
+            // 
             // AboutForm
             // 
-            this.AcceptButton = this.CloseButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.CloseButton;
@@ -135,6 +156,7 @@ namespace Spare.UI
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "About";
             this.tableLayoutPanel.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -142,11 +164,13 @@ namespace Spare.UI
         #endregion
 
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel;
-        private System.Windows.Forms.Button CloseButton;
         private System.Windows.Forms.LinkLabel GithubLabel;
         private System.Windows.Forms.Label VersionLabel;
         private System.Windows.Forms.Label CopyrightLabel;
         private System.Windows.Forms.Label ProductNameLabel;
         private System.Windows.Forms.ToolTip AboutToolTip;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Button UpdateButton;
+        private System.Windows.Forms.Button CloseButton;
     }
 }

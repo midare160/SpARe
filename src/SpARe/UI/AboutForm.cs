@@ -1,9 +1,9 @@
 ﻿using Spare.Api;
-using Spare.Api.Json;
 using Spare.Extensions;
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Text.RegularExpressions;
@@ -19,6 +19,17 @@ namespace Spare.UI
 
         private static T? GetAttribute<T>() where T : Attribute =>
             ExecutingAssembly.GetCustomAttributes<T>().FirstOrDefault();
+
+        private static void OpenRepoWebsite()
+        {
+            var info = new ProcessStartInfo
+            {
+                FileName = RepositoryUrl ?? throw new NullReferenceException($"{nameof(RepositoryUrl)} is not defined!"),
+                UseShellExecute = true
+            };
+
+            Process.Start(info)?.Dispose();
+        }
         #endregion
 
         #region Declarations
@@ -70,7 +81,7 @@ namespace Spare.UI
         {
             try
             {
-                var result = await CompareVersionsAsync();
+                var result = await CheckIfRespositoryVersionNewerAsync();
 
                 var dialogResult = MessageBox.Show(
                     result ? "New version available! Do you want to download it now?" : "Already up to date!",
@@ -96,32 +107,18 @@ namespace Spare.UI
             }
         }
 
-        private async Task<bool> CompareVersionsAsync()
+        private async Task<bool> CheckIfRespositoryVersionNewerAsync()
         {
-            if (_client == null)
+            _client ??= new GithubClient();
+
+            var tagName = await _client.GetRepositoryTagNameAsync("https://api.github.com/repositories/283887091/releases/latest");
+
+            if (string.IsNullOrEmpty(tagName))
             {
-                _client = new GithubClient(Application.ProductName);
+                throw new HttpRequestException("Tagname of repository could not be found!", null, HttpStatusCode.NotFound);
             }
 
-            var repository = await _client.GetRepositoryAsync("https://api.github.com/repositories/283887091/releases/latest");
-
-            if (string.IsNullOrEmpty(repository?.TagName))
-            {
-                return false;
-            }
-
-            return new Version(Application.ProductVersion) < new Version(Regex.Replace(repository.TagName, @"[^\d\.]+", ""));
-        }
-
-        private void OpenRepoWebsite()
-        {
-            var info = new ProcessStartInfo
-            {
-                FileName = RepositoryUrl ?? throw new NullReferenceException($"{nameof(RepositoryUrl)} is not defined!"),
-                UseShellExecute = true
-            };
-
-            Process.Start(info)?.Dispose();
+            return new Version(Application.ProductVersion) < new Version(Regex.Replace(tagName, @"[^\d\.]+", ""));
         }
         #endregion
     }

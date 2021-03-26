@@ -1,8 +1,7 @@
-﻿using Spare.Api.Json;
+﻿using Newtonsoft.Json;
 using Spare.Extensions;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Spare.Api
@@ -10,22 +9,22 @@ namespace Spare.Api
     public class GithubClient : HttpClient
     {
         #region Constructors
-        public GithubClient(string userAgent)
+        public GithubClient()
         {
-            this.DefaultRequestHeaders.Accept.Clear();
             this.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/vnd.github.v3+json"));
-            this.DefaultRequestHeaders.Add("user-agent", userAgent);
+            this.DefaultRequestHeaders.UserAgent.Add(ProductInfoHeaderValue.Parse("request"));
         }
         #endregion
 
         #region Methods
-        public async Task<Repository?> GetRepositoryAsync(string repoUrl)
+        public async Task<string?> GetRepositoryTagNameAsync(string repoUrl)
         {
             repoUrl.ThrowIfNullOrEmpty(nameof(repoUrl));
 
-            using var stream = await this.GetStreamAsync(repoUrl);
+            var responseText = await this.GetStringAsync(repoUrl);
+            dynamic? response = JsonConvert.DeserializeObject(responseText);
 
-            return await JsonSerializer.DeserializeAsync<Repository>(stream, new JsonSerializerOptions(JsonSerializerDefaults.Web));
+            return response?.tag_name;
         }
         #endregion
     }

@@ -72,7 +72,7 @@ namespace Spare.UI
             this.GithubLabel.Location = new System.Drawing.Point(3, 108);
             this.GithubLabel.Name = "GithubLabel";
             this.GithubLabel.Size = new System.Drawing.Size(368, 36);
-            this.GithubLabel.TabIndex = 3;
+            this.GithubLabel.TabIndex = 4;
             this.GithubLabel.TabStop = true;
             this.GithubLabel.Text = "Github";
             this.GithubLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -84,7 +84,7 @@ namespace Spare.UI
             this.VersionLabel.Location = new System.Drawing.Point(3, 36);
             this.VersionLabel.Name = "VersionLabel";
             this.VersionLabel.Size = new System.Drawing.Size(368, 36);
-            this.VersionLabel.TabIndex = 1;
+            this.VersionLabel.TabIndex = 2;
             this.VersionLabel.Text = "Version";
             this.VersionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -94,7 +94,7 @@ namespace Spare.UI
             this.CopyrightLabel.Location = new System.Drawing.Point(3, 72);
             this.CopyrightLabel.Name = "CopyrightLabel";
             this.CopyrightLabel.Size = new System.Drawing.Size(368, 36);
-            this.CopyrightLabel.TabIndex = 2;
+            this.CopyrightLabel.TabIndex = 3;
             this.CopyrightLabel.Text = "Copyright";
             this.CopyrightLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -104,7 +104,7 @@ namespace Spare.UI
             this.ProductNameLabel.Location = new System.Drawing.Point(3, 0);
             this.ProductNameLabel.Name = "ProductNameLabel";
             this.ProductNameLabel.Size = new System.Drawing.Size(368, 36);
-            this.ProductNameLabel.TabIndex = 0;
+            this.ProductNameLabel.TabIndex = 1;
             this.ProductNameLabel.Text = "Product Name";
             this.ProductNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
@@ -116,14 +116,14 @@ namespace Spare.UI
             this.panel1.Location = new System.Drawing.Point(3, 147);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(368, 34);
-            this.panel1.TabIndex = 4;
+            this.panel1.TabIndex = 0;
             // 
             // UpdateButton
             // 
             this.UpdateButton.Location = new System.Drawing.Point(156, 11);
             this.UpdateButton.Name = "UpdateButton";
             this.UpdateButton.Size = new System.Drawing.Size(131, 23);
-            this.UpdateButton.TabIndex = 6;
+            this.UpdateButton.TabIndex = 1;
             this.UpdateButton.Text = "Check for updates";
             this.UpdateButton.UseVisualStyleBackColor = true;
             this.UpdateButton.Click += new System.EventHandler(this.UpdateButton_Click);
@@ -133,13 +133,14 @@ namespace Spare.UI
             this.CloseButton.Location = new System.Drawing.Point(293, 11);
             this.CloseButton.Name = "CloseButton";
             this.CloseButton.Size = new System.Drawing.Size(75, 23);
-            this.CloseButton.TabIndex = 5;
+            this.CloseButton.TabIndex = 0;
             this.CloseButton.Text = "&Close";
             this.CloseButton.UseVisualStyleBackColor = true;
             this.CloseButton.Click += new System.EventHandler(this.CloseButton_Click);
             // 
             // AboutForm
             // 
+            this.AcceptButton = this.CloseButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.CloseButton;

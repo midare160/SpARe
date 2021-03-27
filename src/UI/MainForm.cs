@@ -32,7 +32,7 @@ namespace Spare.UI
         private void MainForm_Load(object sender, EventArgs e)
         {
             OutputTextBox.Text = GreetingString;
-            StartButton.Enabled = !string.IsNullOrEmpty(Spotify.GetInfo()?.FileVersion);
+            StartButton.Enabled = !string.IsNullOrEmpty(Manager.GetExeInfo()?.FileVersion);
         }
 
         private void MainForm_HelpButtonClicked(object sender, CancelEventArgs e)
@@ -41,7 +41,7 @@ namespace Spare.UI
 
             e.Cancel = true;
 
-            if (_aboutForm?.IsDisposed == false)
+            if (_aboutForm is null || _aboutForm.IsDisposed)
             {
                 return;
             }
@@ -58,7 +58,7 @@ namespace Spare.UI
         }
 
         private async void InfoButton_Click(object sender, EventArgs e) =>
-            await this.RunAsync(Spotify.OutputInfo, GetTabPageButtons());
+            await this.RunAsync(Manager.OutputInfo, GetTabPageButtons());
 
         private async void RevertButton_Click(object sender, EventArgs e)
         {
@@ -66,7 +66,7 @@ namespace Spare.UI
         }
 
         private async void CleanButton_Click(object sender, EventArgs e) =>
-            await this.Run(Spotify.Clean(), GetTabPageButtons());
+            await this.Run(Manager.Clean(), GetTabPageButtons());
 
         private void ClearButton_Click(object sender, EventArgs e)
         {

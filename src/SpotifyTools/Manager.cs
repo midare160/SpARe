@@ -8,11 +8,11 @@ using System.Windows.Forms;
 
 namespace Spare.SpotifyTools
 {
-    public static class Spotify
+    public static class Manager
     {
         private static readonly Version CorrectVersion = new(1, 0, 80, 474);
 
-        public static FileVersionInfo? GetInfo()
+        public static FileVersionInfo? GetExeInfo()
         {
             var exe = Paths.SpotifyExe;
 
@@ -25,7 +25,7 @@ namespace Spare.SpotifyTools
             Output.NewLine();
             Output.Message($"Installed version");
 
-            var version = GetInfo()?.ProductVersion;
+            var version = GetExeInfo()?.ProductVersion;
 
             switch (version)
             {

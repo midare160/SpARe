@@ -39,7 +39,7 @@ namespace Spare.SpotifyTools
                 return !File.Exists(Paths.SpotifyExe);
             }
 
-            return false;
+            return true;
         }
     }
 }

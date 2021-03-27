@@ -13,7 +13,7 @@ namespace Spare.Extensions
         /// <returns><see cref="Process.ExitCode"/> or <see cref="DefaultExitCode"/>, if an error occured or the <see cref="Process"/> is <see langword="null"/>.</returns>
         public static async Task<int> WaitForExitCodeAsync(this Process? process)
         {
-            if (process == null)
+            if (process is null)
             {
                 return DefaultExitCode;
             }

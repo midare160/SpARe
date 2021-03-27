@@ -1,4 +1,5 @@
 ﻿using Spare.Entities;
+using Spare.Extensions;
 using System;
 
 namespace Spare.Helpers
@@ -12,6 +13,8 @@ namespace Spare.Helpers
         /// otherwise <see langword="false"/> and with <see cref="ActionResult.Exception"/> as the catched <see cref="Exception"/>.</returns>
         public static ActionResult Try(Action action)
         {
+            action.ThrowIfNull(nameof(action));
+
             try
             {
                 action();

@@ -66,7 +66,7 @@ namespace Spare.UI
         }
 
         private async void CleanButton_Click(object sender, EventArgs e) =>
-            await this.Run(Manager.Clean(), GetTabPageButtons());
+            await this.Run(Manager.CleanAsync(), GetTabPageButtons());
 
         private void ClearButton_Click(object sender, EventArgs e)
         {

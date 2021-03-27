@@ -46,9 +46,9 @@ namespace Spare.Extensions
             }
         }
 
-        private static void ResetControlsState(IDictionary<Control, bool> controls)
+        private static void ResetControlsState(IDictionary<Control, bool> controlsWithInitialState)
         {
-            foreach (var control in controls)
+            foreach (var control in controlsWithInitialState)
             {
                 control.Key.Enabled = control.Value;
             }

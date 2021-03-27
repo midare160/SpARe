@@ -47,7 +47,7 @@ namespace Spare.SpotifyTools
             Output.EndOfBlock();
         }
 
-        public static async Task Clean()
+        public static async Task CleanAsync()
         {
             Output.Message("Uninstalling Spotify...");
             Output.EndMessage(await Uninstaller.Uninstall());

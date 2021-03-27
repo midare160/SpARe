@@ -18,11 +18,11 @@ namespace Spare.Extensions
             return str.PadLeft(padLeft).PadRight(totalWidth);
         }
 
-        public static void ThrowIfNullOrEmpty(this string? str, string? argumentName = null)
+        public static void ThrowIfNullOrEmpty(this string? str, string? argumentName = null, string? message = null)
         {
             if (string.IsNullOrEmpty(str))
             {
-                throw new ArgumentNullException(argumentName);
+                throw new ArgumentNullException(argumentName, message);
             }
         }
     }

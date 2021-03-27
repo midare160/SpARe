@@ -1,5 +1,4 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <Authors>midare160</Authors>
     <Copyright>©2020-2021 midare160</Copyright>
@@ -15,6 +14,7 @@
     <Nullable>enable</Nullable>
     <ApplicationIcon>Resources\logo.ico</ApplicationIcon>
     <ApplicationManifest>app.manifest</ApplicationManifest>
+    <Configurations>Debug;Release;Release-SelfContained;Release-FrameworkDependent</Configurations>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Release-FrameworkDependent' Or '$(Configuration)' == 'Release-SelfContained'">
@@ -34,10 +34,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
     <None Update="Data\spotify_installer1.0.8.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
@@ -46,7 +42,10 @@
   </ItemGroup>
 
    <Target Name="ZipPublishOutput" AfterTargets="Publish"> 
-     <Exec Command="powershell Compress-Archive '$(PublishDir)*.exe' '$(PublishDir)$(Configuration)_v$(Version)_$(RuntimeIdentifier).zip' -Force" />
-   </Target> 
+     <Exec Command="powershell Compress-Archive '$(PublishDir)*.exe' '$(PublishDir)$(AssemblyName)_$(Configuration)_v$(Version)_$(RuntimeIdentifier).zip' -Force" />
+   </Target>
 
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
 </Project>

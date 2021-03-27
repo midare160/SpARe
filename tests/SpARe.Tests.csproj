@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SpARe\SpARe.csproj" />
+    <ProjectReference Include="..\src\SpARe.csproj" />
   </ItemGroup>
 
 </Project>

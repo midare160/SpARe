@@ -1,11 +1,10 @@
 ﻿using Spare.Api;
 using Spare.Extensions;
+using Spare.Properties;
+using Spare.SpotifyTools;
 using System;
-using System.Diagnostics;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -14,24 +13,6 @@ namespace Spare.UI
 {
     public partial class AboutForm : Form
     {
-        #region Static
-        private static readonly Assembly ExecutingAssembly = Assembly.GetExecutingAssembly();
-
-        private static T? GetAttribute<T>() where T : Attribute =>
-            ExecutingAssembly.GetCustomAttributes<T>().FirstOrDefault();
-
-        private static void OpenRepoWebsite()
-        {
-            var info = new ProcessStartInfo
-            {
-                FileName = RepositoryUrl ?? throw new NullReferenceException($"{nameof(RepositoryUrl)} is not defined!"),
-                UseShellExecute = true
-            };
-
-            Process.Start(info)?.Dispose();
-        }
-        #endregion
-
         #region Declarations
         private GithubClient? _client;
         #endregion
@@ -44,15 +25,10 @@ namespace Spare.UI
             this.Text = $"About {Application.ProductName}";
             this.ProductNameLabel.Text = Application.ProductName;
             this.VersionLabel.Text = $"v. {Application.ProductVersion}";
-            this.CopyrightLabel.Text = AssemblyCopyright;
+            this.CopyrightLabel.Text = ProjectAssembly.Copyright;
 
-            AboutToolTip.SetToolTip(GithubLabel, RepositoryUrl);
+            AboutToolTip.SetToolTip(GithubLabel, ProjectAssembly.RepositoryUrl);
         }
-        #endregion
-
-        #region Properties
-        public static string? AssemblyCopyright => GetAttribute<AssemblyCopyrightAttribute>()?.Copyright;
-        public static string? RepositoryUrl => GetAttribute<AssemblyMetadataAttribute>()?.Value;
         #endregion
 
         #region Events
@@ -72,7 +48,7 @@ namespace Spare.UI
             if (e.Button != MouseButtons.Left) return;
 
             GithubLabel.LinkVisited = true;
-            OpenRepoWebsite();
+            Manager.OpenRepoWebsite();
         }
         #endregion
 
@@ -91,7 +67,7 @@ namespace Spare.UI
 
                 if (dialogResult != DialogResult.Yes) return;
 
-                OpenRepoWebsite();
+                Manager.OpenRepoWebsite("releases/latest");
             }
             catch (HttpRequestException ex)
             {

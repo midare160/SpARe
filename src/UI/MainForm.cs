@@ -41,7 +41,7 @@ namespace Spare.UI
 
             e.Cancel = true;
 
-            if (_aboutForm is null || _aboutForm.IsDisposed)
+            if (_aboutForm?.IsDisposed == false)
             {
                 return;
             }
@@ -55,6 +55,7 @@ namespace Spare.UI
         private async void StartButton_Click(object sender, EventArgs e)
         {
             // TODO remove ads here
+            throw new NotImplementedException();
         }
 
         private async void InfoButton_Click(object sender, EventArgs e) =>
@@ -63,6 +64,7 @@ namespace Spare.UI
         private async void RevertButton_Click(object sender, EventArgs e)
         {
             // TODO revert changes here
+            throw new NotImplementedException();
         }
 
         private async void CleanButton_Click(object sender, EventArgs e) =>

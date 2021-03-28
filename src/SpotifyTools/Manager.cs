@@ -1,4 +1,5 @@
-﻿using Spare.Properties;
+﻿using Flurl;
+using Spare.Properties;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -12,12 +13,8 @@ namespace Spare.SpotifyTools
     {
         private static readonly Version CorrectVersion = new(1, 0, 80, 474);
 
-        public static FileVersionInfo? GetExeInfo()
-        {
-            var exe = Paths.SpotifyExe;
-
-            return File.Exists(exe) ? FileVersionInfo.GetVersionInfo(exe) : null;
-        }
+        public static FileVersionInfo? GetExeInfo() =>
+            File.Exists(Paths.SpotifyExe) ? FileVersionInfo.GetVersionInfo(Paths.SpotifyExe) : null;
 
         public static void OutputInfo()
         {
@@ -50,7 +47,7 @@ namespace Spare.SpotifyTools
         public static async Task CleanAsync()
         {
             Output.Message("Uninstalling Spotify...");
-            Output.EndMessage(await Uninstaller.Uninstall());
+            Output.EndMessage(await Uninstaller.UninstallAsync());
 
             Output.Message("Deleting directories...");
             Output.EndMessage(Uninstaller.DeleteDirectories().All(a => a.IsSuccessful));
@@ -60,6 +57,17 @@ namespace Spare.SpotifyTools
             Output.SuccessMessage();
 
             Output.EndOfBlock();
+        }
+
+        public static void OpenRepoWebsite(string? subPage = null)
+        {
+            var info = new ProcessStartInfo
+            {
+                FileName = Url.Combine(ProjectAssembly.RepositoryUrl, subPage),
+                UseShellExecute = true
+            };
+
+            Process.Start(info)?.Dispose();
         }
     }
 }

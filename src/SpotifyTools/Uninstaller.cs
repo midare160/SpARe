@@ -1,6 +1,6 @@
 ﻿using Microsoft.Win32;
-using Spare.Helpers;
 using Spare.Entities;
+using Spare.Helpers;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -12,8 +12,12 @@ namespace Spare.SpotifyTools
 {
     public class Uninstaller
     {
-        public static IEnumerable<ActionResult> DeleteDirectories() =>
-            (new[] { Paths.Local, Paths.Roaming }).Select(dir => PathHelper.DeleteDirectory(dir));
+        public static IEnumerable<ActionResult> DeleteDirectories()
+        {
+            var paths = new[] { Paths.Local, Paths.Roaming };
+
+            return paths.Select(dir => PathHelper.DeleteDirectory(dir));
+        }
 
         public static void DeleteRegistryKeys()
         {
@@ -29,7 +33,7 @@ namespace Spare.SpotifyTools
             currentUserKey.DeleteSubKeyTree(@"SOFTWARE\Spotify", throwOnMissing);
         }
 
-        public static async Task<bool> Uninstall()
+        public static async Task<bool> UninstallAsync()
         {
             if (File.Exists(Paths.SpotifyExe))
             {

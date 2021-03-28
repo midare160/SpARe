@@ -1,4 +1,5 @@
-﻿using Spare.Extensions;
+﻿using NLog;
+using Spare.Extensions;
 using Spare.UI;
 using System;
 using System.Drawing;
@@ -13,11 +14,18 @@ namespace Spare
         private const string SuccessMessageString = "OK";
         private const string FailedMessageString = "FAILED";
 
-        private static void InvokeControlForMessage(string? message, HorizontalAlignment align, Color? fontColor = null) =>
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+
+        private static object InvokeControlForMessage(string? message, HorizontalAlignment align, Color? fontColor = null) =>
             Program.MainForm.OutputTextBox.Invoke(new Action(() => AppendToOutput(message, align, fontColor)));
 
         private static void AppendToOutput(string? text, HorizontalAlignment align, Color? textColor)
         {
+            if (!string.IsNullOrWhiteSpace(text))
+            {
+                Logger.Info(text);
+            }
+
             if (align != HorizontalAlignment.Left)
             {
                 if (align == HorizontalAlignment.Right)

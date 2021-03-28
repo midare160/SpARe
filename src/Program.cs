@@ -38,8 +38,8 @@ namespace Spare
         {
             var errorLogFile = new FileTarget
             {
-                Layout = "${longdate}|${level:uppercase=true}|${message}|${exception:format=ToString}",
-                FileName = Path.Combine(Paths.Logs, "errors.log"),
+                Layout = "${longdate}|${level:uppercase=true}|${message}${exception:format=ToString}",
+                FileName = Path.Combine(Paths.Logs, "error.log"),
                 KeepFileOpen = true,
             };
 

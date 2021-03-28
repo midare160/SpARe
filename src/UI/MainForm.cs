@@ -1,4 +1,5 @@
-﻿using Spare.Extensions;
+﻿using NLog;
+using Spare.Extensions;
 using Spare.Properties;
 using Spare.SpotifyTools;
 using System;
@@ -13,6 +14,8 @@ namespace Spare.UI
     {
         #region Static
         private const string GreetingString = "-- Spotify Ad Remover | by midare160 --\n\n";
+
+        private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
         #endregion
 
         #region Declarations
@@ -59,7 +62,7 @@ namespace Spare.UI
         }
 
         private async void InfoButton_Click(object sender, EventArgs e) =>
-            await this.RunAsync(Manager.OutputInfo, GetTabPageButtons());
+            await this.RunAsync(Manager.OutputInfo, nameof(Manager.OutputInfo), GetTabPageButtons());
 
         private async void RevertButton_Click(object sender, EventArgs e)
         {
@@ -68,7 +71,7 @@ namespace Spare.UI
         }
 
         private async void CleanButton_Click(object sender, EventArgs e) =>
-            await this.Run(Manager.CleanAsync(), GetTabPageButtons());
+            await this.RunAsync(Manager.CleanAsync(), nameof(Manager.CleanAsync), GetTabPageButtons());
 
         private void ClearButton_Click(object sender, EventArgs e)
         {

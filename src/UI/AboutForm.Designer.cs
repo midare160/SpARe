@@ -36,6 +36,7 @@ namespace Spare.UI
             this.CopyrightLabel = new System.Windows.Forms.Label();
             this.ProductNameLabel = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.LogsButton = new System.Windows.Forms.Button();
             this.UpdateButton = new System.Windows.Forms.Button();
             this.CloseButton = new System.Windows.Forms.Button();
             this.AboutToolTip = new System.Windows.Forms.ToolTip(this.components);
@@ -110,6 +111,7 @@ namespace Spare.UI
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.LogsButton);
             this.panel1.Controls.Add(this.UpdateButton);
             this.panel1.Controls.Add(this.CloseButton);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -117,6 +119,16 @@ namespace Spare.UI
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(368, 34);
             this.panel1.TabIndex = 0;
+            // 
+            // LogsButton
+            // 
+            this.LogsButton.Location = new System.Drawing.Point(0, 11);
+            this.LogsButton.Name = "LogsButton";
+            this.LogsButton.Size = new System.Drawing.Size(75, 23);
+            this.LogsButton.TabIndex = 2;
+            this.LogsButton.Text = "Logs";
+            this.LogsButton.UseVisualStyleBackColor = true;
+            this.LogsButton.Click += new System.EventHandler(this.LogsButton_Click);
             // 
             // UpdateButton
             // 
@@ -173,5 +185,6 @@ namespace Spare.UI
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button UpdateButton;
         private System.Windows.Forms.Button CloseButton;
+        private System.Windows.Forms.Button LogsButton;
     }
 }

@@ -3,6 +3,7 @@ using Spare.Extensions;
 using Spare.Properties;
 using Spare.SpotifyTools;
 using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
@@ -33,7 +34,7 @@ namespace Spare.UI
 
         #region Events
         private async void UpdateButton_Click(object sender, EventArgs e) =>
-            await this.Run(CheckForUpdateAsync(), UpdateButton);
+            await this.RunAsync(CheckForUpdateAsync(), nameof(CheckForUpdateAsync), UpdateButton);
 
         private void CloseButton_Click(object sender, EventArgs e)
         {
@@ -50,6 +51,9 @@ namespace Spare.UI
             GithubLabel.LinkVisited = true;
             Manager.OpenRepoWebsite();
         }
+
+        private async void LogsButton_Click(object sender, EventArgs e) =>
+            await this.RunAsync(Process.Start("explorer.exe", Paths.Logs).WaitForExitAsync(), "opening logs folder", LogsButton);
         #endregion
 
         #region Private Procedures

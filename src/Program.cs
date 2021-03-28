@@ -1,7 +1,10 @@
 using NLog;
+using NLog.Config;
+using NLog.Targets;
 using Spare.SpotifyTools;
 using Spare.UI;
 using System;
+using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -19,6 +22,8 @@ namespace Spare
         [STAThread]
         private static void Main()
         {
+            ConfigureLogging();
+
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
             Application.ThreadException += OnUnhandledException;
             AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
@@ -27,6 +32,32 @@ namespace Spare
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(MainForm);
+        }
+
+        private static void ConfigureLogging()
+        {
+            var errorLogFile = new FileTarget
+            {
+                Layout = "${longdate}|${level:uppercase=true}|${message}|${exception:format=ToString}",
+                FileName = Path.Combine(Paths.Logs, "errors.log"),
+                KeepFileOpen = true,
+            };
+
+            var traceLogFile = new FileTarget
+            {
+                FileName = Path.Combine(Paths.Logs, "trace.log"),
+                KeepFileOpen = true,
+            };
+
+            LogManager.Configuration = new LoggingConfiguration
+            {
+                LoggingRules =
+                {
+                    new LoggingRule("*", LogLevel.Trace, LogLevel.Warn, traceLogFile),
+                    new LoggingRule("*", LogLevel.Error, LogLevel.Fatal, errorLogFile),
+                    new LoggingRule("*", LogLevel.Trace, LogLevel.Fatal, new ConsoleTarget())
+                }
+            };
         }
 
         private static void OnUnhandledException(object sender, EventArgs e)

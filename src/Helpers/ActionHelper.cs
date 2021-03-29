@@ -1,6 +1,7 @@
 ﻿using Spare.Entities;
 using Spare.Extensions;
 using System;
+using System.Diagnostics;
 
 namespace Spare.Helpers
 {
@@ -23,7 +24,7 @@ namespace Spare.Helpers
             }
             catch (Exception ex)
             {
-                return new ActionResult(ex);
+                return new ActionResult(ex.Demystify());
             }
         }
     }

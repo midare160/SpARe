@@ -4,6 +4,7 @@ using NLog.Targets;
 using Spare.SpotifyTools;
 using Spare.UI;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
@@ -63,6 +64,7 @@ namespace Spare
         private static void OnUnhandledException(object sender, EventArgs e)
         {
             var exception = (e as ThreadExceptionEventArgs)?.Exception ?? (e as UnhandledExceptionEventArgs)?.ExceptionObject as Exception;
+            exception = exception?.Demystify();
 
             Logger.Error(exception);
 
@@ -74,7 +76,8 @@ namespace Spare
                 Text = exception?.Message,
                 Icon = TaskDialogIcon.Error,
                 AllowCancel = true,
-                Expander = new TaskDialogExpander(exception?.ToString()),
+                SizeToContent = true,
+                Expander = new TaskDialogExpander(exception?.StackTrace),
                 Buttons =
                 {
                     reportButton,

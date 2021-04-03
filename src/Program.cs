@@ -56,7 +56,7 @@ namespace Spare
                 {
                     new LoggingRule("*", LogLevel.Trace, LogLevel.Warn, traceLogFile),
                     new LoggingRule("*", LogLevel.Error, LogLevel.Fatal, errorLogFile),
-                    new LoggingRule("*", LogLevel.Trace, LogLevel.Fatal, new ConsoleTarget())
+                    new LoggingRule("*", LogLevel.Trace, LogLevel.Fatal, new DebuggerTarget())
                 }
             };
         }

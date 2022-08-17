@@ -1,14 +1,17 @@
 ﻿using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System.ComponentModel;
 
 namespace SpARe.Services.Hosts
 {
     public class ApplicationHostedService : IHostedService
     {
+        private readonly ILogger<ApplicationHostedService> _logger;
         private readonly IFormFactory _formFactory;
 
-        public ApplicationHostedService(IFormFactory formFactory)
+        public ApplicationHostedService(ILogger<ApplicationHostedService> logger, IFormFactory formFactory)
         {
+            _logger = logger;
             _formFactory = formFactory;
         }
 
@@ -18,8 +21,9 @@ namespace SpARe.Services.Hosts
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
 
-            AppDomain.CurrentDomain.UnhandledException += (s, e) => OnException(e.ExceptionObject);
+            AppDomain.CurrentDomain.UnhandledException += (s, e) => OnException((Exception)e.ExceptionObject);
             Application.ThreadException += (s, e) => OnException(e.Exception);
+
             Application.Run(_formFactory.GetForm<MainForm>());
 
             return Task.CompletedTask;
@@ -31,14 +35,14 @@ namespace SpARe.Services.Hosts
             return Task.CompletedTask;
         }
 
-        private static void OnException(object exceptionObject)
+        private void OnException(Exception exception)
         {
-            if (exceptionObject is not Exception or OperationCanceledException)
+            if (exception is OperationCanceledException)
             {
                 return;
             }
 
-            // TODO handle ex
+            _logger.LogError(exception, "Unhandled exception occured.");
         }
     }
 }

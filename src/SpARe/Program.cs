@@ -1,6 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using SpARe.Extensions;
 using SpARe.Services;
+using SpARe.Services.Forms;
 using SpARe.Services.Hosts;
 using System.Reflection;
 
@@ -9,13 +11,11 @@ namespace SpARe
     internal static class Program
     {
         /// <summary>
-        ///  The main entry point for the application.
+        /// The main entry point for the application.
         /// </summary>
-        [STAThread]
         private static async Task Main(string[] args)
         {
             await Host.CreateDefaultBuilder(args)
-                .UseEnvironment(Environments.Development)
                 .ConfigureServices(s =>
                 {
                     AddHosts(s);
@@ -37,17 +37,19 @@ namespace SpARe
 
         private static void AddForms(IServiceCollection serviceCollection)
         {
-            var formTypes = Assembly
-                .GetExecutingAssembly()
-                .GetTypes()
-                .Where(t => t != typeof(MainForm) && t.IsSubclassOf(typeof(Form)));
-
-            foreach (var formType in formTypes)
+            foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
             {
-                serviceCollection.AddTransient(formType);
-            }
+                if (type.IsImplementationOf<ISingletonForm>())
+                {
+                    serviceCollection.AddSingleton(type);
+                    continue;
+                }
 
-            serviceCollection.AddSingleton<MainForm>();
+                if (type.IsImplementationOf<ITransientForm>())
+                {
+                    serviceCollection.AddTransient(type);
+                }
+            }
         }
     }
 }

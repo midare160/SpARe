@@ -1,9 +1,10 @@
 using SpARe.Services;
+using SpARe.Services.Forms;
 using SpARe.UI;
 
 namespace SpARe
 {
-    public partial class MainForm : Form
+    public partial class MainForm : Form, ISingletonForm
     {
         private readonly IFormFactory _formFactory;
 

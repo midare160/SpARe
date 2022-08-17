@@ -4,10 +4,23 @@
 		<OutputType>WinExe</OutputType>
 		<TargetFramework>net6.0-windows</TargetFramework>
 		<Nullable>enable</Nullable>
-		<UseWindowsForms>true</UseWindowsForms>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<AssemblyVersion>1.0.0</AssemblyVersion>
+		<UseWindowsForms>true</UseWindowsForms>
+
+		<AssemblyVersion>3.0.0</AssemblyVersion>
+		<Authors>midare160</Authors>
+		<Copyright>© 2022 midare160</Copyright>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<RepositoryUrl>https://github.com/midare160/SpARe</RepositoryUrl>
+		<Deterministic>false</Deterministic>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Include="..\..\README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />

@@ -2,6 +2,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SpARe.Extensions;
 using SpARe.Services;
+using SpARe.Services.Exceptions;
+using SpARe.Services.FileSystem;
 using SpARe.Services.Forms;
 using SpARe.Services.Hosts;
 using System.Reflection;
@@ -32,7 +34,11 @@ namespace SpARe
 
         private static void AddServices(IServiceCollection serviceCollection)
         {
-            serviceCollection.AddTransient<IFormFactory, FormFactory>();
+            serviceCollection
+                .AddTransient<IExceptionHandler, ExceptionHandler>()
+                .AddTransient<IFormFactory, FormFactory>()
+                .AddTransient<IAdRemoverService, AdRemoverService>()
+                .AddTransient<IFileService, FileService>();
         }
 
         private static void AddForms(IServiceCollection serviceCollection)

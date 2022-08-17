@@ -1,18 +1,18 @@
 ﻿using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using SpARe.Services.Exceptions;
 using System.ComponentModel;
 
 namespace SpARe.Services.Hosts
 {
     public class ApplicationHostedService : IHostedService
     {
-        private readonly ILogger<ApplicationHostedService> _logger;
         private readonly IFormFactory _formFactory;
+        private readonly IExceptionHandler _exceptionHandler;
 
-        public ApplicationHostedService(ILogger<ApplicationHostedService> logger, IFormFactory formFactory)
+        public ApplicationHostedService(IFormFactory formFactory, IExceptionHandler exceptionHandler)
         {
-            _logger = logger;
             _formFactory = formFactory;
+            _exceptionHandler = exceptionHandler;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -21,11 +21,10 @@ namespace SpARe.Services.Hosts
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
 
-            AppDomain.CurrentDomain.UnhandledException += (s, e) => OnException((Exception)e.ExceptionObject);
-            Application.ThreadException += (s, e) => OnException(e.Exception);
+            AppDomain.CurrentDomain.UnhandledException += _exceptionHandler.OnAppDomainException;
+            Application.ThreadException += _exceptionHandler.OnThreadException;
 
             Application.Run(_formFactory.GetForm<MainForm>());
-
             return Task.CompletedTask;
         }
 
@@ -33,16 +32,6 @@ namespace SpARe.Services.Hosts
         {
             Application.Exit(new CancelEventArgs(cancellationToken.IsCancellationRequested));
             return Task.CompletedTask;
-        }
-
-        private void OnException(Exception exception)
-        {
-            if (exception is OperationCanceledException)
-            {
-                return;
-            }
-
-            _logger.LogError(exception, "Unhandled exception occured.");
         }
     }
 }

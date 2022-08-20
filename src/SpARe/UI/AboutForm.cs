@@ -1,4 +1,5 @@
-﻿using SpARe.Services.Forms;
+﻿using SpARe.Aspects;
+using SpARe.Services.Forms;
 using System.Reflection;
 
 namespace SpARe.UI
@@ -9,6 +10,7 @@ namespace SpARe.UI
 
         public AboutForm() => InitializeComponent();
 
+        [WaitCursor]
         private void AboutForm_Load(object sender, EventArgs e)
         {
             Text = $"About {CurrentAssembly.GetCustomAttribute<AssemblyTitleAttribute>()!.Title}";
@@ -20,6 +22,7 @@ namespace SpARe.UI
             ProductNameLabel.Text = $"{assemblyProduct!.Product} ({assemblyConfiguration!.Configuration})";
         }
 
+        [WaitCursor]
         private void AboutForm_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Escape)

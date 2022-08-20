@@ -5,16 +5,19 @@ namespace SpARe.UI
 {
     partial class AboutForm : Form, ITransientForm
     {
+        private static readonly Assembly CurrentAssembly = Assembly.GetExecutingAssembly();
+
         public AboutForm() => InitializeComponent();
 
         private void AboutForm_Load(object sender, EventArgs e)
         {
-            var assembly = Assembly.GetExecutingAssembly();
+            Text = $"About {CurrentAssembly.GetCustomAttribute<AssemblyTitleAttribute>()!.Title}";
+            VersionLabel.Text = $"v. {CurrentAssembly.GetCustomAttribute<AssemblyFileVersionAttribute>()!.Version}";
+            CopyrightLabel.Text = CurrentAssembly.GetCustomAttribute<AssemblyCopyrightAttribute>()!.Copyright;
 
-            this.Text = $"About {assembly.GetCustomAttribute<AssemblyTitleAttribute>()?.Title}";
-            this.ProductNameLabel.Text = assembly.GetCustomAttribute<AssemblyProductAttribute>()?.Product;
-            this.VersionLabel.Text = $"v. {Assembly.GetExecutingAssembly().GetName().Version}";
-            this.CopyrightLabel.Text = assembly.GetCustomAttribute<AssemblyCopyrightAttribute>()?.Copyright;
+            var assemblyProduct = CurrentAssembly.GetCustomAttribute<AssemblyProductAttribute>();
+            var assemblyConfiguration = CurrentAssembly.GetCustomAttribute<AssemblyConfigurationAttribute>();
+            ProductNameLabel.Text = $"{assemblyProduct!.Product} ({assemblyConfiguration!.Configuration})";
         }
 
         private void AboutForm_KeyDown(object sender, KeyEventArgs e)

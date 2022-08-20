@@ -21,10 +21,8 @@ namespace SpARe.Services.Exceptions
             OnException(e.ExceptionObject as Exception);
         }
 
-        public void OnThreadException(object sender, ThreadExceptionEventArgs e)
-        {
+        public void OnThreadException(object sender, ThreadExceptionEventArgs e) =>
             OnException(e.Exception);
-        }
 
         private void OnException(Exception? exception)
         {

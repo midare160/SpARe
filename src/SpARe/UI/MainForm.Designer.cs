@@ -72,6 +72,7 @@
             this.Controls.Add(this.RevertButton);
             this.Controls.Add(this.StartButton);
             this.Controls.Add(this.AboutButton);
+            this.MaximizeBox = false;
             this.Name = "MainForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Form1";

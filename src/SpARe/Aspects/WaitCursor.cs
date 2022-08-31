@@ -5,7 +5,7 @@ using System.Collections.Concurrent;
 namespace SpARe.Aspects
 {
     [PSerializable]
-    public class WaitCursor : OnMethodBoundaryAspect
+    public class WaitCursorAttribute : OnMethodBoundaryAspect
     {
         private static readonly ConcurrentDictionary<Control, int> _waitingMethods = new();
         private static readonly object _entryLock = new();

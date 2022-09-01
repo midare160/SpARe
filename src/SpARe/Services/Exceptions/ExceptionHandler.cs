@@ -5,7 +5,7 @@ namespace SpARe.Services.Exceptions
 {
     public class ExceptionHandler : IExceptionHandler
     {
-        private readonly ILogger<ExceptionHandler> _logger;
+        private readonly ILogger _logger;
 
         public ExceptionHandler(ILogger<ExceptionHandler> logger)
         {

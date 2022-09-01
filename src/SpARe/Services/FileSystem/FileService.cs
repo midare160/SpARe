@@ -4,7 +4,7 @@ namespace SpARe.Services.FileSystem
 {
     public class FileService : IFileService
     {
-        private readonly ILogger<FileService> _logger;
+        private readonly ILogger _logger;
 
         public FileService(ILogger<FileService> logger)
         {

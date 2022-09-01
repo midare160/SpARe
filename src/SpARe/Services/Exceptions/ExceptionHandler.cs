@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using System.Diagnostics;
 
 namespace SpARe.Services.Exceptions
 {
@@ -26,12 +27,13 @@ namespace SpARe.Services.Exceptions
 
         private void OnException(Exception? exception)
         {
-            if (exception is OperationCanceledException)
+            if (exception is null or OperationCanceledException)
             {
                 return;
             }
 
             _logger.LogError(exception, "Unhandled exception occured.");
+            ExceptionBox.Show(exception);
         }
     }
 }

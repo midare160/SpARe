@@ -43,4 +43,8 @@
 	  </EmbeddedResource>
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="MessageFilters\" />
+	</ItemGroup>
+
 </Project>

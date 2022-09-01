@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
+using SpARe.UI.Utility;
 
 namespace SpARe.Services.Exceptions
 {
@@ -32,7 +33,7 @@ namespace SpARe.Services.Exceptions
             }
 
             _logger.LogError(exception, "Unhandled exception occured.");
-            ExceptionBox.Show(exception);
+            ExceptionDialog.Show(exception);
         }
     }
 }

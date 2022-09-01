@@ -1,6 +1,6 @@
 ﻿using SpARe.Services.FileSystem;
 
-namespace SpARe.Services
+namespace SpARe.Services.General
 {
     public class AdRemoverService : IAdRemoverService
     {

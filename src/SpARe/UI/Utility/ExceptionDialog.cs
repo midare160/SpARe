@@ -1,8 +1,8 @@
 ﻿using System.Diagnostics;
 
-namespace SpARe.Services.Exceptions
+namespace SpARe.UI.Utility
 {
-    public static class ExceptionBox
+    public static class ExceptionDialog
     {
         public static TaskDialogButton? Show(Exception exception)
         {
@@ -16,6 +16,7 @@ namespace SpARe.Services.Exceptions
                 Expander = new TaskDialogExpander(exception.StackTrace),
                 Icon = TaskDialogIcon.Error,
                 AllowCancel = true,
+                SizeToContent = true,
                 Buttons =
                 {
                     reportButton,

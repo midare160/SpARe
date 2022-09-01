@@ -5,7 +5,7 @@ using SpARe.Services;
 using SpARe.Services.Exceptions;
 using SpARe.Services.FileSystem;
 using SpARe.Services.Forms;
-using SpARe.Services.Hosts;
+using SpARe.Services.General;
 using System.Reflection;
 
 namespace SpARe
@@ -36,7 +36,8 @@ namespace SpARe
         private static void AddServices(IServiceCollection serviceCollection)
         {
             serviceCollection
-                .AddTransient<IExceptionHandler, ExceptionHandler>()
+                .AddSingleton<IExceptionHandler, ExceptionHandler>()
+                .AddSingleton<IMessageFilter, MessageFilter>()
                 .AddTransient<IFormFactory, FormFactory>()
                 .AddTransient<IAdRemoverService, AdRemoverService>()
                 .AddTransient<IFileService, FileService>();

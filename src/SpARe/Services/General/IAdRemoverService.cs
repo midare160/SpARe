@@ -1,4 +1,4 @@
-﻿namespace SpARe.Services
+﻿namespace SpARe.Services.General
 {
     public interface IAdRemoverService
     {

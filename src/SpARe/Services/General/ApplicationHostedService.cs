@@ -2,17 +2,19 @@
 using SpARe.Services.Exceptions;
 using System.ComponentModel;
 
-namespace SpARe.Services.Hosts
+namespace SpARe.Services.General
 {
     public class ApplicationHostedService : IHostedService
     {
         private readonly IFormFactory _formFactory;
         private readonly IExceptionHandler _exceptionHandler;
+        private readonly IMessageFilter _messageFilter;
 
-        public ApplicationHostedService(IFormFactory formFactory, IExceptionHandler exceptionHandler)
+        public ApplicationHostedService(IFormFactory formFactory, IExceptionHandler exceptionHandler, IMessageFilter messageFilter)
         {
             _formFactory = formFactory;
             _exceptionHandler = exceptionHandler;
+            _messageFilter = messageFilter;
         }
 
         public Task StartAsync(CancellationToken cancellationToken)
@@ -24,7 +26,9 @@ namespace SpARe.Services.Hosts
             AppDomain.CurrentDomain.UnhandledException += _exceptionHandler.OnAppDomainException;
             Application.ThreadException += _exceptionHandler.OnThreadException;
 
+            Application.AddMessageFilter(_messageFilter);
             Application.Run(_formFactory.GetForm<MainForm>());
+
             return Task.CompletedTask;
         }
 

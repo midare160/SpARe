@@ -6,16 +6,21 @@ namespace SpARe.Services.Exceptions
     {
         public static TaskDialogButton? Show(Exception exception)
         {
-            var reportButton = new TaskDialogButton("Create an issue on Github (Stacktrace will be copied to clipboard).", allowCloseDialog: false);
+            var reportButton = new TaskDialogCommandLinkButton("Report", "Create an issue on Github (Stacktrace will be copied to clipboard).", allowCloseDialog: false);
             reportButton.Click += (s, e) => OnReportButtonClicked(exception);
 
             var page = new TaskDialogPage()
             {
-                Caption = "Critical error occured!",
-                Heading = exception.Message,
+                Heading = "Critical error occured!",
+                Text = $"{exception.GetType()}: {exception.Message}",
+                Expander = new TaskDialogExpander(exception.StackTrace),
                 Icon = TaskDialogIcon.Error,
                 AllowCancel = true,
-                Expander = new TaskDialogExpander(exception.ToString()),
+                Buttons =
+                {
+                    reportButton,
+                    new TaskDialogCommandLinkButton("Ignore", "Proceed and ignore this error.")
+                }
             };
 
             return TaskDialog.ShowDialog(page);
@@ -24,7 +29,13 @@ namespace SpARe.Services.Exceptions
         private static void OnReportButtonClicked(Exception exception)
         {
             Clipboard.SetText(exception.ToString());
-            using var _ = Process.Start("https://github.com/midare160/SpotifyAdRemover/issues/new");
+
+            var startInfo = new ProcessStartInfo("https://github.com/midare160/SpotifyAdRemover/issues/new")
+            {
+                UseShellExecute = true
+            };
+
+            using var _ = Process.Start(startInfo);
         }
     }
 }

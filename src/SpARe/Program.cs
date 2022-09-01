@@ -15,16 +15,17 @@ namespace SpARe
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-        private static async Task Main(string[] args)
+        [STAThread]
+        private static void Main(string[] args)
         {
-            await Host.CreateDefaultBuilder(args)
+            Host.CreateDefaultBuilder(args)
                 .ConfigureServices(s =>
                 {
                     AddHosts(s);
                     AddServices(s);
                     AddForms(s);
                 })
-                .StartAsync();
+                .Start();
         }
 
         private static void AddHosts(IServiceCollection serviceCollection)

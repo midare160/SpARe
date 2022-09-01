@@ -1,4 +1,4 @@
-﻿using System.Diagnostics;
+﻿using SpARe.Helpers;
 
 namespace SpARe.UI.Utility
 {
@@ -31,12 +31,8 @@ namespace SpARe.UI.Utility
         {
             Clipboard.SetText(exception.ToString());
 
-            var startInfo = new ProcessStartInfo("https://github.com/midare160/SpotifyAdRemover/issues/new")
-            {
-                UseShellExecute = true
-            };
-
-            using var _ = Process.Start(startInfo);
+            // TODO get repo url from csproj
+            using var _ = ProcessHelper.StartWithShell("https://github.com/midare160/SpotifyAdRemover/issues/new");
         }
     }
 }

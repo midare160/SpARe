@@ -98,7 +98,6 @@
             this.ClientSize = new System.Drawing.Size(363, 116);
             this.Controls.Add(this.tableLayoutPanel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -109,7 +108,6 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "AboutForm";
             this.Load += new System.EventHandler(this.AboutForm_Load);
-            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.AboutForm_KeyDown);
             this.tableLayoutPanel.ResumeLayout(false);
             this.tableLayoutPanel.PerformLayout();
             this.ResumeLayout(false);

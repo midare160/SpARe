@@ -14,6 +14,10 @@
             switch ((Keys)m.WParam)
             {
                 case Keys.F1:
+                    // TODO open readme in repo
+                    break;
+                case Keys.Escape:
+                    Form.ActiveForm?.Close();
                     break;
             }
 

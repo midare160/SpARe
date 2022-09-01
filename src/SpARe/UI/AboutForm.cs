@@ -21,14 +21,5 @@ namespace SpARe.UI
             var assemblyConfiguration = CurrentAssembly.GetCustomAttribute<AssemblyConfigurationAttribute>();
             ProductNameLabel.Text = $"{assemblyProduct!.Product} ({assemblyConfiguration!.Configuration})";
         }
-
-        [WaitCursor]
-        private void AboutForm_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Escape)
-            {
-                Close();
-            }
-        }
     }
 }

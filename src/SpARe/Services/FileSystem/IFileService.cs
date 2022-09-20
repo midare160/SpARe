@@ -2,6 +2,6 @@
 {
     public interface IFileService
     {
-        bool Delete(string? path);
+        bool Delete(string path);
     }
 }

@@ -5,7 +5,6 @@ using SpARe.Services;
 using SpARe.Services.Exceptions;
 using SpARe.Services.FileSystem;
 using SpARe.Services.Forms;
-using System.Reflection;
 
 namespace SpARe
 {
@@ -17,7 +16,7 @@ namespace SpARe
         [STAThread]
         private static void Main(string[] args)
         {
-            Host.CreateDefaultBuilder(args)
+            using var host = Host.CreateDefaultBuilder(args)
                 .ConfigureServices(s =>
                 {
                     AddHosts(s);

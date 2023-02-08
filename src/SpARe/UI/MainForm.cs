@@ -1,7 +1,6 @@
-using SpARe.Aspects;
+using SpARe.Extensions;
 using SpARe.Services;
 using SpARe.Services.Forms;
-using SpARe.Services.General;
 using SpARe.UI;
 
 namespace SpARe
@@ -19,17 +18,24 @@ namespace SpARe
             InitializeComponent();
         }
 
-        [WaitCursor]
-        private async void StartButton_Click(object sender, EventArgs e) =>
+        private async void StartButton_Click(object sender, EventArgs e)
+        {
+            using var _ = this.StartWaitCursor();
+
             await _adRemoverService.StartAsync();
+        }
 
-        [WaitCursor]
-        private async void RevertButton_Click(object sender, EventArgs e) => 
+        private async void RevertButton_Click(object sender, EventArgs e)
+        {
+            using var _ = this.StartWaitCursor();
+
             await _adRemoverService.RevertAsync();
+        }
 
-        [WaitCursor]
         private void AboutButton_Click(object sender, EventArgs e)
         {
+            using var _ = this.StartWaitCursor();
+
             using var aboutForm = _formFactory.GetForm<AboutForm>();
             aboutForm.ShowDialog(this);
         }

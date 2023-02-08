@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using SpARe.UI.Utility;
+using SpARe.Utility;
 
 namespace SpARe.Services.Exceptions
 {

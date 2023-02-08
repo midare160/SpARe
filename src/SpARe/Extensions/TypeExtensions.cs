@@ -10,7 +10,7 @@
 
             if (!genericType.IsInterface)
             {
-                throw new ArgumentException($"{genericType} is not an interface!");
+                throw new ArgumentException($"{genericType} is not an interface!", nameof(T));
             }
 
             return !type.IsInterface && type.IsAssignableTo(genericType);

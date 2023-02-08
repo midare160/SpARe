@@ -5,7 +5,6 @@ using SpARe.Services;
 using SpARe.Services.Exceptions;
 using SpARe.Services.FileSystem;
 using SpARe.Services.Forms;
-using SpARe.Services.General;
 using System.Reflection;
 
 namespace SpARe
@@ -45,7 +44,7 @@ namespace SpARe
 
         private static void AddForms(IServiceCollection serviceCollection)
         {
-            foreach (var type in Assembly.GetExecutingAssembly().GetTypes())
+            foreach (var type in typeof(IAssemblyMarker).Assembly.GetTypes())
             {
                 if (type.IsImplementationOf<ISingletonForm>())
                 {

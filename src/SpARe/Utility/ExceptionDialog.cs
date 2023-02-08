@@ -1,6 +1,6 @@
 ﻿using SpARe.Helpers;
 
-namespace SpARe.UI.Utility
+namespace SpARe.Utility
 {
     public static class ExceptionDialog
     {

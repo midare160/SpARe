@@ -7,17 +7,10 @@ namespace SpARe.Services.FileSystem
     public class FileService : IFileService
     {
         private const int NumberOfRetries = 5;
-        private const double SleepDuration = 500;
         private const string PathKey = "path";
 
-        private static Context GetRetryContext(string path)
-        {
-            return new Context()
-            {
-                { PathKey, path }
-            };
-        }
-
+        private static readonly TimeSpan SleepDuration = TimeSpan.FromMilliseconds(500);
+        
         private readonly ILogger _logger;
         private readonly ISyncPolicy _retryPolicy;
 
@@ -36,7 +29,11 @@ namespace SpARe.Services.FileSystem
 
             if (result.Outcome == OutcomeType.Failure)
             {
-                _logger.LogWarning(result.FinalException, "File {path} couldn't be deleted! Cancelling...", path);
+                _logger.LogWarning(
+                    result.ExceptionType == ExceptionType.Unhandled ? result.FinalException : null, 
+                    "File {path} couldn't be deleted! Cancelling...",
+                    path);
+
                 return false;
             }
 
@@ -48,7 +45,7 @@ namespace SpARe.Services.FileSystem
         {
             return Policy.Handle<UnauthorizedAccessException>()
                 .Or<IOException>()
-                .WaitAndRetry(NumberOfRetries, i => TimeSpan.FromMilliseconds(i * SleepDuration), OnRetry);
+                .WaitAndRetry(NumberOfRetries, i => i * SleepDuration, OnRetry);
         }
 
         private void OnRetry(Exception exception, TimeSpan sleepDuration, int retryCount, Context context)
@@ -60,6 +57,14 @@ namespace SpARe.Services.FileSystem
                 retryCount,
                 NumberOfRetries,
                 sleepDuration.TotalSeconds);
+        }
+
+        private static Context GetRetryContext(string path)
+        {
+            return new Context()
+            {
+                { PathKey, path }
+            };
         }
     }
 }

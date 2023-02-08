@@ -9,7 +9,7 @@
 
 		<AssemblyVersion>3.0.0</AssemblyVersion>
 		<Authors>midare160</Authors>
-		<Copyright>© 2022 midare160</Copyright>
+		<Copyright>© 2022-2023 midare160</Copyright>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryUrl>https://github.com/midare160/SpARe</RepositoryUrl>
 		<Deterministic>false</Deterministic>
@@ -26,7 +26,6 @@
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
 		<PackageReference Include="Polly" Version="7.2.3" />
-		<PackageReference Include="PostSharp" Version="6.10.15" />
 	</ItemGroup>
 
 	<ItemGroup>

@@ -1,6 +1,6 @@
 ﻿using SpARe.Services.FileSystem;
 
-namespace SpARe.Services.General
+namespace SpARe.Services
 {
     public class AdRemoverService : IAdRemoverService
     {
@@ -13,11 +13,13 @@ namespace SpARe.Services.General
 
         public Task RevertAsync()
         {
+            // TODO
             return Task.CompletedTask;
         }
 
         public Task StartAsync()
         {
+            // TODO
             return Task.CompletedTask;
         }
     }

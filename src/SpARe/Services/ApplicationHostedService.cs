@@ -2,7 +2,7 @@
 using SpARe.Services.Exceptions;
 using System.ComponentModel;
 
-namespace SpARe.Services.General
+namespace SpARe.Services
 {
     public class ApplicationHostedService : IHostedService
     {

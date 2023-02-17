@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Hosting;
 using SpARe.Services.Exceptions;
-using System.ComponentModel;
 
 namespace SpARe.Services
 {

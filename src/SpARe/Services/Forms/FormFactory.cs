@@ -3,16 +3,19 @@ using SpARe.Services.Forms;
 
 namespace SpARe.Services
 {
-    public class FormFactory : IFormFactory
-    {
-        private readonly IServiceProvider _serviceProvider;
+	public class FormFactory : IFormFactory
+	{
+		private readonly IServiceProvider _serviceProvider;
 
-        public FormFactory(IServiceProvider serviceProvider)
-        {
-            _serviceProvider = serviceProvider;
-        }
+		public FormFactory(IServiceProvider serviceProvider)
+		{
+			_serviceProvider = serviceProvider;
+		}
 
-        public T GetForm<T>() where T : IForm =>
-            _serviceProvider.GetRequiredService<T>();
-    }
+		public T GetForm<T>() where T : IForm =>
+			_serviceProvider.GetRequiredService<T>();
+
+		public IForm GetForm(Type formType) =>
+			(IForm)_serviceProvider.GetRequiredService(formType);
+	}
 }

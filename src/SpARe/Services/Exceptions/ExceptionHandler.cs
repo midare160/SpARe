@@ -3,37 +3,37 @@ using SpARe.Utility;
 
 namespace SpARe.Services.Exceptions
 {
-    public class ExceptionHandler : IExceptionHandler
-    {
-        private readonly ILogger _logger;
+	public class ExceptionHandler : IExceptionHandler
+	{
+		private readonly ILogger _logger;
 
-        public ExceptionHandler(ILogger<ExceptionHandler> logger)
-        {
-            _logger = logger;
-        }
+		public ExceptionHandler(ILogger<ExceptionHandler> logger)
+		{
+			_logger = logger;
+		}
 
-        public void OnAppDomainException(object sender, UnhandledExceptionEventArgs e)
-        {
-            if (e.IsTerminating)
-            {
-                _logger.LogCritical("Application can't recover from error and is terminating...");
-            }
+		public void Handle(Exception? exception)
+		{
+			if (exception is null or OperationCanceledException)
+			{
+				return;
+			}
 
-            OnException(e.ExceptionObject as Exception);
-        }
+			_logger.LogError(exception, "Unhandled exception occured.");
+			ExceptionDialog.Show(exception);
+		}
 
-        public void OnThreadException(object sender, ThreadExceptionEventArgs e) =>
-            OnException(e.Exception);
+		public void OnAppDomainException(object sender, UnhandledExceptionEventArgs e)
+		{
+			if (e.IsTerminating)
+			{
+				_logger.LogCritical("Application can't recover from error and is terminating...");
+			}
 
-        private void OnException(Exception? exception)
-        {
-            if (exception is null or OperationCanceledException)
-            {
-                return;
-            }
+			Handle(e.ExceptionObject as Exception);
+		}
 
-            _logger.LogError(exception, "Unhandled exception occured.");
-            ExceptionDialog.Show(exception);
-        }
-    }
+		public void OnThreadException(object sender, ThreadExceptionEventArgs e) =>
+			Handle(e.Exception);
+	}
 }

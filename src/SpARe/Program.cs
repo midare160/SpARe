@@ -2,9 +2,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SpARe.Extensions;
 using SpARe.Services;
-using SpARe.Services.Exceptions;
-using SpARe.Services.FileSystem;
-using SpARe.Services.Forms;
 
 namespace SpARe
 {
@@ -13,49 +10,17 @@ namespace SpARe
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
-        [STAThread]
-        private static void Main(string[] args)
+        private static async Task Main(string[] args)
         {
-            using var host = Host.CreateDefaultBuilder(args)
-                .ConfigureServices(s =>
-                {
-                    AddHosts(s);
-                    AddServices(s);
-                    AddForms(s);
-                })
-                .Start();
-        }
+            var builder = Host.CreateApplicationBuilder(args);
+            
+            builder.Services.AddHostedService<ApplicationHostedService>();
+            builder.Services.AddServices();
+            builder.Services.AddForms<IAssemblyMarker>();
 
-        private static void AddHosts(IServiceCollection serviceCollection)
-        {
-            serviceCollection.AddHostedService<ApplicationHostedService>();
-        }
+            var host = builder.Build();
 
-        private static void AddServices(IServiceCollection serviceCollection)
-        {
-            serviceCollection
-                .AddSingleton<IExceptionHandler, ExceptionHandler>()
-                .AddSingleton<IMessageFilter, MessageFilter>()
-                .AddTransient<IFormFactory, FormFactory>()
-                .AddTransient<IAdRemoverService, AdRemoverService>()
-                .AddTransient<IFileService, FileService>();
-        }
-
-        private static void AddForms(IServiceCollection serviceCollection)
-        {
-            foreach (var type in typeof(IAssemblyMarker).Assembly.GetTypes())
-            {
-                if (type.IsImplementationOf<ISingletonForm>())
-                {
-                    serviceCollection.AddSingleton(type);
-                    continue;
-                }
-
-                if (type.IsImplementationOf<ITransientForm>())
-                {
-                    serviceCollection.AddTransient(type);
-                }
-            }
+            await host.RunAsync();
         }
     }
 }

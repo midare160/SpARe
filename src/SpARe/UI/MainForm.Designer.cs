@@ -29,55 +29,66 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.AboutButton = new System.Windows.Forms.Button();
-            this.StartButton = new System.Windows.Forms.Button();
-            this.RevertButton = new System.Windows.Forms.Button();
-            this.SuspendLayout();
+            AboutButton = new Button();
+            StartButton = new Button();
+            RevertButton = new Button();
+            InstallButton = new Button();
+            SuspendLayout();
             // 
             // AboutButton
             // 
-            this.AboutButton.Location = new System.Drawing.Point(164, 136);
-            this.AboutButton.Name = "AboutButton";
-            this.AboutButton.Size = new System.Drawing.Size(75, 23);
-            this.AboutButton.TabIndex = 0;
-            this.AboutButton.Text = "About";
-            this.AboutButton.UseVisualStyleBackColor = true;
-            this.AboutButton.Click += new System.EventHandler(this.AboutButton_Click);
+            AboutButton.Location = new Point(147, 150);
+            AboutButton.Name = "AboutButton";
+            AboutButton.Size = new Size(108, 23);
+            AboutButton.TabIndex = 0;
+            AboutButton.Text = "About";
+            AboutButton.UseVisualStyleBackColor = true;
+            AboutButton.Click += AboutButton_Click;
             // 
             // StartButton
             // 
-            this.StartButton.Location = new System.Drawing.Point(164, 78);
-            this.StartButton.Name = "StartButton";
-            this.StartButton.Size = new System.Drawing.Size(75, 23);
-            this.StartButton.TabIndex = 1;
-            this.StartButton.Text = "Start";
-            this.StartButton.UseVisualStyleBackColor = true;
-            this.StartButton.Click += new System.EventHandler(this.StartButton_Click);
+            StartButton.Location = new Point(147, 92);
+            StartButton.Name = "StartButton";
+            StartButton.Size = new Size(108, 23);
+            StartButton.TabIndex = 1;
+            StartButton.Text = "Remove ads";
+            StartButton.UseVisualStyleBackColor = true;
+            StartButton.Click += StartButton_Click;
             // 
             // RevertButton
             // 
-            this.RevertButton.Location = new System.Drawing.Point(164, 107);
-            this.RevertButton.Name = "RevertButton";
-            this.RevertButton.Size = new System.Drawing.Size(75, 23);
-            this.RevertButton.TabIndex = 2;
-            this.RevertButton.Text = "Revert";
-            this.RevertButton.UseVisualStyleBackColor = true;
-            this.RevertButton.Click += new System.EventHandler(this.RevertButton_Click);
+            RevertButton.Location = new Point(147, 121);
+            RevertButton.Name = "RevertButton";
+            RevertButton.Size = new Size(108, 23);
+            RevertButton.TabIndex = 2;
+            RevertButton.Text = "Revert changes";
+            RevertButton.UseVisualStyleBackColor = true;
+            RevertButton.Click += RevertButton_Click;
+            // 
+            // InstallButton
+            // 
+            InstallButton.Location = new Point(147, 63);
+            InstallButton.Name = "InstallButton";
+            InstallButton.Size = new Size(108, 23);
+            InstallButton.TabIndex = 3;
+            InstallButton.Text = "Install Spotify";
+            InstallButton.UseVisualStyleBackColor = true;
+            InstallButton.Click += InstallButton_Click;
             // 
             // MainForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(402, 237);
-            this.Controls.Add(this.RevertButton);
-            this.Controls.Add(this.StartButton);
-            this.Controls.Add(this.AboutButton);
-            this.MaximizeBox = false;
-            this.Name = "MainForm";
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Form1";
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(402, 237);
+            Controls.Add(InstallButton);
+            Controls.Add(RevertButton);
+            Controls.Add(StartButton);
+            Controls.Add(AboutButton);
+            MaximizeBox = false;
+            Name = "MainForm";
+            StartPosition = FormStartPosition.CenterScreen;
+            Text = "SpARe";
+            ResumeLayout(false);
         }
 
         #endregion
@@ -85,5 +96,6 @@
         private Button AboutButton;
         private Button StartButton;
         private Button RevertButton;
+        private Button InstallButton;
     }
 }

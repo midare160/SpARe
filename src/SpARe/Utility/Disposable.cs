@@ -1,16 +1,10 @@
 ﻿namespace SpARe.Utility
 {
-    public class Disposable : IDisposable
+    public class Disposable : Disposable<Action>
     {
-        private readonly Action _disposeAction;
-
         public Disposable(Action disposeAction)
+            : base(disposeAction, static a => a!())
         {
-            ArgumentNullException.ThrowIfNull(disposeAction);
-
-            _disposeAction = disposeAction;
         }
-
-        public void Dispose() => _disposeAction();
     }
 }

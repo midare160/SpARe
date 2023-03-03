@@ -1,26 +1,48 @@
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using SpARe;
 using SpARe.Extensions;
+using SpARe.Options;
+using SpARe.Properties;
 using SpARe.Services;
+using SpARe.Services.Exceptions;
+using SpARe.Services.Http;
+using SpARe.Services.IO;
+using SpARe.UI;
+using WindowsFormsLifetime;
 
-namespace SpARe
+var builder = Host.CreateApplicationBuilder(args);
+
+builder.Configuration.AddAsJsonStream(Resources.appsettings_static);
+builder.Services.AddOptions<GitHubOptions>().Bind(builder.Configuration.GetSection(GitHubOptions.Name));
+
+builder.Services.AddWindowsFormsLifetime<MainForm>(preApplicationRunAction: serviceProvider =>
 {
-    internal static class Program
-    {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        private static async Task Main(string[] args)
-        {
-            var builder = Host.CreateApplicationBuilder(args);
-            
-            builder.Services.AddHostedService<ApplicationHostedService>();
-            builder.Services.AddServices();
-            builder.Services.AddForms<IAssemblyMarker>();
+    var exceptionHandler = serviceProvider.GetRequiredService<IExceptionHandler>();
+    AppDomain.CurrentDomain.UnhandledException += (s, e) => exceptionHandler.HandleException(e.ExceptionObject as Exception);
+    Application.ThreadException += (s, e) => exceptionHandler.HandleException(e.Exception);
 
-            var host = builder.Build();
+    Application.AddMessageFilter(serviceProvider.GetRequiredService<IMessageFilter>());
+});
 
-            await host.RunAsync();
-        }
-    }
-}
+builder.Services.AddFormsFromAssemblyContainingType<IAssemblyMarker>();
+builder.Services.AddSingleton<IExceptionDialog, ExceptionDialog>();
+builder.Services.AddSingleton<IExceptionHandler, ExceptionHandler>();
+builder.Services.AddSingleton<IMessageFilter, MessageFilter>();
+builder.Services.AddTransient<IAdRemoverService, AdRemoverService>();
+builder.Services.AddTransient<IFileService, FileService>();
+builder.Services.AddTransient<IInstallerService, InstallerService>();
+builder.Services.AddTransient<IGitHubClient, GitHubClient>();
+
+builder.Services.AddHttpClient<IGitHubClient, GitHubClient>((services, client) =>
+{
+    var options = services.GetRequiredService<IOptions<GitHubOptions>>();
+    GitHubClient.Configure(client, options.Value.RepositoryApiUrl);
+});
+
+builder.Services.AddMediatR(config => config.RegisterServicesFromAssemblyContaining<IAssemblyMarker>());
+
+var app = builder.Build();
+await app.RunAsync();

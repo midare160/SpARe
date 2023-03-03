@@ -1,39 +1,31 @@
 ﻿using Microsoft.Extensions.Logging;
-using SpARe.Utility;
+using SpARe.UI;
+using WindowsFormsLifetime;
 
 namespace SpARe.Services.Exceptions
 {
-	public class ExceptionHandler : IExceptionHandler
-	{
-		private readonly ILogger _logger;
+    public class ExceptionHandler : IExceptionHandler
+    {
+        private readonly ILogger _logger;
+        private readonly IExceptionDialog _exceptionDialog;
+        private readonly IGuiContext _guiContext;
 
-		public ExceptionHandler(ILogger<ExceptionHandler> logger)
-		{
-			_logger = logger;
-		}
+        public ExceptionHandler(ILogger<ExceptionHandler> logger, IExceptionDialog exceptionDialog, IGuiContext guiContext)
+        {
+            _logger = logger;
+            _exceptionDialog = exceptionDialog;
+            _guiContext = guiContext;
+        }
 
-		public void Handle(Exception? exception)
-		{
-			if (exception is null or OperationCanceledException)
-			{
-				return;
-			}
+        public void HandleException(Exception? exception)
+        {
+            if (exception is null or OperationCanceledException)
+            {
+                return;
+            }
 
-			_logger.LogError(exception, "Unhandled exception occured.");
-			ExceptionDialog.Show(exception);
-		}
-
-		public void OnAppDomainException(object sender, UnhandledExceptionEventArgs e)
-		{
-			if (e.IsTerminating)
-			{
-				_logger.LogCritical("Application can't recover from error and is terminating...");
-			}
-
-			Handle(e.ExceptionObject as Exception);
-		}
-
-		public void OnThreadException(object sender, ThreadExceptionEventArgs e) =>
-			Handle(e.Exception);
-	}
+            _logger.LogError(exception, "Unhandled exception occured.");
+            _guiContext.Invoke(() => _exceptionDialog.ShowNew(exception));
+        }
+    }
 }

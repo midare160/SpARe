@@ -1,8 +1,8 @@
-﻿using SpARe.Services.FileSystem;
+﻿using SpARe.Services.IO;
 
 namespace SpARe.Services
 {
-	public class AdRemoverService : IAdRemoverService
+    public class AdRemoverService : IAdRemoverService
 	{
 		private readonly IFileService _fileService;
 
@@ -13,14 +13,12 @@ namespace SpARe.Services
 
 		public Task RevertAsync()
 		{
-			// TODO
-			return Task.CompletedTask;
+			return Task.FromException(new NotImplementedException());
 		}
 
 		public Task StartAsync()
 		{
-			// TODO
-			return Task.CompletedTask;
+			return Task.FromException(new NotImplementedException());
 		}
 	}
 }

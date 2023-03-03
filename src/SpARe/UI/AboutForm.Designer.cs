@@ -27,91 +27,108 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.tableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
-            this.ProductNameLabel = new System.Windows.Forms.Label();
-            this.VersionLabel = new System.Windows.Forms.Label();
-            this.CopyrightLabel = new System.Windows.Forms.Label();
-            this.tableLayoutPanel.SuspendLayout();
-            this.SuspendLayout();
+            tableLayoutPanel = new TableLayoutPanel();
+            ProductNameLabel = new Label();
+            VersionLabel = new Label();
+            CopyrightLabel = new Label();
+            UpdateCheckButton = new Button();
+            tableLayoutPanel.SuspendLayout();
+            SuspendLayout();
             // 
             // tableLayoutPanel
             // 
-            this.tableLayoutPanel.ColumnCount = 1;
-            this.tableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel.Controls.Add(this.ProductNameLabel, 0, 0);
-            this.tableLayoutPanel.Controls.Add(this.VersionLabel, 0, 1);
-            this.tableLayoutPanel.Controls.Add(this.CopyrightLabel, 0, 2);
-            this.tableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel.Location = new System.Drawing.Point(10, 10);
-            this.tableLayoutPanel.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.tableLayoutPanel.Name = "tableLayoutPanel";
-            this.tableLayoutPanel.RowCount = 3;
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.tableLayoutPanel.Size = new System.Drawing.Size(343, 96);
-            this.tableLayoutPanel.TabIndex = 0;
+            tableLayoutPanel.ColumnCount = 2;
+            tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel.Controls.Add(ProductNameLabel, 0, 0);
+            tableLayoutPanel.Controls.Add(VersionLabel, 0, 1);
+            tableLayoutPanel.Controls.Add(CopyrightLabel, 0, 2);
+            tableLayoutPanel.Controls.Add(UpdateCheckButton, 1, 3);
+            tableLayoutPanel.Dock = DockStyle.Fill;
+            tableLayoutPanel.Location = new Point(10, 10);
+            tableLayoutPanel.Margin = new Padding(4, 3, 4, 3);
+            tableLayoutPanel.Name = "tableLayoutPanel";
+            tableLayoutPanel.RowCount = 4;
+            tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            tableLayoutPanel.RowStyles.Add(new RowStyle(SizeType.Percent, 25F));
+            tableLayoutPanel.Size = new Size(343, 151);
+            tableLayoutPanel.TabIndex = 0;
             // 
             // ProductNameLabel
             // 
-            this.ProductNameLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.ProductNameLabel.AutoSize = true;
-            this.ProductNameLabel.Location = new System.Drawing.Point(131, 8);
-            this.ProductNameLabel.Margin = new System.Windows.Forms.Padding(7, 0, 4, 0);
-            this.ProductNameLabel.MaximumSize = new System.Drawing.Size(0, 20);
-            this.ProductNameLabel.Name = "ProductNameLabel";
-            this.ProductNameLabel.Size = new System.Drawing.Size(84, 15);
-            this.ProductNameLabel.TabIndex = 19;
-            this.ProductNameLabel.Text = "Product Name";
-            this.ProductNameLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            ProductNameLabel.Anchor = AnchorStyles.None;
+            ProductNameLabel.AutoSize = true;
+            tableLayoutPanel.SetColumnSpan(ProductNameLabel, 2);
+            ProductNameLabel.Location = new Point(131, 11);
+            ProductNameLabel.Margin = new Padding(7, 0, 4, 0);
+            ProductNameLabel.MaximumSize = new Size(0, 20);
+            ProductNameLabel.Name = "ProductNameLabel";
+            ProductNameLabel.Size = new Size(84, 15);
+            ProductNameLabel.TabIndex = 0;
+            ProductNameLabel.Text = "Product Name";
+            ProductNameLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // VersionLabel
             // 
-            this.VersionLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.VersionLabel.AutoSize = true;
-            this.VersionLabel.Location = new System.Drawing.Point(150, 40);
-            this.VersionLabel.Margin = new System.Windows.Forms.Padding(7, 0, 4, 0);
-            this.VersionLabel.MaximumSize = new System.Drawing.Size(0, 20);
-            this.VersionLabel.Name = "VersionLabel";
-            this.VersionLabel.Size = new System.Drawing.Size(45, 15);
-            this.VersionLabel.TabIndex = 0;
-            this.VersionLabel.Text = "Version";
-            this.VersionLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            VersionLabel.Anchor = AnchorStyles.None;
+            VersionLabel.AutoSize = true;
+            tableLayoutPanel.SetColumnSpan(VersionLabel, 2);
+            VersionLabel.Location = new Point(150, 48);
+            VersionLabel.Margin = new Padding(7, 0, 4, 0);
+            VersionLabel.MaximumSize = new Size(0, 20);
+            VersionLabel.Name = "VersionLabel";
+            VersionLabel.Size = new Size(45, 15);
+            VersionLabel.TabIndex = 1;
+            VersionLabel.Text = "Version";
+            VersionLabel.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // CopyrightLabel
             // 
-            this.CopyrightLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.CopyrightLabel.AutoSize = true;
-            this.CopyrightLabel.Location = new System.Drawing.Point(143, 72);
-            this.CopyrightLabel.Margin = new System.Windows.Forms.Padding(7, 0, 4, 0);
-            this.CopyrightLabel.MaximumSize = new System.Drawing.Size(0, 20);
-            this.CopyrightLabel.Name = "CopyrightLabel";
-            this.CopyrightLabel.Size = new System.Drawing.Size(60, 15);
-            this.CopyrightLabel.TabIndex = 21;
-            this.CopyrightLabel.Text = "Copyright";
-            this.CopyrightLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            CopyrightLabel.Anchor = AnchorStyles.None;
+            CopyrightLabel.AutoSize = true;
+            tableLayoutPanel.SetColumnSpan(CopyrightLabel, 2);
+            CopyrightLabel.Location = new Point(143, 85);
+            CopyrightLabel.Margin = new Padding(7, 0, 4, 0);
+            CopyrightLabel.MaximumSize = new Size(0, 20);
+            CopyrightLabel.Name = "CopyrightLabel";
+            CopyrightLabel.Size = new Size(60, 15);
+            CopyrightLabel.TabIndex = 2;
+            CopyrightLabel.Text = "Copyright";
+            CopyrightLabel.TextAlign = ContentAlignment.MiddleCenter;
+            // 
+            // UpdateCheckButton
+            // 
+            UpdateCheckButton.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            UpdateCheckButton.Location = new Point(204, 125);
+            UpdateCheckButton.Name = "UpdateCheckButton";
+            UpdateCheckButton.Size = new Size(136, 23);
+            UpdateCheckButton.TabIndex = 3;
+            UpdateCheckButton.Text = "Check for updates";
+            UpdateCheckButton.UseVisualStyleBackColor = true;
+            UpdateCheckButton.Click += UpdateCheckButton_Click;
             // 
             // AboutForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(363, 116);
-            this.Controls.Add(this.tableLayoutPanel);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Icon = global::SpARe.Properties.Resources.about;
-            this.Margin = new System.Windows.Forms.Padding(4, 3, 4, 3);
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "AboutForm";
-            this.Padding = new System.Windows.Forms.Padding(10);
-            this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "About";
-            this.Load += new System.EventHandler(this.AboutForm_Load);
-            this.tableLayoutPanel.ResumeLayout(false);
-            this.tableLayoutPanel.PerformLayout();
-            this.ResumeLayout(false);
-
+            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleMode = AutoScaleMode.Font;
+            ClientSize = new Size(363, 171);
+            Controls.Add(tableLayoutPanel);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            Icon = Properties.Resources.about;
+            Margin = new Padding(4, 3, 4, 3);
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "AboutForm";
+            Padding = new Padding(10);
+            ShowInTaskbar = false;
+            StartPosition = FormStartPosition.CenterParent;
+            Text = "About";
+            Load += AboutForm_Load;
+            tableLayoutPanel.ResumeLayout(false);
+            tableLayoutPanel.PerformLayout();
+            ResumeLayout(false);
         }
 
         #endregion
@@ -120,5 +137,6 @@
         private System.Windows.Forms.Label ProductNameLabel;
         private System.Windows.Forms.Label VersionLabel;
         private System.Windows.Forms.Label CopyrightLabel;
+        private Button UpdateCheckButton;
     }
 }

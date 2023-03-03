@@ -1,43 +1,41 @@
+using MediatR;
 using SpARe.Extensions;
-using SpARe.Services;
-using SpARe.Services.Forms;
-using SpARe.UI;
+using SpARe.Requests;
 
-namespace SpARe
+namespace SpARe;
+
+public partial class MainForm : Form
 {
-	public partial class MainForm : Form, ISingletonForm
-	{
-		private readonly IFormFactory _formFactory;
-		private readonly IAdRemoverService _adRemoverService;
+    private readonly IMediator _mediator;
 
-		public MainForm(IFormFactory formFactory, IAdRemoverService adRemoverService)
-		{
-			_formFactory = formFactory;
-			_adRemoverService = adRemoverService;
+    public MainForm(IMediator mediator)
+    {
+        _mediator = mediator;
 
-			InitializeComponent();
-		}
+        InitializeComponent();
+    }
 
-		private async void StartButton_Click(object sender, EventArgs e)
-		{
-			using var _ = this.StartWaitCursor();
+    private async void InstallButton_Click(object sender, EventArgs e)
+    {
+        using var _ = this.StartWaitCursor();
+        await _mediator.Send<InstallRequest>();
+    }
 
-			await _adRemoverService.StartAsync();
-		}
+    private async void StartButton_Click(object sender, EventArgs e)
+    {
+        using var _ = this.StartWaitCursor();
+        await _mediator.Send<StartAdRemovalRequest>();
+    }
 
-		private async void RevertButton_Click(object sender, EventArgs e)
-		{
-			using var _ = this.StartWaitCursor();
+    private async void RevertButton_Click(object sender, EventArgs e)
+    {
+        using var _ = this.StartWaitCursor();
+        await _mediator.Send<RevertAdRemovalRequest>();
+    }
 
-			await _adRemoverService.RevertAsync();
-		}
-
-		private void AboutButton_Click(object sender, EventArgs e)
-		{
-			using var _ = this.StartWaitCursor();
-
-			using var aboutForm = _formFactory.GetForm<AboutForm>();
-			aboutForm.ShowDialog(this);
-		}
-	}
+    private async void AboutButton_Click(object sender, EventArgs e)
+    {
+        using var _ = this.StartWaitCursor();
+        await _mediator.Send(new AboutRequest(this));
+    }
 }

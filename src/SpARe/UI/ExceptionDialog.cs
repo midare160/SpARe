@@ -1,13 +1,23 @@
-﻿using SpARe.Helpers;
+﻿using Flurl;
+using Microsoft.Extensions.Options;
+using SpARe.Helpers;
+using SpARe.Options;
 
-namespace SpARe.Utility
+namespace SpARe.UI
 {
-    public static class ExceptionDialog
+    public class ExceptionDialog : IExceptionDialog
     {
-        public static TaskDialogButton? Show(Exception exception)
+        private readonly GitHubOptions _gitHubOptions;
+
+        public ExceptionDialog(IOptions<GitHubOptions> gitHubOptions)
+        {
+            _gitHubOptions = gitHubOptions.Value;
+        }
+
+        public TaskDialogButton? ShowNew(Exception exception)
         {
             var reportButton = new TaskDialogCommandLinkButton("Report", "Create an issue on Github (Stacktrace will be copied to clipboard).", allowCloseDialog: false);
-            reportButton.Click += (s, e) => OnReportButtonClicked(exception);
+            reportButton.Click += (_, _) => OnReportButtonClicked(exception);
 
             var page = new TaskDialogPage()
             {
@@ -27,12 +37,12 @@ namespace SpARe.Utility
             return TaskDialog.ShowDialog(page);
         }
 
-        private static void OnReportButtonClicked(Exception exception)
+        private void OnReportButtonClicked(Exception exception)
         {
             Clipboard.SetText(exception.ToString());
 
-            // TODO get repo url from csproj
-            using var _ = ProcessHelper.StartWithShell("https://github.com/midare160/SpotifyAdRemover/issues/new");
+            var newIssueUrl = Url.Combine(_gitHubOptions.RepositoryUrl, "issues/new");
+            using var _ = ProcessHelper.StartWithShell(newIssueUrl);
         }
     }
 }
